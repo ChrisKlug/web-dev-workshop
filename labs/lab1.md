@@ -45,10 +45,10 @@ Now that the container resource has been added, you should be able to start your
 
 This should open a browser showing you the Aspire Dashboard. And on the Dashboard, you should see a single resource called __ui__.
 
-The _State_ might read as "Runtime unhealthy" until the Docker image has been downloaded. To check on the progress of the download, click the __Console Logs__ button ![](resources/console-logs-button.png) on the right-hand side of the dashboard.
+The _State_ might read as "Runtime unhealthy" until the Docker image has been downloaded. To check on the progress of the download, click the __Console Logs__ button ![](../resources/console-logs-button.png) on the right-hand side of the dashboard.
 
 Once the __ui__ resource is in the "Healthy" state, click on the __localhost:XXXXX__ URL to view the UI.
 
 __Note:__ The UI doesn't actually work at the moment, as it requires from API endpoints to exist...
 
-[<< Home](./readme.md) | [Lab 2 >>](./lab2.md)
+[<< Home](../readme.md) | [Lab 2 >>](./lab2.md)

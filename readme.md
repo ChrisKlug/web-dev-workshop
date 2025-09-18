@@ -16,11 +16,12 @@ The 2 days include a combination of presentations and labs, and breaks of course
 
 - Presentation: Intro to the solution and what we are building
 - Presentation: Getting started with Aspire
-- Lab 1: Setting up Aspire - [Lab material](lab1.md)
-- Lab 2: Setting up YARP - [Lab material](lab2.md)
-- Lab 3: Adding a SQL Server database - [Lab material](lab3.md)
-- Lab 4: Creating a Products Service - [Lab material](lab4.md)
-- Lab 5: Implementing the Products API using FastEndpoints - [Lab material](lab5.md)
+- Lab 1: Setting up Aspire - [Lab material](./labs/lab1.md)
+- Lab 2: Setting up YARP - [Lab material](./labs/lab2.md)
+- Lab 3: Adding a SQL Server database - [Lab material](./labs/lab3.md)
+- Lab 4: Creating a Products Service - [Lab material](./labs/lab4.md)
+- Lab 5: Implementing the Products API using FastEndpoints - [Lab material](./labs/lab5.md)
+- Lab 6: Integration Testing the Products API - [Lab material](./labs/lab6.md)
 
 ### Day 2
 

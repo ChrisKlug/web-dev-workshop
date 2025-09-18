@@ -66,7 +66,7 @@ With that code in place, you can press __F5__ to start debugging.
 
 You should now see a SQL Server and a SQL Server Database resource in the Aspire Dashboard.
 
-![](./resources/sql-server-resource.png)
+![](../resources/sql-server-resource.png)
 
 __Note:__ It might take a while for them to start up, as it needs to download the SQL Server Docker image to your machine if it is not already there. 
 
