@@ -2,16 +2,6 @@
 
 The UI expects a couple of REST-ful endpoints to retrieve the product information to display in the application. However, before we can start implementing these, we need to have a database to store the data in.
 
-## What are we doing?
-
-You need a SQL Server instance, and a database, to store the data in. And, you could use the one you might have installed on your machine. However, as you are running Aspire, you might as well use the power of Aspire and Docker to run it.
-
-So, the the first thing you need to do, is to add a reference to the `Aspire.Hosting.SqlServer` NuGet package, and add a SQL Server instance to our AppModel using the `AddSqlServer()` extension method on the `IDistributedApplicationBuilder`.
-
-Now, as we are talking about a database, it is also recommended to add a persistent store to it, by using a Docker volume. This can easily be added using the `WithDataVolume()` extension method.
-
-And finally, you need an actual database. So, you have to use the `AddDatabase()` method to add a database called __WebDevWorkshop__.
-
 ## Steps (for Visual Studio)
 
 ### Add the required NuGet packages

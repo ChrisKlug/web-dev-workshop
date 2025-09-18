@@ -2,10 +2,6 @@
 
 In this lab, you will set up a new .NET solution with Aspire as the host for the services to come.
 
-## What are we doing?
-
-You need to create a new __Aspire Empty App__ called __WebDevWorkshop__. Inside this project, you then need to add add a container resource called `ui` using the image called `zerokoll/webdevworkshop-ui`. The resource should expose its port 80 on any port on your machine.
-
 ## Steps (for Visual Studio/Rider)
 
 ### Install / Update Aspire Templates

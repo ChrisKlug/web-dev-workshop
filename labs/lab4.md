@@ -2,54 +2,6 @@
 
 Now that you have a database in place, it is time to create a new Products service that will be responsible for serving up the products information. It will do so using an HTTP-based API using FastEndpoints. However, before you can get to the API creation, you first need a new project, and some database access.
 
-## What are we doing?
-
-The first stepo is to create a new __ASP.NET Core Empty__ project called __WebDevWorkshop.Services.Products__, making sure that the "_Enlist in .NET Aspire orchestration_" option is ticked to add it to Aspire.
-
-Once the new project has been set up, and added to the AppModel, you will need a reference to the database to get the connectionstring to be injected.
-
-__Note:__ It is also a good idea to wait for the database resource to be up and running before starting up the project.
-
-Once the database reference is in place, you need to set up the database access. In this case, the data is simple, and can be represented using a simple record called __Product__. It needs the following properties
-
-- int Id, 
-- string Name, 
-- string Description
-- decimal Price
-- bool IsFeatured
-- string ThumbnailUrl
-- string ImageUrl
-
-Once you have the record defined, you need to add EntityFramework to the project, to be able to create a new `DbContext` that can be used to query the database.
-
-As you are using Aspire, the recommended way to add EF to your project, is to use the `Aspire.Microsoft.EntityFrameworkCore.SqlServer` NuGet package.
-
-With that NuGet package in place, you can go ahead and create a new `DbContext` called __ProductsContext__, and add it to the DI using the Aspire specific extension method `AddSqlServerDbContext<T>()`. 
-
-__Note:__ The `AddSqlServerDbContext<T>()` extension method extends the `IHostApplicationBuilder` interface, not the `IServiceCollection` one.
-
-Once that is in place, you need to create a new database migration, and run it as part of the application startup. 
-
-The migration should look like [this](./resources/ef-migration.md)
-
-__Warning:__ If you run migrations during startup, only do so when debugging. Doing it in production can have "interesting" problems when running multiple instances. 
-
-Now that you know what the database table will look like, you will also need to configure the `ProductsContext` by overriding the `OnModelCreating` and configuring it to support querying for `Product` entities.
-
-The problem now, is that you have no data. To fix that, the easiest way is to use the SQL in [this file](./resources/SeedData.sql), to populate it with some test data. This can be done right after the migration has been run.
-
-The last step is to create a `Product` repository to simplify the retrieval av `Product` entities. The interface for the repository should be called `IProducts` and look like this
-
-```csharp
-public interface IProducts
-{
-    Task<Product?> WithId(int id);
-    Task<Product[]> ThatAreFeatured();
-}
-```
-
-Once you have added this interface to your project, and implemented it in a class using the `ProductsContext` for the database access. You need to remember to add it to the DI as well.
-
 ## Steps (for Visual Studio)
 
 ### Add a new project

@@ -6,12 +6,6 @@ Minimal APIs on the other hand lack a built in mechanism for grouping and managi
 
 Another, a bit less used way of implementing HTTP-based APIs, is to implement them using a project called [FastEndpoints](https://fast-endpoints.com). This project uses minimal APIs as its foundation, but adds a mediator type of pattern on top of it. This gives you the best of both worlds in some ways. You get the chain of responsibility pattern support by using the mediator pattern. It adds support for grouping and structure when using large amounts of endpoints. And it has the performance benefits of minimal APIs. It also supports all the features minimal APIs support, as well as a lot of those supported by MVC as well.
 
-## What are we doing?
-
-In this lab, you need to add the FastEndpoints NuGet package. Then add FastEndpoints to the applications DI and request pipepline. And finally implement 2 endpoints, one for the path __/api/products/featured__ and one for the path __/api/products/{PRODUCT_ID}__.
-
-The endpoints should be fairly "thin" and simple to implement as you have already set up the `ProductsContext` as well as added an implementation of `IProducts`
-
 ## Steps (for Visual Studio)
 
 ### Add Fast Endpoints to the project

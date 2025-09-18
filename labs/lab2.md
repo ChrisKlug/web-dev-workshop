@@ -6,30 +6,6 @@ One solution would obviously be to set up cross-origin support in the API. But..
 
 Instead of cross-origin support, we can make it possible for the UI to call the API on on the same host as itself. And to do that, we will use YARP to reverse proxy the UI from the application hosting the API.
 
-## What are we doing?
-
-You need to create a new __ASP.NET Core Empty__ project called __WebDevWorkshop.Web__, making sure that the "_Enlist in .NET Aspire orchestration_" option is ticked to add it to Aspire.
-
-Once the new project has been created, you should make sure to expose its HTTP-endpoints by calling `WithExternalHttpEndpoints`.
-
-Inside the newly created project, you need to add add a reference to the NuGet package [Yarp.ReverseProxy] to be able to add YARP to your request pipeline.
-
-And then, you need to configure YARP to reverse proxy all calls to `/` to `https+http://ui`.
-
-__Note:__ The use of [https+http://] is specific to the the service discovery functionality, and tells the service discovery to use HTTPS if possible, and HTTP if HTTPS is not available.
-
-However, this requires Aspire service location to be set up as well. This means adding a reference to the NuGet package `Microsoft.Extensions.ServiceDiscovery.Yarp` and calling `builder.Services.AddHttpForwarderWithServiceDiscovery()` instead of calling `builder.Services.AddReverseProxy()` as you normally would.
-
-Once you have that in place, you need to add the forwarder to the request pipeline by calling the `app.MapForwarder()` method.
-
-This causes any call that isn't handled in the local project to be reverse-proxied to the UI project, which is allmost what we want. 
-
-Calling a non-existent API endpoint should probably return 404 instead of reverse-proxy the call to the UI project. So, to sort that out, you need to map an HTTP-handler that causes any call to `/api/**` to return 404. 
-
-The last piece of the puzzle is to add an Aspire resource reference from the web project to the ui resource's `http` endpoint.
-
-This means that any incoming request should now be reverse-proxied to the UI resource.
-
 ## Steps (for Visual Studio)
 
 ### Add a new project
