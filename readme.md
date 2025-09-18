@@ -22,6 +22,10 @@ The 2 days include a combination of presentations and labs, and breaks of course
 - Lab 4: Creating a Products Service - [Lab material](./labs/lab4.md)
 - Lab 5: Implementing the Products API using FastEndpoints - [Lab material](./labs/lab5.md)
 - Lab 6: Integration Testing the Products API - [Lab material](./labs/lab6.md)
+- Lab 7: Clean up the Integration Testing - [Lab material](./labs/lab7.md)
+- Lab 8: Testing the Product Endpoint - [Lab material](./labs/lab8.md)
+- Lab 9: Creating an SDK for the Products API - [Lab material](./labs/lab9.md)
+- Lab 10: Providing the UI with Products - [Lab material](./labs/lab10.md)
 
 ### Day 2
 
