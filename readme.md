@@ -16,16 +16,22 @@ The 2 days include a combination of presentations and labs, and breaks of course
 
 - Presentation: Intro to the solution and what we are building
 - Presentation: Getting started with Aspire
-- Lab 1: Setting up Aspire - [Lab material](./labs/lab1.md)
-- Lab 2: Setting up YARP - [Lab material](./labs/lab2.md)
-- Lab 3: Adding a SQL Server database - [Lab material](./labs/lab3.md)
-- Lab 4: Creating a Products Service - [Lab material](./labs/lab4.md)
-- Lab 5: Implementing the Products API using FastEndpoints - [Lab material](./labs/lab5.md)
-- Lab 6: Integration Testing the Products API - [Lab material](./labs/lab6.md)
-- Lab 7: Clean up the Integration Testing - [Lab material](./labs/lab7.md)
-- Lab 8: Testing the Product Endpoint - [Lab material](./labs/lab8.md)
-- Lab 9: Creating an SDK for the Products API - [Lab material](./labs/lab9.md)
-- Lab 10: Providing the UI with Products - [Lab material](./labs/lab10.md)
+- [Lab 1: Setting up Aspire](./labs/lab1.md)
+- Presentation: What is YARP (Yet Another Reverse Proxy)
+- [Lab 2: Setting up YARP](./labs/lab2.md)
+- [Lab 3: Adding a SQL Server database](./labs/lab3.md)
+- [Lab 4: Creating a Products Service](./labs/lab4.md)
+- Presentation: FastEndpoints - Another API endpoint option
+- [Lab 5: Implementing the Products API using FastEndpoints](./labs/lab5.md)
+- Presentation: Testing APIs
+- [Lab 6: Integration Testing the Products API](./labs/lab6.md)
+- [Lab 7: Clean up the Integration Testing](./labs/lab7.md)
+- [Lab 8: Testing the Product Endpoint](./labs/lab8.md)
+- Presentation: The benefits of SDK:s over APIs
+- [Lab 9: Creating an SDK for the Products API](./labs/lab9.md)
+- [Lab 10: Providing the UI with Products](./labs/lab10.md)
+- Presentation: Project Orleans - The very quick primer
+- [Lab 11: Creating an Orleans-based Shopping Cart](./labs/lab11.md)
 
 ### Day 2
 
