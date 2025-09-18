@@ -251,7 +251,69 @@ Now, try start debugging again.
 
 Now, you should get a browser with 2 tabs. One showing the Aspire Dashboard, and one showing the UI with actual products on it!
 
-The images are supposed to be missing. This will be fixed in the next lab!
+The images are unfortunately missing... So, let's fix that!
+
+### Providing static resources
+
+There ar 2 reasons that there are no images being displayed on the website. First of all, you have no images. Secondly, you have not set up ASP.NET Core to serve static file.
+
+Now, the default way to solve this, would be to add a ___wwwroot__ directory, and add the images there. This piggy backs on a convention, and makes adding the middleware needed to serve the files very easy. However, to be a bit complicated, let's do it a little differently...
+
+Add a new directory called __ProductImages__ in the __WebDevWorkshop.Web__ project. And then, download the following images to that directory
+
+- [apple.jpg](../resources/product-images/apple.jpg)
+- [apple_thumbnail.jpg](../resources/product-images/apple_thumbnail.jpg)
+- [banana.jpg](../resources/product-images/banana.jpg)
+- [banana_thumbnail.jpg](../resources/product-images/banana_thumbnail.jpg)
+- [dragon-fruit.jpg](../resources/product-images/dragon-fruit.jpg)
+- [dragon-fruit_thumbnail.jpg](../resources/product-images/dragon-fruit_thumbnail.jpg)
+- [durian.jpg](../resources/product-images/durian.jpg)
+- [durian_thumbnail.jpg](../resources/product-images/durian_thumbnail.jpg)
+- [kiwi.jpg](../resources/product-images/kiwi.jpg)
+- [kiwi_thumbnail.jpg](../resources/product-images/kiwi_thumbnail.jpg)
+- [orange.jpg](../resources/product-images/orange.jpg)
+- [orange_thumbnail.jpg](../resources/product-images/orange_thumbnail.jpg)
+
+Once you have the images, it is time to add the static files middleware to the request pipeline.
+
+The default method `app.UseStaticFiles()` will default to serving images from the __wwwroot__ file as mentioned above. However, as the product images are not located there, we need to use the overload that takes a `StaticFileOptions`
+
+Open the __Program.cs__ file in the __WebDevWorkshop.Web__ project, and place the following code right after the creation of the `WebApplication`
+
+```csharp
+...
+var app = builder.Build();
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    
+});
+...
+```
+
+The `StaticFileOptions` contains the configuration needed to make the midleware do what you need. In this case, it needs a `RequestPath` and a `IFileProvider` in the form of a `PhysicalFileProvider`.
+
+The `RequestPath`, which is at what path it should serve the file, should be __/images/products__ to correspond with what the UI expetcs. And the `FileProvider` needs to be set to a `PhysicalFileProvider` that points to the directory where the images are stored. 
+
+In this case, the images are stored in the __ProductImages__ directory of the project. Unfortunately, the `PhysicalFileProvider` needs an absolute path. So, you will need to compbine the applications `ContentRootPath` and the directory name using `Path.Combine()`
+
+```csharp
+app.UseStaticFiles(new StaticFileOptions
+{
+    RequestPath = "/images/products",
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(
+            app.Environment.ContentRootPath,
+            "ProductImages")
+    )
+});
+```
+
+### Verify that images are being served
+
+Press __F5__ and make sure that the images are served as expected.
+
+__Note:__ It is __very__ possible that the browser has cached the images. To fix this, do a __HARD__ refresh (Ctrl + F5), or even better, press __F12__ to open the Developer Tools, navigate to the __Network__ tab and tick the __Disable cache__ checkbox. This will disable the cache whenever the Developer Tools are open
 
 
 [<< Lab 9](./lab9.md) | [Lab 11 >>](./lab11.md)
