@@ -32,6 +32,11 @@ The 2 days include a combination of presentations and labs, and breaks of course
 - [Lab 10: Providing the UI with Products](./labs/lab10.md)
 - Presentation: Project Orleans - The very quick primer
 - [Lab 11: Creating an Orleans-based Shopping Cart](./labs/lab11.md)
+- [Lab 12: Persisting the Shopping Cart](./labs/lab12.md)
+- [Lab 13: Testing the Shopping Cart Endpoints](./labs/lab13.md)
+- Presentation: ASP.NET Core Authentication
+- [Lab 14: Adding a IdentityServer](./labs/lab14.md)
+- [Lab 15: Adding User Authentication](./labs/lab15.md)
 
 ### Day 2
 
