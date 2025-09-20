@@ -256,8 +256,6 @@ Restart the debuggin and try loggin in again. The username is __alice__ and the 
 
 This should now succeed. And you should also be able to sign out.
 
-__Note:__ Only the sign in and sign out buttons are enabled.
-
-__Known Issue:__ There is an issue with the user not being redirected back to the application after signing out. This is likely due to a misconfiguration in the IdentityServer, but needs to be investigated. Go ahead and click on the  link back to the application after log out instead.
+__Note:__ Only the sign in and sign out buttons are enabled in the UI. The others are just for show... 😂
 
 [<< Lab 14](./lab14.md) | [Lab 16 >>](./lab16.md)
