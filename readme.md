@@ -37,6 +37,7 @@ The 2 days include a combination of presentations and labs, and breaks of course
 - Presentation: ASP.NET Core Authentication
 - [Lab 14: Adding a IdentityServer](./labs/lab14.md)
 - [Lab 15: Adding User Authentication](./labs/lab15.md)
+- [Lab 16: Testing with Authentication](./labs/lab16.md)
 
 ### Day 2
 

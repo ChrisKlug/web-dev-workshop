@@ -47,4 +47,28 @@ Once the __ui__ resource is in the "Healthy" state, click on the __localhost:XXX
 
 __Note:__ The UI doesn't actually work at the moment, as it requires from API endpoints to exist...
 
+### Optional: Fix the Dashboard state
+
+There is a small problem that might arise if you are very quick. 
+
+When you start up Aspire, if you look at the Dashboard, you will notice that the __ui__ resource gets the state __Running__ almost immidiately. However, when the tab that shows the website opens, it takes a bit of time before the page loads. 
+
+This is because Aspire only checks to see if the container is up and running. Not that the application inside it is. To fix that, you can go ahead and add a health check to the __ui__resource. This will ping the defined path over and over again. And as long as it doesn't return HTTP 2XX, it will be considered unheatlhy.
+
+__Note:__ This obviously also works if the resource goes offline for some reason.
+
+Open the __AppHost.cs__ file, and add a call to the `WithHttpHealthCheck()` method
+
+```csharp
+var ui = builder.AddContainer("ui", "zerokoll/webdevworkshop-ui")
+    .WithHttpEndpoint(targetPort: 80)
+    .WithHttpHealthCheck("/");
+```
+
+Press __F5__ again, and notice how the __ui__ resource stays __Unhealthy__ for a little while before switching to __Running__.
+
+__Note:__ It might be starting too fast to notice, but now you know that you have that check in place at least.
+
+__Note:__ There is also a `WithHealthCheck()` method that allows you to create custom health checks that aren't HTTP-based.
+
 [<< Home](../readme.md) | [Lab 2 >>](./lab2.md)
