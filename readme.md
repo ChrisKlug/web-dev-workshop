@@ -39,7 +39,7 @@ The 2 days include a combination of presentations and labs, and breaks of course
 - [Lab 15: Adding User Authentication](./labs/lab15.md)
 - [Lab 16: Testing with Authentication](./labs/lab16.md)
 - [Lab 17: Creating a gRPC-based Orders Service](./labs/lab17.md)
-
+- [Lab 18: Testing gRPC Services](./labs/lab18.md)
 
 ### Day 2
 
