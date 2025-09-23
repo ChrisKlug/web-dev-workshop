@@ -163,7 +163,7 @@ app.MapGet("/api/me", (ClaimsPrincipal user) =>
 
 The other endpoints are a bit more complex, so it might be easier to use an MVC controller for those.
 
-Add a new, empty MVC controller called __AuthController__ in the __Controllers__ directory. And addorn it with a `Route` attribute with the value __[controller]__ to make all actions inside it have their paths prefixed with __auth__.
+Add a new, empty MVC controller called __AuthController__ in the __Controllers__ directory, and addorn it with a `Route` attribute with the value __[controller]__ to make all actions inside it have their paths prefixed with __auth__. You can also remove the auto-generated `Index()` action, as it won't be needed
 
 ```csharp
 [Route("[controller]")]

@@ -138,30 +138,19 @@ Create a new directory called __Controllers__.
 
 __Note:__ MVC Controllers do not actually need to be in a directory called __Controllers__. It is just a structural convention that has zero impact on the code. But it is what people are used too...
 
-In the __Controllers__ directory, use the VS tooling to create a new controller called __ProductsController__ using the __API Controller Empty__ template. Or just a class called __ProductsController__ and have it inherit from `Controller`.
+In the __Controllers__ directory, use the VS tooling to create a new controller called __ProductsController__ using the __API Controller Empty__ template. 
 
 Add a primary contstructor that accepts an `IProductsClient` interface
 
 ```csharp
-public class ProductsController(IProductsClient productsClient)
-    : Controller
-{
-    ...
-}
-```
-
-Depending on how you created the controller, you might need to add a `RouteAttribute` with the value __/api/[controller]__ to the class
-
-```csharp
 [Route("api/[controller]")]
+[ApiController]
 public class ProductsController(IProductsClient productsClient)
-    : Controller
+    : ControllerBase
 {
     ...
 }
 ```
-
-This will make sure that any action in this controller will have __api/products/__ added as a prefix to its path.
 
 Next you can replace the generated `Index` action with an action called __GetFeaturedProducts()__. It should be `async` and return `Task<Ok<Product[]>>`
 
