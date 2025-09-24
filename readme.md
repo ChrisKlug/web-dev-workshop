@@ -10,7 +10,7 @@ The end goal during this workshop is to build a solution that looks like the fol
 
 ## Workshop outline
 
-The 2 days include a combination of presentations and labs, and breaks of course. The general ourline is as follows
+The 2 days include a combination of presentations and labs, and breaks of course. The general outline is as follows
 
 ### Day 1
 

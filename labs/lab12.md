@@ -141,7 +141,7 @@ builder.Services.AddOrleans(silo =>
 
 With that in place, you can press __F5__ to start debugging. 
 
-You can't see it in the Aspire Dasboard, but there is now another Dashboard available at http://localhost:8080. So try browsing to that.
+You can't see it in the Aspire Dashboard, but there is now another Dashboard available at http://localhost:8080. So try browsing to that.
 
 ![Project Orleans Dashboard](../resources/orleans-dashboard.png)
 
@@ -149,7 +149,7 @@ In this dashboard, you can see the different grains and silos etc in your cluste
 
 ### Fixing the hard-coded port number
 
-Having the Orleans Dashboard hardcoded to 8080 is not the gretest solution. Aspire does a lot of work to make sure ports don't collide. 
+Having the Orleans Dashboard hardcoded to 8080 is not the greatest solution. Aspire does a lot of work to make sure ports don't collide. 
 
 Instead of hard-coding the port, let's let Aspire create on for you. To do that, you need to use the `WithHttpEndpoint`. This method tells Aspire to add another port for you. And the port number can be injected to your application as an envrionment variable by using the `env` parameter to tell it what environment variable name to use
 

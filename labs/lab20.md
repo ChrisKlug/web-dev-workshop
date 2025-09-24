@@ -160,9 +160,9 @@ So, let's try and add a metric to keep track of orders being added.
 
 Create a new directory called __Observability__, and then a new class called __OrdersMetrics__ inside that directory. This class will be the way to interact with the metric. 
 
-A OTEL metric can take a few different forms, for example a counter, a histogram or a guage. In this case you will use a counter, to keep track of the number of orders being added.
+An OTEL metric can take a few different forms, for example a counter, a histogram or a gauge. In this case you will use a counter, to keep track of the number of orders being added.
 
-The representation of a metric in C#, is an instance of `Meter`. From the `Meter` you can then create a counter or guage etc.
+The representation of a metric in C#, is an instance of `Meter`. From the `Meter` you can then create a counter or gauge etc.
 
 Each `Meter` needs a unique name. So, go ahead and add a public, constant string called __MeterName__ with the value __WebDevWorkshop.Services.Orders__
 
