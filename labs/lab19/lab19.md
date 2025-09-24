@@ -321,7 +321,7 @@ Open the Aspire Dashboard and navigate to the __Traces__ section.
 
 One of the last traces should be one to __api/Orders__. It should have a box at the end that says __orders__, indicating that it included a call to the __orders__ resource.
 
-![Open Telemetry Trace](../resources/otel-trace.png)
+![Open Telemetry Trace](../../resources/otel-trace.png)
 
 If you click on that trace, you should see a full trace of the entire call, from it arriving to __webdevworkshop-web__, to the calls to the __products__ service, all the way to the __orders__ service. Including execution times etc.
 
