@@ -449,4 +449,4 @@ public Task Gets_shopping_cart_from_grain_if_ShoppingCartId_cookie_exists()
 
 That is not a huge change, but with a lot of tests, it adds up. And it also makes the tests _very_ precise and easy to read and understand.
 
-[<< Lab 12](./lab12.md) | [Lab 14 >>](./lab14.md)
+[<< Lab 12](../lab12/lab12.md) | [Lab 14 >>](../lab14/lab14.md)

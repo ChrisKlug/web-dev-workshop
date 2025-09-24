@@ -286,4 +286,4 @@ Clicking on that metric should give you a graph displaying the total number of o
 
 If you want to, you can go back to the website and add another order. It should show up in the metrics data almost immediately.
 
-[<< Lab 19](./lab19.md) | [Lab 21 >>](./lab21.md)
+[<< Lab 19](../lab19/lab19.md) | [Lab 21 >>](../lab21/lab21.md)

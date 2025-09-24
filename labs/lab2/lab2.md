@@ -126,4 +126,4 @@ builder.AddProject<Projects.WebDevWorkshop_Web>(..., "aspire")
 
 Press __F5__ to start the solution, and verify that the web resource now exposes an HTTPS-based URL.
 
-[<< Lab 1](./lab1.md) | [Lab 3 >>](./lab3.md)
+[<< Lab 1](../lab1/lab1.md) | [Lab 3 >>](../lab3/lab3.md)

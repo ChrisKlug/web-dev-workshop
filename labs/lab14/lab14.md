@@ -204,4 +204,4 @@ And if you click on the URL to the __identityserver__, you should be greeted by 
 
 __Note:__ By ticking the __Save to user secrets__ box, Aspire has automatically saved the value in your user secrets for this project. So, in the future you will not be asked for a password.
 
-[<< Lab 13](./lab13.md) | [Lab 15 >>](./lab15.md)
+[<< Lab 13](../lab13/lab13.md) | [Lab 15 >>](../lab15/lab15.md)

@@ -95,4 +95,4 @@ It should come back green for both tests!
 
 __Note:__ You might need to re-build the solution to get the Test Explorer to see the new test
 
-[<< Lab 7](./lab7.md) | [Lab 9 >>](./lab9.md)
+[<< Lab 7](../lab7/lab7.md) | [Lab 9 >>](../lab9/lab9.md)

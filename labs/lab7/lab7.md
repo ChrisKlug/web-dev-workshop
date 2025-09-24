@@ -221,4 +221,4 @@ Obviously you know that this will work, as the code hasn't changed that much. Bu
 
 So, go ahead and run the test, and verify that it is still green.
 
-[<< Lab 6](./lab6.md) | [Lab 8 >>](./lab8.md)
+[<< Lab 6](../lab6/lab6.md) | [Lab 8 >>](../lab8/lab8.md)

@@ -71,4 +71,4 @@ __Note:__ It might be starting too fast to notice, but now you know that you hav
 
 __Note:__ There is also a `WithHealthCheck()` method that allows you to create custom health checks that aren't HTTP-based.
 
-[<< Home](../readme.md) | [Lab 2 >>](./lab2.md)
+[<< Home](../../readme.md) | [Lab 2 >>](../lab2/lab2.md)

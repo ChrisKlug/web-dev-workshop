@@ -398,4 +398,4 @@ __Note:__ You might need to re-build the solution to get the Test Explorer to se
 
 The test should now go green! If it doesn't try debugging the test to see what has failed.
 
-[<< Lab 5](./lab5.md) | [Lab 7 >>](./lab7.md)
+[<< Lab 5](../lab5/lab5.md) | [Lab 7 >>](../lab7/lab7.md)

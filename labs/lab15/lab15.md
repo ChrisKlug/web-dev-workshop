@@ -258,4 +258,4 @@ This should now succeed. And you should also be able to sign out.
 
 __Note:__ Only the sign in and sign out buttons are enabled in the UI. The others are just for show... 😂
 
-[<< Lab 14](./lab14.md) | [Lab 16 >>](./lab16.md)
+[<< Lab 14](../lab14/lab14.md) | [Lab 16 >>](../lab16/lab16.md)

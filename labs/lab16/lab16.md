@@ -291,4 +291,4 @@ If you press __F5__ now, and then browse to __/api/me__, you should get a HTTP 4
 
 Mission accomplished!
 
-[<< Lab 15](./lab15.md) | [Lab 17 >>](./lab17.md)
+[<< Lab 15](../lab15/lab15.md) | [Lab 17 >>](../lab17/lab17.md)

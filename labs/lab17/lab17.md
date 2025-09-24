@@ -519,4 +519,4 @@ You should now see a new resource called __webdevworkshop-services-orders__ in t
 
 Unfortunately you will have to wait until the next lab to see if it actually works...
 
-[<< Lab 16](./lab16.md) | [Lab 18 >>](./lab18.md)
+[<< Lab 16](../lab16/lab16.md) | [Lab 18 >>](../lab18/lab18.md)

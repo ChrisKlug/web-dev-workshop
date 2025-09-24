@@ -222,4 +222,4 @@ If you press __F5__ now, to start Aspire, you should now see a new link called _
 
 __Note:__ Depending on the screen size and resolution, you might have to click on the little "pill" that says __+1__ to see the link.
 
-[<< Lab 11](./lab11.md) | [Lab 13 >>](./lab13.md)
+[<< Lab 11](../lab11/lab11.md) | [Lab 13 >>](../lab13/lab13.md)

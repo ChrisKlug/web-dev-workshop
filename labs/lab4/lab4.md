@@ -275,4 +275,4 @@ The last step in this lab is to add the repository to the DI. So, open up the __
 builder.Services.AddScoped<IProducts, EfProducts>();
 ```
 
-[<< Lab 3](./lab3.md) | [Lab 5 >>](./lab5.md)
+[<< Lab 3](../lab3/lab3.md) | [Lab 5 >>](../lab5/lab5.md)

@@ -60,4 +60,4 @@ You should now see a SQL Server and a SQL Server Database resource in the Aspire
 
 __Note:__ It might take a while for them to start up, as it needs to download the SQL Server Docker image to your machine if it is not already there. 
 
-[<< Lab 2](./lab2.md) | [Lab 4 >>](./lab4.md)
+[<< Lab 2](../lab2/lab2.md) | [Lab 4 >>](../lab4/lab4.md)

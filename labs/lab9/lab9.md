@@ -183,4 +183,4 @@ Now, any relative path used by the `HttpProductsClient` will be prefixed with th
 
 That's all there is to it! In the next lab you will see how to use this SDK to retrieve products from the API, without having to use HTTP requests.
 
-[<< Lab 8](./lab8.md) | [Lab 10 >>](./lab10.md)
+[<< Lab 8](../lab8/lab8.md) | [Lab 10 >>](../lab10/lab10.md)

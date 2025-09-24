@@ -412,4 +412,4 @@ In the website, once again make sure that you you are logged in. Then add some p
 
 After you get the __Order placed successfully, thank you!__ message, verify that the shopping cart disappears in the top righ corner.
 
-[<< Lab 18](./lab18.md) | [Lab 20 >>](./lab20.md)
+[<< Lab 18](../lab18/lab18.md) | [Lab 20 >>](../lab20/lab20.md)

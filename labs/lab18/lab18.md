@@ -476,4 +476,4 @@ public class TestRunStart : XunitTestFramework
 
 Now, try to run the test again. It should go green!
 
-[<< Lab 17](./lab17.md) | [Lab 19 >>](./lab19.md)
+[<< Lab 17](../lab17/lab17.md) | [Lab 19 >>](../lab19/lab19.md)

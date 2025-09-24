@@ -305,4 +305,4 @@ Press __F5__ and make sure that the images are served as expected.
 __Note:__ It is __very__ possible that the browser has cached the images. To fix this, do a __HARD__ refresh (Ctrl + F5), or even better, press __F12__ to open the Developer Tools, navigate to the __Network__ tab and tick the __Disable cache__ checkbox. This will disable the cache whenever the Developer Tools are open
 
 
-[<< Lab 9](./lab9.md) | [Lab 11 >>](./lab11.md)
+[<< Lab 9](../lab9/lab9.md) | [Lab 11 >>](../lab11/lab11.md)

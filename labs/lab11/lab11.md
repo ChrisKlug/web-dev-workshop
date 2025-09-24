@@ -396,4 +396,4 @@ Press __F5__ and try adding items to the shopping cart. After the first item has
 
 __Note:__ The shopping cart is a bit limited as it does not support removal etc. But, it shows the concept of how to use Orleans for the functionaluty. And that's the goal. Not a fully working shopping cart...
 
-[<< Lab 10](./lab10.md) | [Lab 12 >>](./lab12.md)
+[<< Lab 10](../lab10/lab10.md) | [Lab 12 >>](../lab12/lab12.md)
