@@ -177,7 +177,7 @@ public class OrdersContext(DbContextOptions<OrdersContext> options)
 
 You will also need some "entities" to represent orders and addresses. To house those, create a new class called __Order__ in a new directory called __Entities__.
 
-Because these classes aren't very important as such, you can just copy the contents of [this](../../resources/entities.md) file into the __Order.cs__ file.
+Because these classes aren't very important as such, you can just copy the contents of [this](./resources/entities.md) file into the __Order.cs__ file.
 
 __Optional:__ If you want a bit more structure to the project layout, you can move the classes into individual file by placing your cursor on the class definition and then press __Ctrl + .__ and select __Move type to {Class Name}.cs__.
 

@@ -33,7 +33,7 @@ builder.AddProject<Projects.WebDevWorkshop_Services_Products>("webdevworkshop-se
 
 With that code in place, you can press __F5__ to start debugging.
 
-To verify that the reference has worked as well, you can click on the __webdevworkshop-services-products__ resource row to show the details for that resource. You can then scroll down in the details pane to the __Environment Variables__ section. There, you should find an environment variable called __ConnectionStrings__WebDevWorkshop__. To view the actual value, you can either show all values, by clicking the "Show Values" button (![Show Values](../../resources/show-values-button.png)), or click on the inspect button (![Inspect Button](../../resources/inspect-button.png)) to the right of the ●●●●●●●●.
+To verify that the reference has worked as well, you can click on the __webdevworkshop-services-products__ resource row to show the details for that resource. You can then scroll down in the details pane to the __Environment Variables__ section. There, you should find an environment variable called __ConnectionStrings__WebDevWorkshop__. To view the actual value, you can either show all values, by clicking the "Show Values" button (![Show Values](./resources/show-values-button.png)), or click on the inspect button (![Inspect Button](./resources/inspect-button.png)) to the right of the ●●●●●●●●.
 
 __Note:__ The password is auto-generated for you unless you manually provide one, which isn't really necessary in this case.
 
@@ -193,7 +193,7 @@ modelBuilder.Entity<Product>(x => {
 
 Currently you have a database with an empty table. You probably want some seed data to work with. And even if there are some seed data support in EF Core, the simplest way is often to just use a SQL script.
 
-Go ahead and copy [this file](../../resources/SeedData.sql) to the __Data__ directory. 
+Go ahead and copy [this file](./resources/SeedData.sql) to the __Data__ directory. 
 
 Once you have the SQL file in place, you can tell EF to run the code for you by calling `ctx.Database.ExecuteSqlRaw()` right after you ran the migration. However, the method expects a string containing the SQL to run. So, you need to read the SQL file contents as a string first, and then pass that in. 
 

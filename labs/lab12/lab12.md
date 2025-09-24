@@ -143,7 +143,7 @@ With that in place, you can press __F5__ to start debugging.
 
 You can't see it in the Aspire Dashboard, but there is now another Dashboard available at http://localhost:8080. So try browsing to that.
 
-![Project Orleans Dashboard](../../resources/orleans-dashboard.png)
+![Project Orleans Dashboard](./resources/orleans-dashboard.png)
 
 In this dashboard, you can see the different grains and silos etc in your cluster. This can be a very useful tool when trying to figure out what is happening in Orleans.
 

@@ -392,7 +392,7 @@ Now that you have implemented the required grain, added silo to hold the grain, 
 
 Press __F5__ and try adding items to the shopping cart. After the first item has been added to the cart, you should see a shopping cart icon in the top right corner of the site. You should also be able to click to see what is in the cart
 
-![Shopping Cart icon](../../resources/shopping-cart.png)
+![Shopping Cart icon](./resources/shopping-cart.png)
 
 __Note:__ The shopping cart is a bit limited as it does not support removal etc. But, it shows the concept of how to use Orleans for the functionaluty. And that's the goal. Not a fully working shopping cart...
 

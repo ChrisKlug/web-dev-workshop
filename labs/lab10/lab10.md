@@ -250,18 +250,18 @@ Now, the default way to solve this, would be to add a ___wwwroot__ directory, an
 
 Add a new directory called __ProductImages__ in the __WebDevWorkshop.Web__ project. And then, download the following images to that directory
 
-- [apple.jpg](../../resources/product-images/apple.jpg)
-- [apple_thumbnail.jpg](../../resources/product-images/apple_thumbnail.jpg)
-- [banana.jpg](../../resources/product-images/banana.jpg)
-- [banana_thumbnail.jpg](../../resources/product-images/banana_thumbnail.jpg)
-- [dragon-fruit.jpg](../../resources/product-images/dragon-fruit.jpg)
-- [dragon-fruit_thumbnail.jpg](../../resources/product-images/dragon-fruit_thumbnail.jpg)
-- [durian.jpg](../../resources/product-images/durian.jpg)
-- [durian_thumbnail.jpg](../../resources/product-images/durian_thumbnail.jpg)
-- [kiwi.jpg](../../resources/product-images/kiwi.jpg)
-- [kiwi_thumbnail.jpg](../../resources/product-images/kiwi_thumbnail.jpg)
-- [orange.jpg](../../resources/product-images/orange.jpg)
-- [orange_thumbnail.jpg](../../resources/product-images/orange_thumbnail.jpg)
+- [apple.jpg](./resources/apple.jpg)
+- [apple_thumbnail.jpg](./resources/apple_thumbnail.jpg)
+- [banana.jpg](./resources/banana.jpg)
+- [banana_thumbnail.jpg](./resources/banana_thumbnail.jpg)
+- [dragon-fruit.jpg](./resources/dragon-fruit.jpg)
+- [dragon-fruit_thumbnail.jpg](./resources/dragon-fruit_thumbnail.jpg)
+- [durian.jpg](./resources/durian.jpg)
+- [durian_thumbnail.jpg](./resources/durian_thumbnail.jpg)
+- [kiwi.jpg](./resources/kiwi.jpg)
+- [kiwi_thumbnail.jpg](./resources/kiwi_thumbnail.jpg)
+- [orange.jpg](./resources/orange.jpg)
+- [orange_thumbnail.jpg](./resources/orange_thumbnail.jpg)
 
 Once you have the images, it is time to add the static files middleware to the request pipeline.
 
