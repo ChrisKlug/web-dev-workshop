@@ -49,6 +49,7 @@ The 2 days include a combination of presentations and labs, and breaks of course
 - [Lab 20: Adding Custom Data to the OTEL Traces](./labs/lab20/lab20.md)
 - Presentation: Optional: The Outbox Pattern and EF Core Interceptors
 - [Lab 21: Optional: Outbox Pattern using EF Core Interceptors](./labs/lab21/lab21.md)
+- [Lab 22: Optional: Deploying using Docker Compose](./labs/lab21/lab21.md)
 
 ## Source Code
 

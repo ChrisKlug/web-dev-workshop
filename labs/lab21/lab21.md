@@ -362,4 +362,4 @@ services.AddDbContext<TDbContext>((services, options) =>
 
 Now, if you run the test again, it should succeed! And this time, it should succeed as expected, not because weird config stuff that is a bit unexpected.
 
-[<< Lab 20](../lab20/lab20.md) | [Home >>](../../readme.md)
+[<< Lab 20](../lab20/lab20.md) | [Lab 22 >>](../lab22/lab22.md)
