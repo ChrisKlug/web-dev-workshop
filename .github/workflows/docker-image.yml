@@ -19,4 +19,4 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
     
     - name: Build the Docker image
-      run: docker build /resources/docker/ui --file Dockerfile
+      run: docker build /resources/docker/ui --tag zerokoll/webdevworkshop-ui 
