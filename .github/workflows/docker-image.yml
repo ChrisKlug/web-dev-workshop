@@ -20,3 +20,6 @@ jobs:
     
     - name: Build the Docker image
       run: docker build ./resources/docker/ui --tag zerokoll/webdevworkshop-ui 
+
+    - name: Push the Docker image
+      run: docker push zerokoll/webdevworkshop-ui 
