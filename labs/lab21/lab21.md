@@ -348,16 +348,60 @@ services.Remove(optionsConfigDescriptor);
 
 Try running the test again. It should fail now.
 
-Now that it is failing, you know that it isn't running the config in the `Program` class. Instead, you can not add the interceptor to the `DbContext` registration in the `TestHelper` as you want.
+Now that it is failing, you know that it isn't running the config in the `Program` class. Instead, you can now add the interceptor to the `DbContext` registration in the `TestHelper` as you want.
 
-At the end of the callback passed to the `AddDbContext<TDbContext>()` method, add the required call to `AddInterceptors()` to add the `OrderCreatedInterceptor`.
+However, there is a slight problem. You cannot reference the __WebDevWorkshop.Services.Orders__ project from the __WebDevWorkshop.Testing__ project, as it would end up with 2 `Program` classes in the __WebDevWorkshop.Services.Products.Tests__ project. One from the __WebDevWorkshop.Services.Products__ service, and one from the downstreams imported imported __WebDevWorkshop.Services.Orders__.
+
+The easiest solution to this, is to add another callback that is used to configure the `OrdersContext`.
+
+So, open the __TesteHelper.cs__ file, and locate the `ExecuteTest()` method you just added. In that method, declare another callback called __configureDbContext__, taking a `DbContextOptionsBuilder` instance. It doesn't need to return task or anything, as it will only be used to configure the context
 
 ```csharp
+public static async Task ExecuteTest<TProgram, TDbContext, TGrpcService>(
+    Action<DbContextOptionsBuilder> configureDbContext,
+    Func<TGrpcService, Task> test,
+    Func<DbCommand, Task>? dbConfig = null,
+    Func<DbCommand, Task>? validateDb = null
+)
+```
+
+And then, in the `ConfigureTestServices()` callback, right after calling `options.UseSqlServer()`, add a call to the `configureDbContext` callback
+
+```csharp
+...
 services.AddDbContext<TDbContext>((services, options) =>
 {
     ...
-    options.AddInterceptors(OrderCreatedInterceptor.Instance);
+    options.UseSqlServer(config.GetConnectionString("WebDevWorkshopOrders"), ...);
+    configureDbContext(options);
+
 }, ...);
+...
+```
+
+The last step is to update the __Adds_order_to_db__  and __Generates_an_event__ tests.
+
+Open the __OrdersServiceTests.cs__ file in the __WebDevWorkshop.Services.Orders.Tests__ project and update the calls to the `TestHelper.ExecuteTest()` method to include the `DbContext` configuration.
+
+You don't need the interceptor in the __Adds_order_to_db__ test, so it only needs the following
+
+```csharp
+public Task Adds_order_to_db()
+=> TestHelper
+    .ExecuteTest<SERVER::Program, OrdersService.Data.OrdersContext, gRPC.OrdersService.OrdersServiceClient>(
+        configureDbContext: x => {},
+        test: async client => { ... }
+    );
+```
+
+The __Generates_an_event__ on the other hand, do need the `OrderCreatedInterceptor`, so the callback ends up like this
+
+```csharp
+public Task Generates_an_event()
+    => TestHelper.ExecuteTest<SERVER::Program, OrdersService.Data.OrdersContext, gRPC.OrdersService.OrdersServiceClient>(
+        configureDbContext: x => x.AddInterceptors(OrderCreatedInterceptor.Instance),
+        test: async client => { ... }
+    );
 ```
 
 Now, if you run the test again, it should succeed! And this time, it should succeed as expected, not because weird config stuff that is a bit unexpected.
