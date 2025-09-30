@@ -191,6 +191,8 @@ __Note:__ Fast Endpoints automatically registers any endpoint in DI during start
 
 Press __F5__ to start debugging. This should open up 3 tabs, one for the Dashboard, one for the Web project and one for the Products service.
 
+__Note:__ It might take a few seconds for the tabs to open...
+
 Find the tab that points to the Products service, and browse to __/api/products/featured__ and to __/api/products/1__, to verify that you are getting the expected data back.
 
 [<< Lab 4](../lab4/lab4.md) | [Lab 6 >>](../lab6/lab6.md)

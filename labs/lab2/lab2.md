@@ -90,6 +90,8 @@ In the Aspire Dashboard, make sure you are seeing 2 resources (the UI and the We
 
 Click on the HTTPS link for Web resource. This should open a new tab, in which you see the (broken) UI, as the call should be reverse-proxied for you.
 
+__Note:__ Depending on you resolution, the HTTP link might be hidden as a __+1__ instead of the actual link.
+
 Go back to the Dashboard and click on the Web resource to open the details pane. In the new pane, scroll down to find the `services__ui__http__0` environment variable. This is the thing that makes the Aspire service discovery work.
 
 Next, go to the "Structured Logs" section and select the Web project in the drop-down. This should show you the logs being output from the project. 

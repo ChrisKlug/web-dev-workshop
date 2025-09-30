@@ -39,6 +39,8 @@ var ui = builder.AddContainer("ui", "zerokoll/webdevworkshop-ui")
 
 Now that the container resource has been added, you should be able to start your application by pressing __F5__.
 
+__Note:__ It can take a long time sometimes to get it started. Make sure that your Docker Desktop hasn't gone into _Resource Saver Mode_. If it has, try turning that off. More information can be found [here](https://docs.docker.com/desktop/use-desktop/resource-saver/)
+
 This should open a browser showing you the Aspire Dashboard. And on the Dashboard, you should see a single resource called __ui__.
 
 The _State_ might read as "Runtime unhealthy" until the Docker image has been downloaded. To check on the progress of the download, click the __Console Logs__ button ![](./resources/console-logs-button.png) on the right-hand side of the dashboard.
