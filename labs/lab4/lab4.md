@@ -6,7 +6,7 @@ Now that you have a database in place, it is time to create a new Products servi
 
 ### Add a new project
 
-Add a new project to your solution. Make it an __ASP.NET Core Empty__ project, and call it __WebDevWorkshop.Web__.
+Add a new project to your solution. Make it an __ASP.NET Core Empty__ project, and call it __WebDevWorkshop.Services.Products__.
 
 Making sure that "_Enlist in .NET Aspire orchestration_" option is ticked on the second screen to add it to Aspire.
 
@@ -235,12 +235,10 @@ public interface IProducts
 public class EfProducts : IProducts
 {
     public Task<Product?> WithId(int id)
-    {
-    }
+        => throw new NotImplementedException();
 
     public Task<Product[]> ThatAreFeatured()
-    {
-    }
+        => throw new NotImplementedException();
 }
 ```
 
