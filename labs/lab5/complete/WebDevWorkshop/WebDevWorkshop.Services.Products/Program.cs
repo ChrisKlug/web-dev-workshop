@@ -16,8 +16,9 @@ if (app.Environment.IsDevelopment())
     using (var scope = app.Services.CreateScope())
     using (var ctx = scope.ServiceProvider.GetRequiredService<ProductsContext>())
     {
-        var sql = File.ReadAllText("Data/SeedData.sql");
         ctx.Database.Migrate();
+        var sql = File.ReadAllText("Data/SeedData.sql");
+        ctx.Database.ExecuteSqlRaw(sql);
     }
 }
 
