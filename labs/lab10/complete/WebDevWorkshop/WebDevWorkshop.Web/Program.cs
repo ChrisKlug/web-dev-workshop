@@ -1,3 +1,5 @@
+using Microsoft.Extensions.FileProviders;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddProductsClient("https://products");
@@ -6,8 +8,17 @@ builder.Services.AddControllers();
 builder.AddServiceDefaults();
 var app = builder.Build();
 
-app.UseRouting();
+app.UseStaticFiles(new StaticFileOptions
+{
+    RequestPath = "/images/products",
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(
+            app.Environment.ContentRootPath,
+            "ProductImages")
+    )
+});
 
+app.UseRouting();
 app.MapControllers();
 app.MapDefaultEndpoints();
 

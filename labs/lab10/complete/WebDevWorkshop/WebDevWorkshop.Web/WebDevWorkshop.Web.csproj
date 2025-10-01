@@ -16,4 +16,8 @@
     <ProjectReference Include="..\WebDevWorkshop.Services.Products.Client\WebDevWorkshop.Services.Products.Client.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ProductImages\" />
+  </ItemGroup>
+
 </Project>
