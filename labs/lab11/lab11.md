@@ -62,7 +62,7 @@ public class ShoppingCartItem
 
 __Note:__ There is actually a code generator that can help you set the `IdAttribute`. You just need to add the `[GenerateSerializer]` part. Then put the cursor on that line and press __Ctrl + .__ and choose "Generate serializer attributes"
 
-Now that the DTO is available, you can go back and focus on the `IShoppingCartGrain` interface. It only really needs 2 methods, one to add an item and one to get all items.
+Now that the DTO is available, you can go back and focus on the `IShoppingCart` interface. It only really needs 2 methods, one to add an item and one to get all items.
 
 ```csharp
 public interface IShoppingCart : IGrainWithStringKey 
@@ -72,7 +72,7 @@ public interface IShoppingCart : IGrainWithStringKey
 }
 ```
 
-The next step is to have the `ShoppingCartGrain` implement the `IShoppingCartGrain`. However, it also needs to inherit from `Grain` to make it a grain.
+The next step is to have the `ShoppingCartGrain` implement the `IShoppingCart`. However, it also needs to inherit from `Grain` to make it a grain.
 
 ```csharp
 public class ShoppingCartGrain : Grain, IShoppingCart
@@ -161,7 +161,7 @@ Once you have your grains in place, you need a way to store them. And that is do
 
 In this case, when running locally on a single machine, you will only have a single silo. But the usage is exactly the same whether or not you have one or a thousand silos. It is just a matter of how many silos you spin up. Orleans handles the rest.
 
-Silos can be added to any application hat has an `IHost` interface. In your case, the `WebApplication` implements `IHost`. So, you can simply add a silo to the __WebDevWorkshop.Web__ application. 
+Silos can be added to any application that has an `IHost` interface. In your case, the `WebApplication` implements `IHost`. So, you can simply add a silo to the __WebDevWorkshop.Web__ application. 
 
 Open __Program.cs__ in the __WebDevWorkshop.Web__ project and add a call to `builder.Services.AddOrleans()` right before your "build" the application. The method takes a `Task<ISiloBuilder>` as a parameter
 
@@ -177,7 +177,7 @@ var app = builder.Build();
 ...
 ```
 
-The `ISiloBuilder` interfabe lets you to tell Orleans what kind of cluster set up you want. In this case, as you are only running on your local machine, "local host clustering" would be the best option. So, go ahead and call `UseLocalhostClustering()` to tell Orleans that you want a single node cluster running on your local machine
+The `ISiloBuilder` interface lets you tell Orleans what kind of cluster set up you want. In this case, as you are only running on your local machine, "local host clustering" would be the best option. So, go ahead and call `UseLocalhostClustering()` to tell Orleans that you want a single node cluster running on your local machine
 
 ```csharp
 builder.Services.AddOrleans(silo => { 
@@ -187,11 +187,11 @@ builder.Services.AddOrleans(silo => {
 
 ### Add endpoints for the front-end to use
 
-Now that you have a Orleans "cluster" up and running, you need to give the front-end a way to talk to it. The easiest way to do this, and the way that the UI project expects, is to add a couple of HTTP endpoints. One to add an item, and one te get the added items.
+Now that you have a Orleans "cluster" up and running, you need to give the front-end a way to talk to it. The easiest way to do this, and the way that the UI project expects, is to add a couple of HTTP endpoints. One to add an item, and one to get the added items.
 
 As these are fairly simple endpoints, you might as well implement them using minimal APIs.
 
-__Note:__ As you are already using MVC, that might be a better option in a real-world scenario. But for this lab, it might be unteresting to play around with minimal APIs as well...
+__Note:__ As you are already using MVC, that might be a better option in a real-world scenario. But for this lab, it might be interesting to play around with minimal APIs as well...
 
 Start by adding a POST endpoint right after the `MapControllers()` step in the request pipeline. The path should be __/api/shipping-cart__
 
@@ -394,6 +394,6 @@ Press __F5__ and try adding items to the shopping cart. After the first item has
 
 ![Shopping Cart icon](./resources/shopping-cart.png)
 
-__Note:__ The shopping cart is a bit limited as it does not support removal etc. But, it shows the concept of how to use Orleans for the functionaluty. And that's the goal. Not a fully working shopping cart...
+__Note:__ The shopping cart is a bit limited as it does not support removal etc. But, it shows the concept of how to use Orleans for the functionality. And that's the goal. Not a fully working shopping cart...
 
 [<< Lab 10](../lab10/lab10.md) | [Lab 12 >>](../lab12/lab12.md)

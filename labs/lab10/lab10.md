@@ -20,7 +20,9 @@ Then open the __Program.cs__ file and call the `AddProductsClient()` extension m
 builder.Services.AddProductsClient();
 ```
 
-This requires you to add a `using` statement at the top to invlude the `WebDevWorkshop.Services.Products.Client` namespace. 
+This requires you to add a `using` statement at the top to include the `WebDevWorkshop.Services.Products.Client` namespace. 
+
+__Note:__ It will complain about the missing `baseAddress` parameter. This will be fixed soon.
 
 This works, but it hides the extension method a bit. To fix this, you can open the __IServiceCollectionExtensions.cs__ file in the __WebDevWorkshop.Services.Products.Client__ project, and change the namespace to `Microsoft.Extensions.DependencyInjection`
 
@@ -51,7 +53,7 @@ There are 2 things you need to do to fix this... The first one being to add the 
 
 Open up the __AppHost.cs__ file in the __WebDevWorkshop.AppHost__ project.
 
-Start by making sure that the addition of the __webdevworkshop-services-products__ resource is placed before the addition of the __webdevworkshop-web__ project.
+Start by making sure that the creation of the __webdevworkshop-services-products__ resource, is placed before the creation of the __webdevworkshop-web__ project.
 
 ```csharp
 builder.AddProject<Projects.WebDevWorkshop_Services_Products>("webdevworkshop-services-products")
@@ -140,6 +142,8 @@ __Note:__ MVC Controllers do not actually need to be in a directory called __Con
 
 In the __Controllers__ directory, use the VS tooling to create a new controller called __ProductsController__ using the __API Controller Empty__ template. 
 
+__Note:__ The __API Controller Empty__ template is under __API__ not __MVC__.
+
 Add a primary contstructor that accepts an `IProductsClient` interface
 
 ```csharp
@@ -152,7 +156,7 @@ public class ProductsController(IProductsClient productsClient)
 }
 ```
 
-Next you can replace the generated `Index` action with an action called __GetFeaturedProducts()__. It should be `async` and return `Task<Ok<Product[]>>`
+Next you need to add an action called __GetFeaturedProducts()__. It should be `async` and return `Task<Ok<Product[]>>`
 
 ```csharp
 public async Task<Ok<Product[]>> GetFeaturedProducts()
@@ -170,7 +174,7 @@ public async Task<Ok<Product[]>> GetFeaturedProducts()
 }
 ```
 
-The actual implementation is simple. Since the `Product` you get back is already a DRO, you just need to await a call to the `IProductsClient.GetFeaturedProducts()` method, and return the response wrapped in an "OK"
+The actual implementation is simple. Since the `Product` you get back is already a DTO (Data Transfer Object), you just need to await a call to the `IProductsClient.GetFeaturedProducts()` method, and return the response wrapped in an "OK"
 
 ```csharp
 [HttpGet("featured")]
@@ -244,7 +248,7 @@ The images are unfortunately missing... So, let's fix that!
 
 ### Providing static resources
 
-There ar 2 reasons that there are no images being displayed on the website. First of all, you have no images. Secondly, you have not set up ASP.NET Core to serve static file.
+There are 2 reasons that there are no images being displayed on the website. First of all, you have no images. Secondly, you have not set up ASP.NET Core to serve static file.
 
 Now, the default way to solve this, would be to add a ___wwwroot__ directory, and add the images there. This piggy backs on a convention, and makes adding the middleware needed to serve the files very easy. However, to be a bit complicated, let's do it a little differently...
 

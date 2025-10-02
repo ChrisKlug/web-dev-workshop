@@ -10,7 +10,7 @@ These test will reside in a new test project. So, go ahead and create a new __xU
 
 Once the project has been created, you need to add references to both the __WebDevWorkshop.Web__ and __WebDevWorkshop.Testing__ projects.
 
-Then you can rename the __UnitTest1.cs__ to __ShoppingCartTests.cs__, the __UnitTest1__ class to __ShoppingCartTests__, and remove the __Test1__ test.
+Then you can rename the __UnitTest1.cs__ to __ShoppingCartTests.cs__, and remove the __Test1__ test.
 
 Inside the `ShoppingCartTests` class, add another public class called __GetShoppingCart__.
 
@@ -140,7 +140,7 @@ There are a two ways to solve this. Either you spin up an Orelans test cluster, 
 
 However, to be able to fake a service, you will need to interact with the `TestHelper`. And currently, there is no way to add faked services to it.
 
-Open the __TestHelper.cs__ file and locate the `ExeciteTest()` method you just created. Then add another parameter of the type `Action<IServiceCollection>?`, called __serviceConfig__ to the method. And make it null by default.
+Open the __TestHelper.cs__ file and locate the `ExecuteTest()` method you just created. Then add another parameter of the type `Action<IServiceCollection>?`, called __serviceConfig__ to the method. And make it null by default.
 
 ```csharp
 public static async Task ExecuteTest<TProgram>(
@@ -164,7 +164,7 @@ builder.ConfigureTestServices(services =>
 
 This allows you to configure whatever services you need in your tests. including faked ones, which is what you need.
 
-Open the __ShoppingCartTests.cs__ file, and add a nother test called __Gets_shopping_cart_from_grain_if_ShoppingCartId_cookie_exists__ inside the `GetShoppingCart` class
+Open the __ShoppingCartTests.cs__ file, and add another test called __Gets_shopping_cart_from_grain_if_ShoppingCartId_cookie_exists__ inside the `GetShoppingCart` class
 
 ```csharp
 public class ShoppingCartTests
@@ -182,7 +182,7 @@ public class ShoppingCartTests
 }
 ```
 
-As "usual", the implementation is a call to the `TestHelper`. However, this time there are to parameters to provide
+As "usual", the implementation is a call to the `TestHelper`. However, this time there are two parameters to provide
 
 ```csharp
 [Fact]
@@ -323,7 +323,7 @@ If you want to, you can verify that the test works by using the Test Explorer.
 
 ### Cleaning up the tests
 
-Unfortunately, there is quite a lot of repetition in the tests, even when using the `TestHelper`. And in the end, that will be impossible to maintain. So, let's make that a little better by creating a little helper method that removes the repition for these tests.
+Unfortunately, there is quite a lot of repetition in the tests, even when using the `TestHelper`. And in the end, that will be impossible to maintain. So, let's make that a little better by creating a little helper method that removes the repetition for these tests.
 
 At the bottom of the `ShoppingCartTests` class, add a protected, static method called __ExecuteTest__. It should take 2 parameters, a `Func<HttpClient, Task>` called __test__ and an `Action<IGrainFactory, IProductsClient>` called __serviceConfig__. And finally, it needs to return a `Task`.
 

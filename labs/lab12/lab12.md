@@ -12,7 +12,7 @@ To keep it simple, this lab will just use a memory persistence store. This allow
 
 __Note:__ There are also ways to do custom persistence, where you decide how to persist the state. And it is actually not that hard to do. More information about that can be found [here](https://learn.microsoft.com/en-us/dotnet/orleans/grains/grain-persistence)
 
-The first step in adding memory persistence is to add a the NuGet package called __Microsoft.Orleans.Persistence.Memory__. This allows you to add persistence to Orleans grains by simply calling `AddMemoryGrainStorageAsDefault()` on the `ISiloBuilder`
+The first step in adding memory persistence is to add a the NuGet package called __Microsoft.Orleans.Persistence.Memory__ to the __WebDevWorkshop.Web__ project. This allows you to add persistence to Orleans grains by simply calling `AddMemoryGrainStorageAsDefault()` on the `ISiloBuilder` in the __Program.cs__ file in that same project.
 
 ```csharp
 builder.Services.AddOrleans(silo =>
@@ -78,7 +78,7 @@ public ShoppingCartGrain(
 }
 ```
 
-Ok, so now that you have access to the state like this, you don't need the `items` member anymore. So, you can simply remove it, and update all the places that used it to use `state.State.Items`
+Ok, so now that you have access to the state like this, you don't need the `items` member anymore. So, you can simply remove it, and update all the places that used it to use `_state.State.Items`
 
 ```csharp
 public class ShoppingCartGrain : Grain, IShoppingCart
@@ -119,7 +119,7 @@ __Note:__ Under the hood, the `WriteStateAsync()` will use the grain store to pe
 
 ### Verify persistence works
 
-It is actually really hard to verify that the memory persistence works, at there is no way to look at the memory. And since it only really makes a difference when garbage collection happens, it is even harder.
+It is actually really hard to verify that the memory persistence works, and there is no way to look at the memory. And since it only really makes a difference when garbage collection happens, it is even harder.
 
 However, you are more than welcome to inject a `Logger<T>` in your grains and add some logging statements in the constructor. These can then be viewed in the Aspire Dashboard.
 
@@ -151,7 +151,7 @@ In this dashboard, you can see the different grains and silos etc in your cluste
 
 Having the Orleans Dashboard hardcoded to 8080 is not the greatest solution. Aspire does a lot of work to make sure ports don't collide. 
 
-Instead of hard-coding the port, let's let Aspire create on for you. To do that, you need to use the `WithHttpEndpoint`. This method tells Aspire to add another port for you. And the port number can be injected to your application as an envrionment variable by using the `env` parameter to tell it what environment variable name to use
+Instead of hard-coding the port, let's let Aspire create on for you. To do that, you need to use the `WithHttpEndpoint`. This method tells Aspire to add another port for you. And the port number can be injected to your application as an envrinoment variable by using the `env` parameter to tell it what environment variable name to use
 
 Open the __AppHost.cs__ file in the __WebDevWorkshop.AppHost__ project, and add the a call to `WithHttpEndpoint()` that looks like this
 

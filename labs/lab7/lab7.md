@@ -115,6 +115,8 @@ using (var conn = ctx.Database.GetDbConnection())
 ...
 ```
 
+__Important!__ As part of the copying of the code from __WebDevWorkshop.Services.Products.Tests__ project, your IDE might have added a reference to it from the __WebDevWorkshop.Testing__. Make sure this is not the case. If there is a project reference from the __WebDevWorkshop.Testing__ project to the __WebDevWorkshop.Services.Products.Tests__ project, remove it. If left in place, it will break future code.
+
 ### Update the API test to use the TestHelper
 
 Now that the `TestHelper` is done. You can go ahead and update the test to use it.
