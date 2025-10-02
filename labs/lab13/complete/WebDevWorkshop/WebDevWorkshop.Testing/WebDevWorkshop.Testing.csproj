@@ -11,8 +11,4 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.9" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\WebDevWorkshop.Services.Products\WebDevWorkshop.Services.Products.csproj" />
-  </ItemGroup>
-
 </Project>

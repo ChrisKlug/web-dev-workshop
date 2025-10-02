@@ -59,42 +59,42 @@ namespace WebDevWorkshop.Web.Tests
                         Assert.Equal(1.23m, item["price"]);
                     }
                 );
-
+        }
         public class AddShoppingCartItem
         {
             [Fact]
-                public Task Gets_shopping_cart_from_grain_if_ShoppingCartId_cookie_exists()
-                {
-                    var grainFake = A.Fake<IShoppingCart>();
+            public Task Gets_shopping_cart_from_grain_if_ShoppingCartId_cookie_exists()
+            {
+                var grainFake = A.Fake<IShoppingCart>();
 
-                    return ExecuteTest(
-                        serviceConfig: (grainFactory, productsClient) =>
-                        {
-                            A.CallTo(() => grainFactory.GetGrain<IShoppingCart>("TestCart", null)).Returns(grainFake);
+                return ExecuteTest(
+                    serviceConfig: (grainFactory, productsClient) =>
+                    {
+                        A.CallTo(() => grainFactory.GetGrain<IShoppingCart>("TestCart", null)).Returns(grainFake);
 
-                            A.CallTo(() => productsClient.GetProduct(1)).Returns(
-                                new Product(1,
-                                    "Test Product",
-                                    "A Test Product",
-                                    1.23m, false,
-                                    "thumbnail.jpg",
-                                    "image.jpg")
-                            );
-                        },
-                        test: async client =>
-                        {
-                            client.DefaultRequestHeaders.Add("Cookie", "ShoppingCartId=TestCart");
-                            var response = await client.PostAsJsonAsync("/api/shopping-cart", new { ProductId = 1, Count = 1 });
+                        A.CallTo(() => productsClient.GetProduct(1)).Returns(
+                            new Product(1,
+                                "Test Product",
+                                "A Test Product",
+                                1.23m, false,
+                                "thumbnail.jpg",
+                                "image.jpg")
+                        );
+                    },
+                    test: async client =>
+                    {
+                        client.DefaultRequestHeaders.Add("Cookie", "ShoppingCartId=TestCart");
+                        var response = await client.PostAsJsonAsync("/api/shopping-cart", new { ProductId = 1, Count = 1 });
 
-                            response.EnsureSuccessStatusCode();
+                        response.EnsureSuccessStatusCode();
 
-                            A.CallTo(() => grainFake.AddItem(A<ShoppingCartItem>
-                                                    .That.Matches(x => x.ProductId == 1 && x.Price == 1.23m && x.Count == 1)))
-                                                    .MustHaveHappenedOnceExactly();
-                        }
-                    );
-                }
+                        A.CallTo(() => grainFake.AddItem(A<ShoppingCartItem>
+                                                .That.Matches(x => x.ProductId == 1 && x.Price == 1.23m && x.Count == 1)))
+                                                .MustHaveHappenedOnceExactly();
+                    }
+                );
             }
+        }
 
         protected static Task ExecuteTest(
               Func<HttpClient, Task> test,
