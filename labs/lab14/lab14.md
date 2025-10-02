@@ -96,6 +96,8 @@ Click __Next__.
 
 Save it to a root of your development project, naming it __ssl-cert.pfx__
 
+__Note:__ By "root", it means that it should be in the same directory as the solution file.
+
 Close the __certmgr__ window.
 
 __Important:__ This certificate is trusted by your machine, so make sure it doesn't leave your machine. After the workshop, it is recommended to delete the file completely.
