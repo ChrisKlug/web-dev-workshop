@@ -105,7 +105,7 @@ __Note:__ You can either inherit from ready made base classes like `SaveChangesI
 
 __Note:__ Since the interfaces have default implementations, the difference between implementing the interface and inheriting a base class has been muddled a lot.
 
-In this case, you want to override the `SavingChangesAsync()` method, as you want to act on the information before it is written to the database. That way, your changes will be commited in the same transaction.
+In this case, you want to override the `SavingChangesAsync()` method, as you want to act on the information before it is written to the database. That way, your changes will be committed in the same transaction.
 
 __Note:__ There is also a `SavedChangesAsync()` method that is invoked after the data has been persisted. As well as a bunch of other methods...
 
@@ -324,7 +324,7 @@ You are currently not adding the interceptor to the `DbContext` in the `TestHelp
 
 The reason is that when you `AddSqlServerDbContext<OrdersContext>()` during startup of the application, it adds the configuration callback as a `IDbContextOptionsConfiguration<OrdersContext>` in the service container. 
 
-This causes the callback to be called, a bit unexepctedly, even if you have removed both the `OrdersContext` and `DbContextOptions<OrdersContext>` registrations during test set up in the `TestHelper`.
+This causes the callback to be called, a bit unexpectedly, even if you have removed both the `OrdersContext` and `DbContextOptions<OrdersContext>` registrations during test set up in the `TestHelper`.
 
 To fix this, you need to remove that `IDbContextOptionsConfiguration<OrdersContext>` registration as well.
 

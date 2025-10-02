@@ -251,7 +251,7 @@ public class EfProducts(ProductsContext ctx) : IProducts
 }
 ```
 
-To implement the `WithId()` method, use the `Set<T>()` method to get hold of a set of `Product`. Then use Linq to get the `Product` with the supplied id. However, as it might be and invalid id, you need to make sure the code can handle that. `FirstOrDefaultAsync()` handles this, so you can use that.
+To implement the `WithId()` method, use the `Set<T>()` method to get hold of a set of `Product`. Then use Linq to get the `Product` with the supplied id. However, as it might be an invalid id, you need to make sure the code can handle that. `FirstOrDefaultAsync()` handles this, so you can use that.
 
 ```csharp
 public Task<Product?> WithId(int id) 

@@ -37,7 +37,7 @@ __Note:__ Changing the `Name` property simply changes the name in the Docker-Com
 
 You can also define which resources should be deployed to which publisher, if you have more than one. 
 
-And some publishers also allow you to configure publishing specifics per resource, using extension methods provided by the publishers NuGet package. The Docker-Compose one is fairly simple though, so there isn't a lot you can do.
+And some publishers also allow you to configure publishing specifics per resource, using extension methods provided by the publisher's NuGet package. The Docker-Compose one is fairly simple though, so there isn't a lot you can do.
 
 However, there is one potentially useful configuration thing you can do. On the `IResourceBuilder<DockerComposeEnvironmentResource>` returned from the call to the `AddDockerComposeEnvironment()`, there is an extension method called `WithProperties()`. This allows you to configure some Docker-Compose specific things. Like for example, if you want to skip the generation of the Docker images during publishing.
 
@@ -77,7 +77,7 @@ Optionally, you can do it all in one go by calling
 Invoke-Expression "& { $(Invoke-RestMethod https://aspire.dev/install.ps1) }"
 ```
 
-__Note:__ This might not run properly. It depends on your Powershell execution policy
+__Note:__ This might not run properly. It depends on your PowerShell execution policy.
 
 The other option, to use a global tool, is nice and simple as well. Just run
 
@@ -111,6 +111,6 @@ Once the publishing is done, you can have a look at the generated __docker-compo
 cat docker-compose.yaml
 ```
 
-That's "all" there is to publishing your Aspire solutions. Obviously, it depends quite a bit on what publisher you have chosen. But in the end, all you should have to do, is to run `aspire publish`.
+That's "all" there is to publishing your Aspire solutions. Obviously, it depends quite a bit on which publisher you have chosen. But in the end, all you should have to do is run `aspire publish`.
 
 [<< Lab 21](../lab21/lab21.md) | [Home >>](../../readme.md)

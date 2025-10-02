@@ -1,6 +1,6 @@
 # Lab 11: Creating an Orleans-based Shopping Cart
 
-Since it is a e-commerce website, you obviously need to create a shopping cart solution for it. But instead of just creating one using cookies or a database, the powers to be have decided that using Project Orleans would be a better fit.
+Since it is an e-commerce website, you obviously need to create a shopping cart solution for it. But instead of just creating one using cookies or a database, the powers to be, have decided that using Project Orleans would be a better fit.
 
 Using Project Orleans might be a bit overkill for a shoppingcart... But, it does offer some interesting potential for future enhancements.
 
@@ -17,11 +17,12 @@ The next step is to create the grain needed to represent a shopping cart. Howeve
 
 Create a directory called __ShoppingCart__, and then a new class called __ShoppingCartGrain__ inside it. 
 
-Before you can start implementing the actual grain, you will need an interface to represent a shopping cart. And because the grain might be called over the network, all methods need to be asynchronuous.
+
+Before you can start implementing the actual grain, you will need an interface to represent a shopping cart. And because the grain might be called over the network, all methods need to be asynchronous.
 
 Because it is such a simple grain, you might as well keep both the interface and class in the same file. So, add a new interface called __IShoppingCart__ at the top of the __ShoppingCartGrain.cs__ file. The interface needs to implement `IGrainWithStringKey` to make it a "grain interface". 
 
-__Note:__ In this case the grain will be identified using a string, thus you use the `IGrainWithStringKey` interface. But there are also `IGrainWithIntKey`, `IGrainWithGuidKey` and as well as versions for compound keys if your key isn't a string.
+__Note:__ In this case the grain will be identified using a string, thus you use the `IGrainWithStringKey` interface. But there are also `IGrainWithIntKey`, `IGrainWithGuidKey`, as well as versions for compound keys if your key isn't a string.
 
 ```csharp
 public interface IShoppingCart : IGrainWithStringKey
@@ -45,7 +46,8 @@ public class ShoppingCartItem
 
 This is all you need to represent an item in the shopping cart.
 
-Now, that you have a DTO to represent the item, you need to tell Orleans how to serialize it when gooing across the network.
+
+Now, that you have a DTO to represent the item, you need to tell Orleans how to serialize it when going across the network.
 
 Normally, you would just add a `SerializableAttribute` to the class. However, Orleans uses protobuff serialization. And because of this you need to do something a little different... So, instead of adding a `SerializableAttribute`, you need to add a `GenerateSerializerAttribute` to the class, and a `IdAttribute` to each property to tell it the order in which the properties should be serialized. Like this
 
@@ -72,7 +74,7 @@ public interface IShoppingCart : IGrainWithStringKey
 }
 ```
 
-The next step is to have the `ShoppingCartGrain` implement the `IShoppingCart`. However, it also needs to inherit from `Grain` to make it a grain.
+The next step is to have the `ShoppingCartGrain` implement the `IShoppingCart` interface. However, it also needs to inherit from `Grain` to make it a grain.
 
 ```csharp
 public class ShoppingCartGrain : Grain, IShoppingCart
@@ -134,7 +136,7 @@ public Task AddItem(ShoppingCartItem item)
 }
 ```
 
-And because it needs to be asynchronuous, you need to return a `Task` at the end
+And because it needs to be asynchronous, you need to return a `Task` at the end.
 
 ```csharp
 public Task AddItem(ShoppingCartItem item)
@@ -146,7 +148,7 @@ public Task AddItem(ShoppingCartItem item)
 
 That's it!
 
-Implementing the `GetItems()` method is even easier. All you need to do is return the items as an array...
+Implementing the `GetItems()` method is even easier. All you need to do is return the items as an array.
 
 ```csharp
 public Task<ShoppingCartItem[]> GetItems()
@@ -157,7 +159,8 @@ That concludes the work needed on the shopping cart grain.
 
 ### Setting up a Silo to host the grains
 
-Once you have your grains in place, you need a way to store them. And that is done by adding one or more silos.
+
+Once you have your grains in place, you need a way to host them. That is done by adding one or more silos.
 
 In this case, when running locally on a single machine, you will only have a single silo. But the usage is exactly the same whether or not you have one or a thousand silos. It is just a matter of how many silos you spin up. Orleans handles the rest.
 
@@ -177,7 +180,7 @@ var app = builder.Build();
 ...
 ```
 
-The `ISiloBuilder` interface lets you tell Orleans what kind of cluster set up you want. In this case, as you are only running on your local machine, "local host clustering" would be the best option. So, go ahead and call `UseLocalhostClustering()` to tell Orleans that you want a single node cluster running on your local machine
+The `ISiloBuilder` interface lets you tell Orleans what kind of cluster setup you want. In this case, as you are only running on your local machine, "localhost clustering" would be the best option. So, go ahead and call `UseLocalhostClustering()` to tell Orleans that you want a single node cluster running on your local machine.
 
 ```csharp
 builder.Services.AddOrleans(silo => { 
@@ -187,13 +190,15 @@ builder.Services.AddOrleans(silo => {
 
 ### Add endpoints for the front-end to use
 
-Now that you have a Orleans "cluster" up and running, you need to give the front-end a way to talk to it. The easiest way to do this, and the way that the UI project expects, is to add a couple of HTTP endpoints. One to add an item, and one to get the added items.
+
+Now that you have an Orleans "cluster" up and running, you need to give the front-end a way to talk to it. The easiest way to do this, and the way that the UI project expects, is to add a couple of HTTP endpoints: one to add an item, and one to get the added items.
 
 As these are fairly simple endpoints, you might as well implement them using minimal APIs.
 
 __Note:__ As you are already using MVC, that might be a better option in a real-world scenario. But for this lab, it might be interesting to play around with minimal APIs as well...
 
-Start by adding a POST endpoint right after the `MapControllers()` step in the request pipeline. The path should be __/api/shipping-cart__
+
+Start by adding a POST endpoint right after the `MapControllers()` step in the request pipeline. The path should be __/api/shopping-cart__
 
 ```csharp
 ...
@@ -207,9 +212,10 @@ app.MapPost("/api/shopping-cart", async ctx => {
 
 Once again you need a DTO to represent the data that should be passed to the API. In this case, you need a product id and a count.
 
-Now, once again, to keep a bit of structure, and follow conventions, you should put that in a separate directory. So, create a __Models__ directory, and add a new, public `record` called __AddShoppingCartItemModel__ inside it. 
+Now, once again, to keep a bit of structure and follow conventions, you should put that in a separate directory. So, create a __Models__ directory, and add a new, public `record` called __AddShoppingCartItemModel__ inside it. 
 
-The __AddShoppingCartItemModel__ should have 2 `ìnt` properties called __ProductId__ and __Count__
+
+The __AddShoppingCartItemModel__ should have 2 `int` properties called __ProductId__ and __Count__
 
 ```csharp
 public record AddShoppingCartItemModel(int ProductId, int Count);
@@ -261,7 +267,7 @@ if (ctx.Request.Cookies.ContainsKey("ShoppingCartId"))
 }
 ```
 
-But what do you do if the user doesn't have a cookie? Well, then the user hasn't create a shopping cart yet, so you need to create a unique id for them.
+But what do you do if the user doesn't have a cookie? Well, then the user hasn't created a shopping cart yet, so you need to create a unique id for them.
 
 You could simply use a `Guid` to get a unique string. However, as this workshop is about trying new things, let's try something a little different. Let's build a unique string using the following code instead
 
@@ -275,7 +281,7 @@ else
 }
 ```
 
-This code will generate a 30 character, unique string containing only uppercase letters between A and Z.
+This code will generate a 30-character, unique string containing only uppercase letters between A and Z.
 
 After creating the identifier, you also need to add it to a cookie for future use
 
@@ -311,7 +317,7 @@ app.MapPost("/api/shopping-cart",
             });
 ```
 
-__Note:__ There are some security implications when using a simple string like this, as it is only "security by obscurity". However, it is hard to do something more secure in an unauthenticated situation. And also, worst case is that someone can see someone elses shopping cart if they can guess another users 30 character string
+__Note:__ There are some security implications when using a simple string like this, as it is only "security by obscurity". However, it is hard to do something more secure in an unauthenticated situation. And also, worst case is that someone can see someone else's shopping cart if they can guess another user's 30-character string.
 
 Once you have access to the grain, you can simply go ahead and call the `AddItem()` method
 
@@ -332,7 +338,7 @@ The front-end expects this call to return HTTP 200, as well as the current list 
 return Results.Ok(await cart.GetItems());
 ```
 
-That's what you need to do to add things to the cart. Getting the contents is of course a lot simpler.
+That's what you need to do to add things to the cart. Getting the contents is, of course, a lot simpler.
 
 Go ahead and create a new GET endpoint right after the POST endpoint you just created. The path should be __/api/shopping-cart__.
 
@@ -364,7 +370,7 @@ app.MapGet("/api/shopping-cart",
             });
 ```
 
-If they do, then you can use the value in that cookie to get the user's shopping cart grain. And then return the items in it, wrapped in an OK
+If they do, then you can use the value in that cookie to get the user's shopping cart grain, and then return the items in it, wrapped in an OK.
 
 ```csharp
 if (ctx.Request.Cookies.ContainsKey("ShoppingCartId"))
@@ -376,7 +382,7 @@ if (ctx.Request.Cookies.ContainsKey("ShoppingCartId"))
 }
 ```
 
-If the user doesn't have a cookie, then they haven't added anything to the cart either. So you can just return an empty array
+If the user doesn't have a cookie, then they haven't added anything to the cart either. So you can just return an empty array.
 
 ```csharp
 if (ctx.Request.Cookies.ContainsKey("ShoppingCartId"))
@@ -388,12 +394,12 @@ return Results.Ok(Array.Empty<ShoppingCartItem>());
 
 ### Verify that the shopping cart works
 
-Now that you have implemented the required grain, added silo to hold the grain, and created end required endpoints, it is time to see if it works.
+Now that you have implemented the required grain, added a silo to hold the grain, and created the required endpoints, it is time to see if it works.
 
 Press __F5__ and try adding items to the shopping cart. After the first item has been added to the cart, you should see a shopping cart icon in the top right corner of the site. You should also be able to click to see what is in the cart
 
 ![Shopping Cart icon](./resources/shopping-cart.png)
 
-__Note:__ The shopping cart is a bit limited as it does not support removal etc. But, it shows the concept of how to use Orleans for the functionality. And that's the goal. Not a fully working shopping cart...
+__Note:__ The shopping cart is a bit limited as it does not support removal, etc. But it shows the concept of how to use Orleans for the functionality. And that's the goal, not a fully working shopping cart...
 
 [<< Lab 10](../lab10/lab10.md) | [Lab 12 >>](../lab12/lab12.md)

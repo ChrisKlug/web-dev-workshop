@@ -34,11 +34,11 @@ public override async Task<AddOrderResponse> AddOrder(AddOrderRequest request, S
 
 __Note:__ The `Current` property is nullable, as there might not be an `Activity` available. 
 
-You can also add "events" to a tag. An event is a thing that has happened. For example, an order was placed.
+You can also add "events" to a span. An event is a thing that has happened. For example, an order was placed.
 
 __Note:__ The tags and events can be queried when looking for information about the system, and its execution.
 
-So, let's add an event when an order being added.
+So, let's add an event when an order is being added.
 
 Look a little further down the `AddOrder` method to locate the line of code that creates the `Order`.
 
@@ -121,7 +121,7 @@ activity?.AddEvent(new ActivityEvent("Adding Order",
 ...
 ```
 
-That´s it! This will add another span/activity to the trace, and include the information you added to it. However, not all activities are picked up by OTEL by default. 
+That's it! This will add another span/activity to the trace, and include the information you added to it. However, not all activities are picked up by OTEL by default. 
 
 When you create custom `ActivitySources` like this, you need to tell OTEL to include it.
 
@@ -207,7 +207,7 @@ public class OrdersMetrics
 }
 ```
 
-The last step is to add a method called __AddOrder()__ so that you can notify the counter that a new order has been added. All you need to do inside the __AddOrder()__ method is to call the `Add()`method on the `TotalOrdersCounter`.
+The last step is to add a method called __AddOrder()__ so that you can notify the counter that a new order has been added. All you need to do inside the __AddOrder()__ method is to call the `Add()` method on the `TotalOrdersCounter`.
 
 
 ```csharp
@@ -226,7 +226,7 @@ public class OrdersMetrics
 }
 ```
 
-Ok, that's _almost_ everything you need to do to add a custom metric to your OTEL data. However, there are 2 more things you need to do...
+Ok, that's _almost_ everything you need to do to add a custom metric to your OTEL data. However, there are two more things you need to do...
 
 First of all, you need to register your newly created `OrdersMetrics` class as a singleton instance in the service collection.
 
@@ -265,7 +265,7 @@ public class OrdersService(
     ) 
 ```
 
-Then locate the code where the order is saved to the database, and add a call to `metrics.AddOrder()` as soon as the order has been saved
+Then locate the code where the order is saved to the database, and add a call to `metrics.AddOrder()` as soon as the order has been saved.
 
 ```csharp
 ...
@@ -276,7 +276,7 @@ metrics.AddOrder();
 
 That's it!
 
-### Verofying that it works
+### Verifying that it works
 
 Press __F5__ to start debugging, and then add a couple of orders to the system.
 

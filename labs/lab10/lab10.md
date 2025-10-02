@@ -1,6 +1,6 @@
 # Lab 10: Providing the UI with Products
 
-The UI is limited by CORS. The easiest way to handle this, is to use a backend for frontend (BFF) pattern. This basically means providing an single API for the frontend to use, that is specifically built for the frontend. And by placing on the same domain as the frontend, security is also a lot simpler, as cookie based authentication works.
+The UI is limited by CORS. The easiest way to handle this is to use a backend-for-frontend (BFF) pattern. This basically means providing a single API for the frontend to use, that is specifically built for the frontend. By placing it on the same domain as the frontend, security is also a lot simpler, as cookie-based authentication just works.
 
 So, to do that in this project, you already have the __WebDevWorkshop.Web__ project. Here you can add whatever API you need for the frontend. And to the frontend (the UI project), it will look as if it is hosted on the same host, as it also reverse proxies the frontend for you.
 
@@ -24,7 +24,7 @@ This requires you to add a `using` statement at the top to include the `WebDevWo
 
 __Note:__ It will complain about the missing `baseAddress` parameter. This will be fixed soon.
 
-This works, but it hides the extension method a bit. To fix this, you can open the __IServiceCollectionExtensions.cs__ file in the __WebDevWorkshop.Services.Products.Client__ project, and change the namespace to `Microsoft.Extensions.DependencyInjection`
+This works, but it hides the extension method a bit. To fix this, you can open the __IServiceCollectionExtensions.cs__ file in the __WebDevWorkshop.Services.Products.Client__ project and change the namespace to `Microsoft.Extensions.DependencyInjection`.
 
 ```csharp
 namespace Microsoft.Extensions.DependencyInjection;
@@ -47,13 +47,13 @@ builder.Services.AddProductsClient("https://products");
 
 ### Connecting the 2 projects
 
-Currently, there is no reference from the web project to the products API in the Aspire AppModel. And because of this, the __https://products__ address will fail.
+Currently, there is no reference from the web project to the products API in the Aspire AppModel. Because of this, the __https://products__ address will fail.
 
-There are 2 things you need to do to fix this... The first one being to add the reference between the 2 resources.
+There are two things you need to do to fix this... The first is to add the reference between the two resources.
 
 Open up the __AppHost.cs__ file in the __WebDevWorkshop.AppHost__ project.
 
-Start by making sure that the creation of the __webdevworkshop-services-products__ resource, is placed before the creation of the __webdevworkshop-web__ project.
+Start by making sure that the creation of the __webdevworkshop-services-products__ resource is placed before the creation of the __webdevworkshop-web__ project.
 
 ```csharp
 builder.AddProject<Projects.WebDevWorkshop_Services_Products>("webdevworkshop-services-products")
@@ -86,7 +86,8 @@ builder.AddProject<Projects.WebDevWorkshop_Web>("webdevworkshop-web", "aspire")
     .WaitFor(products);
 ```
 
-This adds the reference. However, the products client expcts the products service to respond to __https://products__. Right now, the URL is actually __https://webdevworkshop-services-products__, since the hostname corresponds to the name of the resource. To fix this, you just need to rename the resource to __products__
+
+This adds the reference. However, the products client expects the products service to respond to __https://products__. Right now, the URL is actually __https://webdevworkshop-services-products__, since the hostname corresponds to the name of the resource. To fix this, you just need to rename the resource to __products__.
 
 ```csharp
 var products = builder.AddProject<Projects.WebDevWorkshop_Services_Products>("products")
@@ -98,7 +99,8 @@ Now that the `IProductsClient` is in place, you can focus on creating the HTTP e
 
 In this case, for different reasons, the choice has fallen on good old MVC.
 
-So, the first thing you need to to is to add support for MVC controllers in the project.
+
+So, the first thing you need to do is add support for MVC controllers in the project.
 
 Start by opening the __Program.cs__ file in the __WebDevWorkshop.Web__ project. 
 
@@ -124,7 +126,7 @@ app.Map("/api/{**catch-all}", (HttpContext ctx) => {
 
 Remember to do it before the other, existing calls, as these are meant to work as fallbacks when no controller has responded.
 
-There is a small problem right now, and that is that MVC requires routing to be able to route to the correct controller. So, before the call to `MapControllers()`, you need to add a call to `UseRouting()` as well
+There is a small problem right now, and that is that MVC requires routing to be able to route to the correct controller. So, before the call to `MapControllers()`, you need to add a call to `UseRouting()` as well.
 
 ```csharp
 var app = builder.Build();
@@ -138,13 +140,14 @@ Ok, now it is time to focus on the actual MVC controllers!
 
 Create a new directory called __Controllers__.
 
-__Note:__ MVC Controllers do not actually need to be in a directory called __Controllers__. It is just a structural convention that has zero impact on the code. But it is what people are used too...
+__Note:__ MVC Controllers do not actually need to be in a directory called __Controllers__. It is just a structural convention that has zero impact on the code. But it is what people are used to...
 
 In the __Controllers__ directory, use the VS tooling to create a new controller called __ProductsController__ using the __API Controller Empty__ template. 
 
 __Note:__ The __API Controller Empty__ template is under __API__ not __MVC__.
 
-Add a primary contstructor that accepts an `IProductsClient` interface
+
+Add a primary constructor that accepts an `IProductsClient` interface
 
 ```csharp
 [Route("api/[controller]")]
@@ -156,7 +159,7 @@ public class ProductsController(IProductsClient productsClient)
 }
 ```
 
-Next you need to add an action called __GetFeaturedProducts()__. It should be `async` and return `Task<Ok<Product[]>>`
+Next, you need to add an action called __GetFeaturedProducts()__. It should be `async` and return `Task<Ok<Product[]>>`.
 
 ```csharp
 public async Task<Ok<Product[]>> GetFeaturedProducts()
@@ -174,19 +177,19 @@ public async Task<Ok<Product[]>> GetFeaturedProducts()
 }
 ```
 
-The actual implementation is simple. Since the `Product` you get back is already a DTO (Data Transfer Object), you just need to await a call to the `IProductsClient.GetFeaturedProducts()` method, and return the response wrapped in an "OK"
+The actual implementation is simple. Since the `Product` you get back is already a DTO (Data Transfer Object), you just need to await a call to the `IProductsClient.GetFeaturedProducts()` method and return the response wrapped in an "OK".
 
 ```csharp
 [HttpGet("featured")]
-public async Task<Ok<Product[]>> GetfeaturedProducts()     
+public async Task<Ok<Product[]>> GetFeaturedProducts()     
     => TypedResults.Ok(
-         await productsClient.GetFeaturedProducts()
+        await productsClient.GetFeaturedProducts()
     );
 ```
 
 __Note:__ You probably want a bit more error handling here, but once again, it is a lab. And also, you actually get retries on the HTTP request simply by using the Aspire `HttpClient` configuration.
 
-The second endpoint needs to return a specific product. So, go ahead and add a new action that is called __GetProduct__. It should take a single `int` parameter called __productId__ and return a `Task<>Results<NotFound, Ok<Product>>`. Oh, and it needs to be async as well...
+The second endpoint needs to return a specific product. So, go ahead and add a new action called __GetProduct__. It should take a single `int` parameter called __productId__ and return a `Task<Results<NotFound, Ok<Product>>>`. Oh, and it needs to be async as well...
 
 ```csharp
 public async Task<Results<NotFound, Ok<Product>>> GetProduct(int productId)
@@ -203,7 +206,7 @@ public async Task<Results<NotFound, Ok<Product>>> GetProduct(int productId)
 }
 ```
 
-The implementation of this endpoint is a tiny bit more complicated, as it needs to return 404 if there is no product, in other words, if the `IProductsClient.GetProduct()` method returns `null`
+The implementation of this endpoint is a tiny bit more complicated, as it needs to return 404 if there is no product, in other words, if the `IProductsClient.GetProduct()` method returns `null`.
 
 ```csharp
 var product = await productsClient.GetProduct(productId);
@@ -220,9 +223,11 @@ To verify that it works, you need to press __F5__ to start the Aspire project.
 
 As the browser opens the web project in a tab, you will see that it actually fails...
 
-There is a reason for this. And the reason for this is that the adress used for the products API is __https://products__. However, the products API isn't actually serving HTTPS requests.
 
-There are 2 ways to fix this. Either, you can change the address to be __https+http://products__ to make it fallback to HTTP is HTTPS isn't available. Or, even better, you can simply make it respond to HTTPS.
+There is a reason for this. And the reason for this is that the address used for the products API is __https://products__. However, the products API isn't actually serving HTTPS requests.
+
+
+There are 2 ways to fix this. Either, you can change the address to be __https+http://products__ to make it fallback to HTTP if HTTPS isn't available. Or, even better, you can simply make it respond to HTTPS.
 
 ### Adding HTTPS support
 
@@ -248,9 +253,9 @@ The images are unfortunately missing... So, let's fix that!
 
 ### Providing static resources
 
-There are 2 reasons that there are no images being displayed on the website. First of all, you have no images. Secondly, you have not set up ASP.NET Core to serve static file.
+There are two reasons that there are no images being displayed on the website. First of all, you have no images. Secondly, you have not set up ASP.NET Core to serve static files.
 
-Now, the default way to solve this, would be to add a ___wwwroot__ directory, and add the images there. This piggy backs on a convention, and makes adding the middleware needed to serve the files very easy. However, to be a bit complicated, let's do it a little differently...
+Now, the default way to solve this would be to add a ___wwwroot__ directory and add the images there. This piggybacks on a convention and makes adding the middleware needed to serve the files very easy. However, to be a bit complicated, let's do it a little differently...
 
 Add a new directory called __ProductImages__ in the __WebDevWorkshop.Web__ project. And then, download the following images to that directory
 
@@ -284,11 +289,14 @@ app.UseStaticFiles(new StaticFileOptions
 ...
 ```
 
-The `StaticFileOptions` contains the configuration needed to make the midleware do what you need. In this case, it needs a `RequestPath` and a `IFileProvider` in the form of a `PhysicalFileProvider`.
 
-The `RequestPath`, which is at what path it should serve the file, should be __/images/products__ to correspond with what the UI expetcs. And the `FileProvider` needs to be set to a `PhysicalFileProvider` that points to the directory where the images are stored. 
+The `StaticFileOptions` contains the configuration needed to make the middleware do what you need. In this case, it needs a `RequestPath` and an `IFileProvider` in the form of a `PhysicalFileProvider`.
 
-In this case, the images are stored in the __ProductImages__ directory of the project. Unfortunately, the `PhysicalFileProvider` needs an absolute path. So, you will need to compbine the applications `ContentRootPath` and the directory name using `Path.Combine()`
+
+The `RequestPath`, which is the path at which it should serve the files, should be __/images/products__ to correspond with what the UI expects. And the `FileProvider` needs to be set to a `PhysicalFileProvider` that points to the directory where the images are stored. 
+
+
+In this case, the images are stored in the __ProductImages__ directory of the project. Unfortunately, the `PhysicalFileProvider` needs an absolute path. So, you will need to combine the application's `ContentRootPath` and the directory name using `Path.Combine()`
 
 ```csharp
 app.UseStaticFiles(new StaticFileOptions
@@ -306,7 +314,7 @@ app.UseStaticFiles(new StaticFileOptions
 
 Press __F5__ and make sure that the images are served as expected.
 
-__Note:__ It is __very__ possible that the browser has cached the images. To fix this, do a __HARD__ refresh (Ctrl + F5), or even better, press __F12__ to open the Developer Tools, navigate to the __Network__ tab and tick the __Disable cache__ checkbox. This will disable the cache whenever the Developer Tools are open
+__Note:__ It is __very__ possible that the browser has cached the images. To fix this, do a __HARD__ refresh (Ctrl + F5), or even better, press __F12__ to open the Developer Tools, navigate to the __Network__ tab, and tick the __Disable cache__ checkbox. This will disable the cache whenever the Developer Tools are open.
 
 
 [<< Lab 9](../lab9/lab9.md) | [Lab 11 >>](../lab11/lab11.md)

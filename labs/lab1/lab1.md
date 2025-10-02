@@ -6,7 +6,7 @@ In this lab, you will set up a new .NET solution with Aspire as the host for the
 
 ### Install / Update Aspire Templates
 
-If you do not have the Aspire templates installed on your machine, or they are not the lates version, you need to install/update those first. This is done (somewhat) easily using the following CLI command
+If you do not have the Aspire templates installed on your machine, or they are not the latest version, you need to install/update those first. This is done (somewhat) easily using the following CLI command:
 
 ```bash
 dotnet new install Aspire.ProjectTemplates
@@ -20,7 +20,7 @@ Open Visual Studio and select __Create a new project__. Then search for and sele
 
 Name the project __WebDevWorkshop__.
 
-_Comment:_ If you have never worked with Aspire before, feel free to have a look through the included source code to see that you can find your way around it.
+_Comment:_ If you have never worked with Aspire before, feel free to have a look through the included source code to see if you can find your way around it.
 
 ### Add a Docker image resource
 
@@ -39,7 +39,7 @@ var ui = builder.AddContainer("ui", "zerokoll/webdevworkshop-ui")
 
 Now that the container resource has been added, you should be able to start your application by pressing __F5__.
 
-__Note:__ It can take a long time sometimes to get it started. Make sure that your Docker Desktop hasn't gone into _Resource Saver Mode_. If it has, try turning that off. More information can be found [here](https://docs.docker.com/desktop/use-desktop/resource-saver/)
+__Note:__ It can take a long time sometimes to get it started. Make sure that your Docker Desktop hasn't gone into _Resource Saver Mode_. If it has, try turning that off. More information can be found [here](https://docs.docker.com/desktop/use-desktop/resource-saver/).
 
 This should open a browser showing you the Aspire Dashboard. And on the Dashboard, you should see a single resource called __ui__.
 
@@ -47,15 +47,15 @@ The _State_ might read as "Runtime unhealthy" until the Docker image has been do
 
 Once the __ui__ resource is in the "Healthy" state, click on the __localhost:XXXXX__ URL to view the UI.
 
-__Note:__ The UI doesn't actually work at the moment, as it requires from API endpoints to exist...
+__Note:__ The UI doesn't actually work at the moment, as it requires some API endpoints to exist...
 
 ### Optional: Fix the Dashboard state
 
 There is a small problem that might arise if you are very quick. 
 
-When you start up Aspire, if you look at the Dashboard, you will notice that the __ui__ resource gets the state __Running__ almost immidiately. However, when the tab that shows the website opens, it takes a bit of time before the page loads. 
+When you start up Aspire, if you look at the Dashboard, you will notice that the __ui__ resource gets the state __Running__ almost immediately. However, when the tab that shows the website opens, it takes a bit of time before the page loads. 
 
-This is because Aspire only checks to see if the container is up and running. Not that the application inside it is. To fix that, you can go ahead and add a health check to the __ui__resource. This will ping the defined path over and over again. And as long as it doesn't return HTTP 2XX, it will be considered unheatlhy.
+This is because Aspire only checks to see if the container is up and running, not that the application inside it is. To fix that, you can go ahead and add a health check to the __ui__ resource. This will ping the defined path over and over again. And as long as it doesn't return HTTP 2XX, it will be considered unhealthy.
 
 __Note:__ This obviously also works if the resource goes offline for some reason.
 

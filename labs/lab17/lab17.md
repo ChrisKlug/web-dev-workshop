@@ -20,11 +20,11 @@ A thing to note here, is that gRPC runs on HTTP2, so, if you open the __appsetti
 }
 ```
 
-This tells Kestrel to use HTTP2 by default. Its also means that you cannot have regular HTTP endpoints in this project, as a browser will default to HTTTP1.1.
+This tells Kestrel to use HTTP2 by default. It also means that you cannot have regular HTTP endpoints in this project, as a browser will default to HTTP1.1.
 
 gPRC uses __proto__ files to define their services. A bit like __wsdl__ in the old ASP.NET Web Services days. And when you created the project, you got a service as part of the setup. Unfortunately, it defines a services called __Greeter__, which is not what you need. So, rename the __Protos/greet.proto__ file to __orders.proto__.
 
-Next, you need to make some changes in the proto-file itself.
+Next, you need to make some changes in the proto file itself.
 
 First of all, you want to change the `csharp_namespace` to __WebDevWorkshop.Services.Orders.gRPC__.
 
@@ -44,7 +44,7 @@ option csharp_namespace = "WebDevWorkshop.Services.Orders.gRPC";
 package orders;
 ```
 
-Now you can start defining the methods that you want to expose. In this case, that is a single method called __OrdersService__. It should have a single method called __AddOrder__, which takes an __AddOrderRequest__ and returns an __AddOrderResponse__.
+Now you can start defining the service and methods that you want to expose. In this case, that is a single service called __OrdersService__. It should have a single method called __AddOrder__, which takes an __AddOrderRequest__ and returns an __AddOrderResponse__.
 
 The service is defined using the `service` keyword, and the method using the `rpc` keyword
 
@@ -65,7 +65,7 @@ __Note:__ The naming convention for proto-files is PascalCasing for types, and c
 
 To create an array, you use the `repeated` keyword.
 
-Also, during declaration, you need to the the index used for each property during serialization. It looks like this
+Also, during declaration, you need to set the index used for each property during serialization. It looks like this:
 
 ```proto
 message AddOrderRequest {
@@ -78,8 +78,7 @@ message AddOrderRequest {
 Now that you have that message in place, you need create the __Address__ message. 
 
 ```proto
-message Address
-{
+message Address {
     string name = 1;
     string street1 = 2;
     string street2 = 3;
@@ -92,8 +91,7 @@ message Address
 And of course the __OrderItem__ message
 
 ```proto
-message OrderItem
-{
+message OrderItem {
     string name = 1;
     int32 quantity = 2;
     float price = 3;
@@ -112,9 +110,9 @@ message AddOrderResponse {
 
 __Note:__ The __OrderResponse__ message marks the __orderId__ and __error__ properties as `optional`. This is because there won't be an error if everything works as it should. But it also won't have an order id if it wasn't possible to place the order.
 
-Now, because you renamed the service from __Greeter__ to __Orders__, the service implementation that was created during project creation, is no longer valid. ANd if you try to compile the project, it will actually fail, complaining about not finding the __Greeter__ namespace etc. So, go ahead and delete the __Services/GreetingService.cs__ file. 
+Now, because you renamed the service from __Greeter__ to __Orders__, the service implementation that was created during project creation is no longer valid. And if you try to compile the project, it will actually fail, complaining about not finding the __Greeter__ namespace etc. So, go ahead and delete the __Services/GreetingService.cs__ file. 
 
-You also need to open the __Program.cs__ file and remove the libe that maps the `GreeterService` as a Grpc Service.
+You also need to open the __Program.cs__ file and remove the line that maps the `GreeterService` as a Grpc Service.
 
 Then create a new class in the __Services__ directory called __OrdersService__.
 
@@ -133,7 +131,7 @@ public class OrdersService : gRPC.OrdersService.OrdersServiceBase
 }
 ```
 
-__Tip:__ Sometimes the IDE hangs on the creation of ther service and won't give you an `OrdersService` class. So, if you cant find the `WebDevWorkshop.Orders.Services.gRPC` namespace, try restarting the IDE.
+__Tip:__ Sometimes the IDE hangs on the creation of the service and won't give you an `OrdersService` class. So, if you can't find the `WebDevWorkshop.Orders.Services.gRPC` namespace, try restarting the IDE.
 
 That base class has `virtual` methods for each one of the methods you defined in the proto-file. In this case, that is a single method. So you can simply override that method with the implementation you want
 
@@ -290,7 +288,7 @@ modelBuilder.Entity<Order>(x =>
 
 As you can see, it maps it to the __Orders__ table, and uses conventions for most of it. However, the order items and addresses are mapped to internal fields. They are then exposed using some properties. And because these properties can't be set by EF, they are explicitly ignored.
 
-__Note:__ Remember to include the namespace __WebDevWorkshop.Services.Orders.Entities__ and not __WebDevWorkshop.Services.Orders.gRPC__ to get the right `Address` and `OrderItems`.
+__Note:__ Remember to include the namespace __WebDevWorkshop.Services.Orders.Entities__ and not __WebDevWorkshop.Services.Orders.gRPC__ to get the right `Address` and `OrderItem`.
 
 The `OrderItem` mapping is simpler as it can handle most of the mapping using conventions
 
@@ -306,7 +304,7 @@ modelBuilder.Entity<OrderItem>(x =>
 });
 ```
 
-And finally, the `Address` mapping is once again a bit more complicated due to the inheritance from `Address` to `InvoiceAddress` and `DevliveryAddres`, which is handled using a string discriminator called __AddressType__
+And finally, the `Address` mapping is once again a bit more complicated due to the inheritance from `Address` to `InvoiceAddress` and `DeliveryAddress`, which is handled using a string discriminator called __AddressType__
 
 ```csharp
 modelBuilder.Entity<Address>(x =>
@@ -344,7 +342,7 @@ var db = sql.AddDatabase("WebDevWorkshop");
 var ordersDb = sql.AddDatabase("WebDevWorkshopOrders", "WebDevWorkshop.Orders");
 ```
 
-Now that you have 2 databases, you can add a reference to the new one from the __webdevworkshop-services-orders__ resource.
+Now that you have two databases, you can add a reference to the new one from the __webdevworkshop-services-orders__ resource.
 
 ```csharp
 builder.AddProject<Projects.WebDevWorkshop_Services_Orders>("webdevworkshop-services-orders")
@@ -358,7 +356,7 @@ That gives you a connectionstring you can use. So, go back to the __Program.cs__
 builder.AddSqlServerDbContext<OrdersContext>("WebDevWorkshopOrders");
 ```
 
-The last step if to make sure the migrations are being run. And as mentioned before, in development, it is fine to run them during startup.
+The last step is to make sure the migrations are being run. And as mentioned before, in development, it is fine to run them during startup.
 
 So, open the __Program.cs__ file, and add the following code right after the creation of the web application, to run the migrations at startup
 
@@ -389,7 +387,7 @@ public class OrdersService(OrdersContext dbContext)
 
 Then go to the `AddOrder()` method and remove the current implementation that simply calls the base class...
 
-The first step of the real implementation, is to create a couple of `Address` instances based on the incoming information. This is a little tedious, but needs to be done
+The first step of the real implementation is to create a couple of `Address` instances based on the incoming information. This is a little tedious, but needs to be done.
 
 ```csharp
 var deliveryAddress = DeliveryAddress.Create(request.DeliveryAddress.Name, 

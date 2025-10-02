@@ -1,12 +1,14 @@
 # Lab 16: Testing with Authentication
 
-The thing is that now that you have added authentication to the website, you probably want to test it as well. But it doesn't really matter if you want to test it not. Because if you open the Test Explorer and run the tests, you will actually notice that they are failing at the moment.
+The thing is, now that you have added authentication to the website, you probably want to test it as well. But it doesn't really matter if you want to test it or not, because if you open the Test Explorer and run the tests, you will actually notice that they are failing at the moment.
 
-If dig into the tests, and look at the error, you will see that it throws an __InvalidOperationException__ with the message __Provide Authority, MetadataAddress, Configuration, or ConfigurationManager to OpenIdConnectOptions__.
+If you dig into the tests and look at the error, you will see that it throws an __InvalidOperationException__ with the message __Provide Authority, MetadataAddress, Configuration, or ConfigurationManager to OpenIdConnectOptions__.
 
-This is a bit confusing if you don't know what it means. But it means that the address if the IdP hasn't been provided. And because of that, the OIDC handler can't find the information that it needs to do its work.
 
-There is a 2 part solution to this. The first part is to remove the OIDC authentication scheme to make it not fail. And the second part is to add another authentication scheme to use during testing.
+This is a bit confusing if you don't know what it means. But it means that the address of the IdP hasn't been provided. And because of that, the OIDC handler can't find the information that it needs to do its work.
+
+
+There is a two-part solution to this. The first part is to remove the OIDC authentication scheme to make it not fail. The second part is to add another authentication scheme to use during testing.
 
 ## Steps (for Visual Studio)
 
@@ -14,7 +16,7 @@ There is a 2 part solution to this. The first part is to remove the OIDC authent
 
 Unfortunately, there doesn't seem to be a nice way to remove the authentication handler from the test setup, so it has to be done in a slightly brutish way.
 
-As you have configured the enironment name to be different during tests, you can use this information to only add the OIDC scheme if the application is not in test
+As you have configured the environment name to be different during tests, you can use this information to only add the OIDC scheme if the application is not in test.
 
 Update the current code that looks like this
 
@@ -38,7 +40,7 @@ if (!builder.Environment.IsEnvironment("IntegrationTesting"))
 
 It's not an elegant solution, but it works...
 
-You should not be able to run the tests, and get a green light back!
+You should now be able to run the tests and get a green light back!
 
 ###  Part 2 - Add Basic authentication during testing
 
@@ -85,7 +87,7 @@ Next you need to add a basic authentication scheme. And for this, you need a NuG
 
 With that package in place, you can call `AddBasicAuthentication()` to add the basic auth scheme. 
 
-The `AddBasicAuthentication()` method has a few overloads, but the one you need to use takes a a callback that takes a parameter of the type `(string username, string password)`, and returns a `Task<bool>`. In this callback, you need to verify that the used credentials are correct.
+The `AddBasicAuthentication()` method has a few overloads, but the one you need to use takes a callback that takes a parameter of the type `(string username, string password)`, and returns a `Task<bool>`. In this callback, you need to verify that the used credentials are correct.
 
 For testing, this verification can be really simple. You just need to verify that both the username and password is __test__.
 
@@ -101,7 +103,7 @@ services.AddAuthentication()
 
 __Note:__ Yes, this code uses a case-insensitive check for the username. This isn't really necessary, but conforms to standards...
 
-Now that you have added the basic auth scheme, you also need to update the authentication defaults. Currently, the application sets cookies to be the default scheme, but OIDC to be the default for challenging the user. That is obviously not going to work in the tests, where there is not OIDC scheme. 
+Now that you have added the basic auth scheme, you also need to update the authentication defaults. Currently, the application sets cookies to be the default scheme, but OIDC to be the default for challenging the user. That is obviously not going to work in the tests, where there is no OIDC scheme. 
 
 So, to reconfigure that, update the `AddAuthentication()` call to set the basic auth scheme as the default for both
 
@@ -121,7 +123,7 @@ Open the __TestHelper.cs__ file, and locate the second "simpler" `ExecuteTest` m
 
 __Note:__ You need to add it to the "simple" one, that is used for testing the web, and not the one used to test the products service, as the products service does not use authentication at all.
 
-Inside the `ConfigureTestServices()` call, after the call to the `serviceConfig`, add a call to the nely added extension method
+Inside the `ConfigureTestServices()` call, after the call to the `serviceConfig`, add a call to the newly added extension method.
 
 ```csharp
 builder.ConfigureTestServices(services =>
@@ -136,7 +138,7 @@ builder.ConfigureTestServices(services =>
 
 With the authentication in place, you can open the Test Explorer and run the tests.
 
-They should come back green at this point. However, that is only kind of true... As you are currently only testing unauthenticated endpoint, you don't actually know if the authentication nis working.
+They should come back green at this point. However, that is only kind of true... As you are currently only testing unauthenticated endpoints, you don't actually know if the authentication is working.
 
 ### Testing the /api/me endpoint
 
@@ -144,7 +146,7 @@ The only endpoint that supports authentication at the moment, is the __/api/me__
 
 Add a new class called __MeTests__ in the __WebDevWorkshop.Web.Tests__ project. And make sure the class is `public`.
 
-The first test should verify that the API returns 401 Unauthenticated if the user isn't logged in.
+The first test should verify that the API returns 401 Unauthorized if the user isn't logged in.
 
 Create a new test called __Get_returns_HTTP_401_Unauthorized_if_not_authenticated__, and have it call the `TestHelper`
 
@@ -157,7 +159,7 @@ public Task Get_returns_HTTP_401_Unauthorized_if_not_authenticated()
     );
 ```
 
-The actual test code is really simple. Just call the endpoint, and verify that you get a 401 back
+The actual test code is really simple. Just call the endpoint, and verify that you get a 401 back.
 
 
 ```csharp
@@ -173,7 +175,7 @@ Open the Test Explorer and run the test to make sure it passes.
 
 This confirms that authentication is working. But, you also need to verify that the endpoint works with an authenticated user.
 
-So, create another test called __Get_returns_HTTP_200_OK_and_name_if_authenticated__. It should do the same thing as the previous test, but assert that the returned status code is 200 OK, and that the payload is the logged in users name.
+So, create another test called __Get_returns_HTTP_200_OK_and_name_if_authenticated__. It should do the same thing as the previous test, but assert that the returned status code is 200 OK, and that the payload is the logged-in user's name.
 
 ```csharp
 [Fact]
@@ -192,7 +194,7 @@ __Note:__ The content is compared to `"test"` as the returned string is converte
 
 If you run the test, it will come back as red. The reason is obviously because there is no authenticated user called __test__. 
 
-The way to fix that, is to pass in a basic auth header to the endpoint. But, instead of doing that in the test, you can configure the `TestHelper` to do it for you. And as most tests will want to have a logged in user, but not all, you need to make it configurable.
+The way to fix that is to pass in a basic auth header to the endpoint. But, instead of doing that in the test, you can configure the `TestHelper` to do it for you. And as most tests will want to have a logged-in user, but not all, you need to make it configurable.
 
 Open the __TestHelper.cs__ file in the __WebDevWorkshop.Testing__ project, and locate the second, simpler `ExecuteTest()` method again. 
 
@@ -209,7 +211,7 @@ public static async Task ExecuteTest<TProgram>(
     ...
 ```
 
-Then, inside the method, right after the creation of the `HttpClient`, you need to add the actual authentication. But ony if the `isAuthenticated` is `true`
+Then, inside the method, right after the creation of the `HttpClient`, you need to add the actual authentication. But only if the `isAuthenticated` is `true`.
 
 Basic Auth is performed by passing in the username and password using a header called __Authorization__. The credentials need to be concatenated with `:` separator, and then base64 encoded before being added to the header.
 
@@ -227,7 +229,7 @@ if (isAuthenticated)
 await test(client);
 ```
 
-This causes a small problem though. At the same time as it hopefully makes the authenticated test work, it breaks the unauthenticated one. So, you will need to update the `Get_returns_HTTP_401_Unauthorized_if_not_authenticated` test to set the `isAuthenticated` parameter to `false``
+This causes a small problem though. At the same time as it hopefully makes the authenticated test work, it breaks the unauthenticated one. So, you will need to update the `Get_returns_HTTP_401_Unauthorized_if_not_authenticated` test to set the `isAuthenticated` parameter to `false`.
 
 ```csharp
 public Task Get_returns_HTTP_401_Unauthorized_if_not_authenticated()
@@ -243,7 +245,7 @@ Once that is fixed, you can open the Test Explorer and run the "entire" test sui
 
 Unfortunately, there is one small issue still...
 
-The tests, using basic auth, verifies that the __/api/me__ endpoint returns 401 Unauthorized, which is what we expect. However, it does so because basic auth doesn't support challenging the user to log in. OIDC does. So, what does that mean? Well...
+The tests, using basic auth, verify that the __/api/me__ endpoint returns 401 Unauthorized, which is what we expect. However, it does so because basic auth doesn't support challenging the user to log in. OIDC does. So, what does that mean? Well...
 
 Press __F5__ to start debugging. Once the website opens up, make sure you are logged out. And then browse to __/api/me__.
 
@@ -271,7 +273,7 @@ auth.AddOpenIdConnect(options =>
 
 In the callback, you want to verify that the requested path starts with __/api__, as you only want these calls to get a 401. All other calls should challenge the user to log in using a redirect.
 
-If it is a request to __/api/*__, you should set the `StatusCode` property to 401, on the `HttpResponse`. And then you need to call `ctx.HandleResponse();` to tell the system that you have handled it and no other code should mess with it.
+If it is a request to __/api/*__, you should set the `StatusCode` property to 401 on the `HttpResponse`. And then you need to call `ctx.HandleResponse();` to tell the system that you have handled it and no other code should mess with it.
 
 ```csharp
 options.Events.OnRedirectToIdentityProvider = ctx =>
@@ -287,7 +289,7 @@ options.Events.OnRedirectToIdentityProvider = ctx =>
 
 __Note:__ The code uses `(int)HttpStatusCode.Unauthorized` instead of just `401`. The reason for this is simply that it is easier to read and understand what it does. Not everyone knows all the HTTP status codes by heart.
 
-If you press __F5__ now, and then browse to __/api/me__, you should get a HTTP 401 instead of a redirect.
+If you press __F5__ now, and then browse to __/api/me__, you should get an HTTP 401 instead of a redirect.
 
 Mission accomplished!
 

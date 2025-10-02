@@ -1,6 +1,7 @@
 # Lab 7: Clean up the Integration Testing
 
-The integration test for the "Featured Products" endpoint is working. However, it is not very easy to read. And if you wanted to create more tests, there is a LOT of duplication that needs to be done.
+
+The integration test for the "Featured Products" endpoint is working. However, it is not very easy to read. And if you wanted to create more tests, there is a LOT of duplicated code that needs to be added.
 
 So, to simplify this, you are going to move all of the boilerplate stuff into a helper class that will make the test a lot cleaner.
 
@@ -22,12 +23,13 @@ public static class TestHelper {
 }
 ```
 
-Now, before you can start moving some of the code from the test to this new helper, you are going to need to reference some NuGet packages. More specifically these
+
+Now, before you can start moving some of the code from the test to this new helper, you are going to need to reference some NuGet packages. More specifically these:
 
 - Microsoft.EntityFrameworkCore.SqlServer
 - Microsoft.AspNetCore.Mvc.Testing
 
-With thos packages referenced, you can go ahead and add a static method called __ExecuteTest__ to your `TestHelper` class. 
+With those packages referenced, you can go ahead and add a static method called __ExecuteTest__ to your `TestHelper` class. 
 
 The __ExecuteTest__ method should accept a `Func<DbCommand, Task>` called __dbSetup__ and a `Func<HttpClient, Task>` called __test__. It also needs to be async and return a Task.
 
@@ -55,7 +57,8 @@ public static async Task ExecuteTest<TProgram>(
 }
 ```
 
-You should then use this type instead of the `Program` type when you create a the `WebApplicationFactory<T>`
+
+You should then use this type instead of the `Program` type when you create the `WebApplicationFactory<T>`
 
 ```csharp
 var app = new WebApplicationFactory<TProgram>()
@@ -98,7 +101,8 @@ var client = app.CreateClient();
 ...
 ```
 
-You also don't want the call to the API, and the assertions to be hard coded. So, you can go ahead and replace the API call, and the assertions, with a call to the `test` func
+
+You also don't want the call to the API, and the assertions to be hard-coded. So, you can go ahead and replace the API call and the assertions with a call to the `test` func
 
 ```csharp
 ...
@@ -115,7 +119,8 @@ using (var conn = ctx.Database.GetDbConnection())
 ...
 ```
 
-__Important!__ As part of the copying of the code from __WebDevWorkshop.Services.Products.Tests__ project, your IDE might have added a reference to it from the __WebDevWorkshop.Testing__. Make sure this is not the case. If there is a project reference from the __WebDevWorkshop.Testing__ project to the __WebDevWorkshop.Services.Products.Tests__ project, remove it. If left in place, it will break future code.
+
+__Important!__ As part of copying the code from the __WebDevWorkshop.Services.Products.Tests__ project, your IDE might have added a reference to it from the __WebDevWorkshop.Testing__ project. Make sure this is not the case. If there is a project reference from the __WebDevWorkshop.Testing__ project to the __WebDevWorkshop.Services.Products.Tests__ project, remove it. If left in place, it will break future code.
 
 ### Update the API test to use the TestHelper
 
@@ -123,7 +128,8 @@ Now that the `TestHelper` is done. You can go ahead and update the test to use i
 
 Open the __WebDevWorkshop.Services.Products.Tests__ project, and add a reference to the __WebDevWorkshop.Testing__ project.
 
-You can then comment our the entire implementation block for the `GET_Returns_HTTP_200_and_all_products_marked_as_featured`, as this will require a lot of rework. However, you don't want to delete it yet, as you will still need some of the code.
+
+You can then comment out the entire implementation block for the `GET_Returns_HTTP_200_and_all_products_marked_as_featured`, as this will require a lot of rework. However, you don't want to delete it yet, as you will still need some of the code.
 
 ```csharp
 [Fact]
@@ -134,7 +140,8 @@ public async Task GET_Returns_HTTP_200_and_all_products_marked_as_featured()
 // }
 ```
 
-Instead of this code, we can create a much simple implementation that just calls the `TestHelper` class.
+
+Instead of this code, we can create a much simpler implementation that just calls the `TestHelper` class.
 
 Start by removing the `async` keyword. The method doesn't need to be async anymore, as this is handled by the `TestHelper`
 
@@ -144,7 +151,8 @@ public Task GET_Returns_HTTP_200_and_all_products_marked_as_featured()
 ...
 ```
 
-Next, create a new implementation that simply calls the `TestHelper.ExecuteTest` method, passing in `Program` and `ProductsContext` as type parameters, and returns the returned `Task`
+
+Next, create a new implementation that simply calls the `TestHelper.ExecuteTest` method, passing in `Program` and `ProductsContext` as type parameters, and returns the returned `Task`.
 
 ```csharp
 [Fact]
@@ -219,7 +227,8 @@ public class FeaturedProductsEndpointTests
 
 ### Verify that it works
 
-Obviously you know that this will work, as the code hasn't changed that much. But every developer knows that that is a fallacy. It needs to be verified...
+
+Obviously, you "know" that this will work, as the code hasn't changed that much. But every developer knows that that is a fallacy. It needs to be verified...
 
 So, go ahead and run the test, and verify that it is still green.
 

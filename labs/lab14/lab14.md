@@ -1,4 +1,4 @@
-# Lab 14: Adding a IdentityServer
+# Lab 14: Adding an IdentityServer
 
 As setting up an identity provider isn't the main focus of this workshop, you will use a pre-created Docker image that has a pre-configured IdentityServer inside it.
 
@@ -10,7 +10,7 @@ __Note:__ If you are curious about Duende IdentityServer, you can find out every
 
 Open the __AppHost.cs__ file in the __WebDevWorkshop.AppHost__ project, and add a new container resource somewhere before the addition of the __webdevworkshop-web__ resource.
 
-The name should be __identityserver__, and the image should be __zerokoll/webdevworkshop-identity-server__. And just as with the __ui__ resource, you will need to configure the required ports. In this case, there is only one port that needs to be exposed, and that is port 8081. And you can let Aspire control the port it chooses on the host.
+The name should be __identityserver__, and the image should be __zerokoll/webdevworkshop-identity-server__. Just as with the __ui__ resource, you will need to configure the required ports. In this case, there is only one port that needs to be exposed, and that is port 8081. You can let Aspire control the port it chooses on the host.
 
 Don't forget to store the resource so that you can use it as a reference later on
 
@@ -19,7 +19,7 @@ var idsrv = builder.AddContainer("identityserver", "zerokoll/webdevworkshop-iden
     .WithHttpsEndpoint(targetPort: 8081);
 ```
 
-And just for the sake of it, you can add a call to `WithExternalHttpEndpoints()` as good measure, as the identity provider needs to be publicly available. 
+And just for the sake of it, you can add a call to `WithExternalHttpEndpoints()` as a good measure, as the identity provider needs to be publicly available. 
 
 ```csharp
 var idsrv = builder.AddContainer(...)		      
@@ -41,7 +41,7 @@ It might take a few seconds, as it needs to download the Docker image first.
 
 Once it comes online, click on the URL to see if it responds.
 
-It doesn't unfortunately.
+It doesn't, unfortunately.
 
 If you go back to the Aspire Dashboard, and open the logs for the __identityserver__ resource, you will see a line that says __Now listening on: http://[::]:8080__.
 
@@ -51,7 +51,7 @@ Now, you could just change it over to HTTP, but considering that we are talking 
 
 Go back to the __AppHost.cs__ file and the __identityserver__ resource.
 
-ASP.NET Core defines what ports and schemes it should listen to using, among other things, an environment variable called __ASPNETCORE_URLS__. So, by setting that to __https://*:8081__, we can tell the Identity Server server to listen to HTTPS.
+ASP.NET Core defines what ports and schemes it should listen to using, among other things, an environment variable called __ASPNETCORE_URLS__. So, by setting that to __https://*:8081__, we can tell the IdentityServer to listen to HTTPS.
 
 ```csharp
 var idsrv = builder.AddContainer("identityserver", "zerokoll/webdevworkshop-identity-server")		      
@@ -62,7 +62,7 @@ var idsrv = builder.AddContainer("identityserver", "zerokoll/webdevworkshop-iden
 
 Now, press __F5__ and see what happens!
 
-Oops... No the resource comes up in an __Exited__ state.
+Oops... Now the resource comes up in an __Exited__ state.
 
 Open the logs again, and you will now see __Unable to configure HTTPS endpoint. No server certificate was specified...__.
 
@@ -98,11 +98,11 @@ Save it to a root of your development project, naming it __ssl-cert.pfx__
 
 Close the __certmgr__ window.
 
-__Important:__ This certificate is trusted by your machine, so make sure it doesn't leave your machine. After the workshop, Iit is recommended to delet the file completely.
+__Important:__ This certificate is trusted by your machine, so make sure it doesn't leave your machine. After the workshop, it is recommended to delete the file completely.
 
 Now that you have the certificate, we can add it to the IdentityServer container using a bind mount.
 
-Open the __AppHost.cs__ file, and locate the __identityserver__ resource. Use the `WithBindMount()` method, to bind the newly created PFX-file to __/devcert/ssl-cert.pfx__. And moake it readonly for the sake it...
+Open the __AppHost.cs__ file, and locate the __identityserver__ resource. Use the `WithBindMount()` method to bind the newly created PFX file to __/devcert/ssl-cert.pfx__. And make it readonly for good measure...
 
 ```csharp
 var idsrv = builder.AddContainer(...)		      
@@ -118,7 +118,7 @@ The certificate is now available inside the container. But we still need to tell
 
 Once again, environment variables come to the rescue. In this case it is the __Kestrel__Certificates__Default__Path__ and __Kestrel__Certificates__Default__Password__ that allows us to configure it.
 
-The __Kestrel__Certificates__Default__Path__ is easy, you just need to set it like this
+The __Kestrel__Certificates__Default__Path__ is easy; you just need to set it like this:
 
 ```csharp
 var idsrv = builder.AddContainer(...)		      
@@ -148,7 +148,7 @@ var idsrv = builder.AddContainer(...)
     ...
 ```
 
-This would work, but we can make it a little better. First of all, you can make the `sslPasswordParameter` a child resource to the `idsrv` by writing
+This would work, but we can make it a little better. First of all, you can make the `sslPasswordParameter` a child resource of the `idsrv` by writing
 
 ```csharp
 var idsrv = builder.AddContainer(...);
@@ -156,7 +156,7 @@ var idsrv = builder.AddContainer(...);
 sslPasswordParameter.WithParentRelationship(idsrv);
 ```
 
-Now, if you don't provide a value for the parameter, Aspire will ask you for one when it starts up. To make that experience a little better, we can include some metadata for the `sslPasswordParameter`
+Now, if you don't provide a value for the parameter, Aspire will ask you for one when it starts up. To make that experience a little better, we can include some metadata for the `sslPasswordParameter`.
 
 ```csharp
 var sslPasswordParameter = builder.AddParameter("ssl-password", true)
@@ -169,7 +169,7 @@ var sslPasswordParameter = builder.AddParameter("ssl-password", true)
     });
 ```
 
-Unfortunately, at the time of writing, this is experimentel code, so you need to disable a warning using a pragma for it to compile
+Unfortunately, at the time of writing, this is experimental code, so you need to disable a warning using a pragma for it to compile.
 
 ```csharp
 #pragma warning disable ASPIREINTERACTION001
@@ -188,7 +188,7 @@ __Note:__ Please let Chris know if this is not experimental anymore
 
 ### Verify that HTTPS works
 
-Press __F5__ to start debugging thw solution.
+Press __F5__ to start debugging the solution.
 
 As the Aspire Dashboard opens up, you will get a big warning at the top saying __Unresolved parameters__, and the __identityserver__ resource will not start.
 
