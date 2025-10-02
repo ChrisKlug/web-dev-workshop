@@ -1,5 +1,11 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
+var db = builder.AddSqlServer("sqlserver")
+    .WithImageTag("2022-latest")
+    .WithDataVolume("webdevworkshopdatacaroline")
+    .WithLifetime(ContainerLifetime.Persistent)
+    .AddDatabase("WebDevWorkshop");
+
 #pragma warning disable ASPIREINTERACTION001
 var sslPasswordParameter = builder.AddParameter("ssl-password", true)
     .WithCustomInput(input => new()
@@ -12,11 +18,6 @@ var sslPasswordParameter = builder.AddParameter("ssl-password", true)
     });
 #pragma warning restore ASPIREINTERACTION001
 
-var db = builder.AddSqlServer("sqlserver")
-    .WithDataVolume("webdevworkshopdata")
-    .WithLifetime(ContainerLifetime.Persistent)
-    .AddDatabase("WebDevWorkshop");
-
 var idsrv = builder.AddContainer("identityserver", "zerokoll/webdevworkshop-identity-server")
     .WithHttpsEndpoint(targetPort: 8081)
     .WithEnvironment("ASPNETCORE_URLS", "https://*:8081")
@@ -25,7 +26,8 @@ var idsrv = builder.AddContainer("identityserver", "zerokoll/webdevworkshop-iden
         Path.Combine(builder.Environment.ContentRootPath, "../ssl-cert.pfx"),
         "/devcert/ssl-cert.pfx",
         true)
-    .WithEnvironment("Kestrel__Certificates__Default__Path", "/devcert/ssl-cert.pfx");
+    .WithEnvironment("Kestrel__Certificates__Default__Path", "/devcert/ssl-cert.pfx")
+    .WithEnvironment("Kestrel__Certificates__Default__Password", sslPasswordParameter);
 
 sslPasswordParameter.WithParentRelationship(idsrv);
 
