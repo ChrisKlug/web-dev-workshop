@@ -55,7 +55,8 @@ namespace WebDevWorkshop.Testing
         }
 
         public static async Task ExecuteTest<TProgram>(
-            Func<HttpClient, Task> test)
+            Func<HttpClient, Task> test,
+            Action<IServiceCollection>? serviceConfig = null)
             where TProgram : class
         {
             var app = new WebApplicationFactory<TProgram>()
@@ -64,6 +65,7 @@ namespace WebDevWorkshop.Testing
                     builder.UseEnvironment("IntegrationTesting");
                     builder.ConfigureTestServices(services =>
                     {
+                        serviceConfig?.Invoke(services);
                     });
                 });
 
