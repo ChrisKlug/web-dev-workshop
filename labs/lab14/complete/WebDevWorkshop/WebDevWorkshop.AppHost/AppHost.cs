@@ -8,9 +8,9 @@ var db = builder.AddSqlServer("sqlserver")
 
 #pragma warning disable ASPIREINTERACTION001
 var sslPasswordParameter = builder.AddParameter("ssl-password", true)
-    .WithCustomInput(input => new()
+    .WithCustomInput(parameter => new()
     {
-        Name = "ssl-password",
+        Name = parameter.Name,
         Label = "SSL Certificate Password",
         Placeholder = "The password",
         InputType = InputType.SecretText,

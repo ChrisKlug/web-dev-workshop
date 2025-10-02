@@ -160,9 +160,9 @@ Now, if you don't provide a value for the parameter, Aspire will ask you for one
 
 ```csharp
 var sslPasswordParameter = builder.AddParameter("ssl-password", true)
-    .WithCustomInput(input => new()
+    .WithCustomInput(parameter => new()
     {
-        Name = "ssl-password",
+        Name = parameter.Name,
         Label = "SSL Certificate Password",
         Placeholder = "The password",
         InputType = InputType.SecretText,
@@ -175,9 +175,9 @@ Unfortunately, at the time of writing, this is experimental code, so you need to
 ```csharp
 #pragma warning disable ASPIREINTERACTION001
 var sslPasswordParameter = builder.AddParameter("ssl-password", true)
-    .WithCustomInput(input => new()
+    .WithCustomInput(parameter => new()
     {
-        Name = "ssl-password",
+        Name = parameter.Name,
         Label = "SSL Certificate Password",
         Placeholder = "The password",
         InputType = InputType.SecretText,
