@@ -113,7 +113,7 @@ namespace WebDevWorkshop.Testing
                         services.AddDbContext<TDbContext>((services, options) =>
                         {
                             var config = services.GetRequiredService<IConfiguration>();
-                            options.UseSqlServer(config.GetConnectionString("Sql"), options =>
+                            options.UseSqlServer(config.GetConnectionString("WebDevWorkshopOrders"), options =>
                             {
                                 options.ExecutionStrategy(x => new NonRetryingExecutionStrategy(x));
                             });
