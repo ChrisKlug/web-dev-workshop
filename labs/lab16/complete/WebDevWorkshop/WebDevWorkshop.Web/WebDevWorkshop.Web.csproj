@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="9.0.9" />
+    <PackageReference Include="Microsoft.Extensions.ServiceDiscovery.Yarp" Version="9.5.0" />
+    <PackageReference Include="Microsoft.Orleans.Persistence.Memory" Version="9.2.1" />
+    <PackageReference Include="Microsoft.Orleans.Server" Version="9.2.1" />
+    <PackageReference Include="OrleansDashboard" Version="8.2.0" />
+    <PackageReference Include="Yarp.ReverseProxy" Version="2.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WebDevWorkshop.ServiceDefaults\WebDevWorkshop.ServiceDefaults.csproj" />
+    <ProjectReference Include="..\WebDevWorkshop.Services.Products.Client\WebDevWorkshop.Services.Products.Client.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ProductImages\" />
+  </ItemGroup>
+
+</Project>
