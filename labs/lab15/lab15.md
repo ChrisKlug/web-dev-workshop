@@ -242,6 +242,8 @@ __Note:__ Yes, that is a sign out icon, but there wasn't a better one to use for
 
 Unfortunately it fails... So, open the logs for the __identityserver__ resource. You should see a message that says __Invalid redirect__. This is because the address that the user is to be redirected to after logging in must be whitelisted. In this case, the IdentityServer expects the user to be redirected to __https://localhost:7278__, which is different than the address that the user is trying to get redirected to.
 
+__Note:__ Actually it seems like it is not failing. Even if that should be the expected outcome, as the URL has not been properly whitelisted. However, if you try to log out, you will not be redirected back to the website. Instead you will end up on a "You have logged out" page on the IdentityServer. This is also fixed by the following change though.
+
 To fix that, you need to move the __webdevworkshop-web__ resource to port __7278__. The easiest way to do that, is to open the __Properties/launchSettings.json__ file in the __WebDevWorkshop.Web__ project, and update the `applicationUrl` value for the __aspire__ profile.
 
 ```json
