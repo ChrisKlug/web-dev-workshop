@@ -342,7 +342,9 @@ var db = sql.AddDatabase("WebDevWorkshop");
 var ordersDb = sql.AddDatabase("WebDevWorkshopOrders", "WebDevWorkshop.Orders");
 ```
 
-Now that you have two databases, you can add a reference to the new one from the __webdevworkshop-services-orders__ resource.
+__Note:__ By creating a new database resource, Aspire will automatically make sure that a new database is created in the SQL Server instance the next time you run the Aspire project.
+
+Now that you have two database resources, you can add a reference to the new one from the __webdevworkshop-services-orders__ resource.
 
 ```csharp
 builder.AddProject<Projects.WebDevWorkshop_Services_Orders>("webdevworkshop-services-orders")
@@ -358,7 +360,7 @@ builder.AddSqlServerDbContext<OrdersContext>("WebDevWorkshopOrders");
 
 The last step is to make sure the migrations are being run. And as mentioned before, in development, it is fine to run them during startup.
 
-So, open the __Program.cs__ file, and add the following code right after the creation of the web application, to run the migrations at startup
+So, add the following code right after the creation of the web application, to run the migrations at startup
 
 ```csharp
 ...
