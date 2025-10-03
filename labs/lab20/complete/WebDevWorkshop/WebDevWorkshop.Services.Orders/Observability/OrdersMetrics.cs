@@ -9,7 +9,7 @@ namespace WebDevWorkshop.Services.Orders.Observability
         public OrdersMetrics(IMeterFactory meterFactory)
         {
             var meter = meterFactory.Create(MeterName);
-            TotalOrdersCounter = meter.CreateCounter<int>("total_orders");
+            TotalOrdersCounter = meter.CreateCounter<int>("orders", "Order", "Orders added");
         }
 
         public void AddOrder() => TotalOrdersCounter.Add(1);

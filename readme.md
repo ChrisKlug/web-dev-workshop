@@ -43,9 +43,9 @@ The 2 days include a combination of presentations and labs, and breaks of course
 - [Lab 16: Testing with Authentication](./labs/lab16/lab16.md) - (45 min)
 - [Lab 17: Creating a gRPC-based Orders Service](./labs/lab17/lab17.md) - (45 min)
 - [Lab 18: Testing gRPC Services](./labs/lab18/lab18.md) - (55 min)
-- [Lab 19: Consuming gRPC Services](./labs/lab19/lab19.md)
+- [Lab 19: Consuming gRPC Services](./labs/lab19/lab19.md) - (45 min)
 - Presentation: Introduction to OpenTelemetry
-- [Lab 20: Adding Custom Data to the OTEL Traces](./labs/lab20/lab20.md)
+- [Lab 20: Adding Custom Data to the OTEL Traces](./labs/lab20/lab20.md) - (20 min)
 - Optional: Presentation: The Outbox Pattern and EF Core Interceptors
 - Optional [Lab 21: Outbox Pattern using EF Core Interceptors](./labs/lab21/lab21.md)
 - Optional: [Lab 22: Deploying using Docker Compose](./labs/lab21/lab21.md)
