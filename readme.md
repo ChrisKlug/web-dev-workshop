@@ -36,20 +36,19 @@ The 2 days include a combination of presentations and labs, and breaks of course
 - Presentation: Project Orleans - The very quick primer
 - [Lab 11: Creating an Orleans-based Shopping Cart](./labs/lab11/lab11.md) - (50 min)
 - [Lab 12: Persisting the Shopping Cart](./labs/lab12/lab12.md) - (50 min)
-- [Lab 13: Testing the Shopping Cart Endpoints](./labs/lab13/lab13.md) - (1 hour)
+- Optional: [Lab 13: Testing the Shopping Cart Endpoints](./labs/lab13/lab13.md) - (1 hour)
 - Presentation: ASP.NET Core Authentication
 - [Lab 14: Adding a IdentityServer](./labs/lab14/lab14.md) - (45 min)
-- [Lab 15: Adding User Authentication](./labs/lab15/lab15.md)
-- [Lab 16: Testing with Authentication](./labs/lab16/lab16.md)
-- Presentation: gRPC?
+- [Lab 15: Adding User Authentication](./labs/lab15/lab15.md) - (30 min)
+- [Lab 16: Testing with Authentication](./labs/lab16/lab16.md) - (45 min)
 - [Lab 17: Creating a gRPC-based Orders Service](./labs/lab17/lab17.md)
 - [Lab 18: Testing gRPC Services](./labs/lab18/lab18.md)
 - [Lab 19: Consuming gRPC Services](./labs/lab19/lab19.md)
 - Presentation: Introduction to OpenTelemetry
 - [Lab 20: Adding Custom Data to the OTEL Traces](./labs/lab20/lab20.md)
-- Presentation: Optional: The Outbox Pattern and EF Core Interceptors
-- [Lab 21: Optional: Outbox Pattern using EF Core Interceptors](./labs/lab21/lab21.md)
-- [Lab 22: Optional: Deploying using Docker Compose](./labs/lab21/lab21.md)
+- Optional: Presentation: The Outbox Pattern and EF Core Interceptors
+- Optional [Lab 21: Outbox Pattern using EF Core Interceptors](./labs/lab21/lab21.md)
+- Optional: [Lab 22: Deploying using Docker Compose](./labs/lab21/lab21.md)
 
 ## Source Code
 
