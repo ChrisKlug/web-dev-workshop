@@ -1,7 +1,6 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
 var db = builder.AddSqlServer("sqlserver")
-    .WithImageTag("2022-latest")
     .WithDataVolume("webdevworkshopdata")
     .WithLifetime(ContainerLifetime.Persistent)
     .AddDatabase("WebDevWorkshop");
@@ -41,6 +40,7 @@ var products = builder.AddProject<Projects.WebDevWorkshop_Services_Products>("pr
 
 builder.AddProject<Projects.WebDevWorkshop_Web>("webdevworkshop-web","aspire")
     .WithExternalHttpEndpoints()
+    .WithEnvironment("IdentityServer__Url", idsrv.GetEndpoint("https"))
     .WithHttpEndpoint(name: "OrleansDashboard", env:"DashboardPort")
     .WithUrlForEndpoint("OrleansDashboard", url =>
     {

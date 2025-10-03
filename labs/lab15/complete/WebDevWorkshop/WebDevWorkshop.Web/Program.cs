@@ -1,4 +1,7 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.Extensions.FileProviders;
+using System.Security.Claims;
 using WebDevWorkshop.Services.Products.Client;
 using WebDevWorkshop.Web.Models;
 using WebDevWorkshop.Web.ShoppingCart;
@@ -21,6 +24,36 @@ builder.Services.AddOrleans(silo => {
         });
     }
 });
+
+
+builder.Services.AddAuthentication(options =>
+                {
+                    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+                })
+                .AddOpenIdConnect(options =>
+                {
+                    options.Authority = builder.Configuration["IdentityServer:Url"];
+
+                    options.ClientId = "interactive.mvc.sample";
+                    options.ClientSecret = "secret";
+
+                    options.ResponseType = "code";
+                    options.UsePkce = true;
+
+                    options.GetClaimsFromUserInfoEndpoint = true;
+                    options.SaveTokens = true;
+                    options.MapInboundClaims = false;
+                    options.DisableTelemetry = true;
+
+                    options.TokenValidationParameters = new()
+                    {
+                        NameClaimType = "name",
+                        RoleClaimType = "role"
+                    };
+                })
+                .AddCookie();
+
 var app = builder.Build();
 
 app.UseStaticFiles(new StaticFileOptions
@@ -34,8 +67,17 @@ app.UseStaticFiles(new StaticFileOptions
 });
 
 app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.MapControllers();
+
 //Minimal APIs
+app.MapGet("/api/me", (ClaimsPrincipal user) => 
+    Results.Ok(user.Identity!.Name)
+).RequireAuthorization();
+
 app.MapPost("/api/shopping-cart", async (AddShoppingCartItemModel model, HttpContext ctx,
             IProductsClient productsClient, IGrainFactory grainFactory) =>
 {
@@ -67,6 +109,7 @@ app.MapPost("/api/shopping-cart", async (AddShoppingCartItemModel model, HttpCon
     });
     return Results.Ok(await cart.GetItems());
 });
+
 app.MapGet("/api/shopping-cart", async (HttpContext ctx, IGrainFactory grainFactory) =>
 {
     if (ctx.Request.Cookies.ContainsKey("ShoppingCartId"))
