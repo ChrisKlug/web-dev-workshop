@@ -212,7 +212,9 @@ Open the __WebDevWorkshop.Services.Orders.Tests.csproj__ file, and update the __
 
 This is a bit weird, but it will cause the compiler to ignore anything inside that project unless you explicitly tell it to include parts of it.
 
-If you try to re-build the project now, you will see that all the warnings go away.Apart for a maybe a couple of nullability warnings. 
+__Note:__ You might need to reload the project to get the alias to work in Visual Studio.
+
+If you try to re-build the project now, you will see that all the warnings go away. Apart for a maybe a couple of nullability warnings. 
 
 Open the __OrdersServiceTests.cs__ file, and replace the implementation of the `Adds_order_to_db()` method with a call to the `TestHelper.ExecuteTest` that you just created
 
@@ -320,7 +322,7 @@ request.Items.Add(new OrderItem
 
 Once you have a complete `AddOrderRequest`, you can go ahead and call the service! 
 
-The the source generator actually generates both a synchronous and an asynchronous version of each method in the proto-file. But you really should try to use the asynchronous one if you can. Don't do potentially long-running calls uing synchronous methods is you can avoid it.
+The the source generator actually generates both a synchronous and an asynchronous version of each method in the proto-file. But you really should try to use the asynchronous one if you can. Don't do potentially long-running calls uing synchronous methods if you can avoid it.
 
 ```csharp
 request.Items.Add(...);
