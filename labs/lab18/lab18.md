@@ -226,8 +226,9 @@ public Task Adds_order_to_db()
         });
 ```
 
-
 Now, the problem is, as it has been several times before, that you can't reference the `Program` class. But you know how to fix that. Just open the __Program.cs__ file in the __WebDevWorkshop.Services.Orders__ project, and add a `public`, `partial` class called __Program__ at the bottom of the file
+
+__Warning:__ If you do not get an error from the usage of the `Program` class, it probably because VS has added a using statement for the `Microsoft.VisualStudio.TestPlatform.TestHost` namespace. This namespace includes a `Program` class as well, but it is not the one you want...
 
 ```csharp
 ...
