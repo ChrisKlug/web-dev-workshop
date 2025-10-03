@@ -41,7 +41,7 @@ The 2 days include a combination of presentations and labs, and breaks of course
 - [Lab 14: Adding a IdentityServer](./labs/lab14/lab14.md) - (45 min)
 - [Lab 15: Adding User Authentication](./labs/lab15/lab15.md) - (30 min)
 - [Lab 16: Testing with Authentication](./labs/lab16/lab16.md) - (45 min)
-- [Lab 17: Creating a gRPC-based Orders Service](./labs/lab17/lab17.md)
+- [Lab 17: Creating a gRPC-based Orders Service](./labs/lab17/lab17.md) - (45 min)
 - [Lab 18: Testing gRPC Services](./labs/lab18/lab18.md)
 - [Lab 19: Consuming gRPC Services](./labs/lab19/lab19.md)
 - Presentation: Introduction to OpenTelemetry
