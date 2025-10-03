@@ -52,7 +52,9 @@ The 2 days include a combination of presentations and labs, and breaks of course
 
 ## Source Code
 
-Well, you are already in the repo that contains everything you need. And it does include a fully implemented solution in the [src directory](./src). 
+Well, you are already in the repo that contains everything you need. And it does include completed solutions in each one of the lab directories. So, in the the [Lab 22 - completed directory](./labs/lab22/completed), you can find a complete solution.
+
+__Note:__ You will not be able to just run any off the solutions from lab 14 and onwards as they require you to set up a certificate. The documentation for how to do that is in [Lab 14](./labs/lab14/lab14.md).
 
 If you struggle with getting a lab completed, you can always clone this repo and get the completed source for that lab. Each lab directory (/labs/labXX) has a sub directory called __complete__ that contains the code as it should look after it has been completed.
 
