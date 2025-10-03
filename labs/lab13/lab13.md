@@ -1,4 +1,4 @@
-# Lab 13: Testing the Shopping Cart Endpoints
+# [Optional] Lab 13: Testing the Shopping Cart Endpoints
 
 The shopping cart isn't very complicated, but it might still be worth testing the endpoints to make sure that they work as expected, and that they don't stop working as expected during future changes.
 

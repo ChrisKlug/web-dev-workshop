@@ -121,7 +121,34 @@ Now, you just need to update the `TestHelper` to use it.
 
 Open the __TestHelper.cs__ file, and locate the second "simpler" `ExecuteTest` method. 
 
-__Note:__ You need to add it to the "simple" one, that is used for testing the web, and not the one used to test the products service, as the products service does not use authentication at all.
+__Important!__ If you did no do lab number 13, which was optional, you will need to add the second "simpler" `ExecuteTest` method now, as it will be missing. Just copy the following code into the __TestHelper.cs__ file
+
+```csharp
+public static async Task ExecuteTest<TProgram>(
+        Func<HttpClient, Task> test,
+        Action<IServiceCollection>? serviceConfig = null
+    )
+        where TProgram : class
+    {
+        var app = new WebApplicationFactory<TProgram>()
+            .WithWebHostBuilder(builder =>
+            {
+                builder.UseEnvironment("IntegrationTesting");
+                builder.ConfigureTestServices(services =>
+                {
+                    serviceConfig?.Invoke(services);
+                });
+            });
+
+        var client = app.CreateClient();
+
+        await test(client);
+    }
+```
+
+If you already did lab 13, you will already have created this method.
+
+You need to add the call to the `AddTestAuthentication()` method in this "simpler" one method, as the other one is used by the products service that doesn't use authentication at all.
 
 Inside the `ConfigureTestServices()` call, after the call to the `serviceConfig`, add a call to the newly added extension method.
 
