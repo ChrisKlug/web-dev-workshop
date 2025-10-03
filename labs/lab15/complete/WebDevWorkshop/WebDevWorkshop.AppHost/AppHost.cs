@@ -1,6 +1,7 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
 var db = builder.AddSqlServer("sqlserver")
+    .WithImageTag("2022-latest")
     .WithDataVolume("webdevworkshopdata")
     .WithLifetime(ContainerLifetime.Persistent)
     .AddDatabase("WebDevWorkshop");
