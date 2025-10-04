@@ -47,7 +47,7 @@ The 2 days include a combination of presentations and labs, and breaks of course
 - Presentation: Introduction to OpenTelemetry
 - [Lab 20: Adding Custom Data to the OTEL Traces](./labs/lab20/lab20.md) - (20 min)
 - Optional: Presentation: The Outbox Pattern and EF Core Interceptors
-- Optional [Lab 21: Outbox Pattern using EF Core Interceptors](./labs/lab21/lab21.md)
+- Optional [Lab 21: Outbox Pattern using EF Core Interceptors](./labs/lab21/lab21.md) - (40 min)
 - Optional: [Lab 22: Deploying using Docker Compose](./labs/lab21/lab21.md)
 
 ## Source Code
