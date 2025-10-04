@@ -90,6 +90,7 @@ namespace WebDevWorkshop.Testing
         }
 
         public static async Task ExecuteTest<TProgram, TDbContext, TGrpcService>(
+            Action<DbContextOptionsBuilder> configureDbContext,
             Func<TGrpcService, Task> test,
             Func<DbCommand, Task>? dbConfig = null,
             Func<DbCommand, Task>? validateDb = null
@@ -120,6 +121,7 @@ namespace WebDevWorkshop.Testing
                             {
                                 options.ExecutionStrategy(x => new NonRetryingExecutionStrategy(x));
                             });
+                            configureDbContext(options);
                         }, ServiceLifetime.Singleton);
                     });
                 });
