@@ -324,13 +324,19 @@ You are currently not adding the interceptor to the `DbContext` in the `TestHelp
 
 The reason is that when you `AddSqlServerDbContext<OrdersContext>()` during startup of the application, it adds the configuration callback as a `IDbContextOptionsConfiguration<OrdersContext>` in the service container. 
 
-This causes the callback to be called, a bit unexpectedly, even if you have removed both the `OrdersContext` and `DbContextOptions<OrdersContext>` registrations during test set up in the `TestHelper`.
+This causes the callback to be called, a bit unexpectedly, even if you have removed both the `TDbContext` and `DbContextOptions<TDbContext>` registrations during test set up in the `TestHelper`.
 
-To fix this, you need to remove that `IDbContextOptionsConfiguration<OrdersContext>` registration as well.
+To fix this, you need to remove that `IDbContextOptionsConfiguration<TDbContext>` registration as well.
 
-Open the __TestHelper.cs__ file in the __WebDevWorkshop.Testing__ project, and located the code that removes the `OrdersContext` and `DbContextOptions<OrdersContext>` registrations.
+Open the __TestHelper.cs__ file in the __WebDevWorkshop.Testing__ project, and located the `ExecuteTest()` method that you are using in the `Generates_an_event()` test.
 
-Right after retrieving the descriptors for these types, add code to retrieve the `IDbContextOptionsConfiguration<OrdersContext>` as well.
+__Note:__ It is the one that takes 4 parameters.
+
+__Tip:__ The easiest way to locate the correct method, is actually to go to the `Generates_an_event()` test, put the caret on the `TestHelper.ExecuteTest<...>()` method name and press __F12__ (Go to implementation).
+
+Once you have located the correct `TestHelper.ExecuteTest()` method, find the code that removes the `TDbContext` and `DbContextOptions<TDbContext>` registrations.
+
+Right after retrieving the descriptors for these types, add code to retrieve the `IDbContextOptionsConfiguration<TDbContext>` as well.
 
 ```csharp
 var dbDescriptor = services.First(x => x.ServiceType == typeof(TDbContext));

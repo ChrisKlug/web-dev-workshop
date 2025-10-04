@@ -30,10 +30,10 @@ namespace WebDevWorkshop.Testing
                     {
                         var dbDescriptor = services.First(x => x.ServiceType == typeof(TDbContext));
                         var optionsDescriptor = services.First(x => x.ServiceType == typeof(DbContextOptions<TDbContext>));
-                        var optionsConfigDescriptor = services.First(x => x.ServiceType == typeof(IDbContextOptionsConfiguration<TDbContext>));
+                        
                         services.Remove(dbDescriptor);
                         services.Remove(optionsDescriptor);
-                        services.Remove(optionsConfigDescriptor);
+                        
                         services.AddDbContext<TDbContext>((services, options) =>
                         {
                             var config = services.GetRequiredService<IConfiguration>();
@@ -108,9 +108,11 @@ namespace WebDevWorkshop.Testing
                     {
                         var dbDescriptor = services.First(x => x.ServiceType == typeof(TDbContext));
                         var optionsDescriptor = services.First(x => x.ServiceType == typeof(DbContextOptions<TDbContext>));
-
+                        var optionsConfigDescriptor = services.First(x => x.ServiceType == typeof(IDbContextOptionsConfiguration<TDbContext>));
+                        
                         services.Remove(dbDescriptor);
                         services.Remove(optionsDescriptor);
+                        services.Remove(optionsConfigDescriptor);
 
                         var config = services.BuildServiceProvider().GetRequiredService<IConfiguration>();
 
