@@ -1,6 +1,4 @@
 ﻿extern alias SERVER;
-
-using WebDevWorkshop.Services.Orders.Data;
 using WebDevWorkshop.Services.Orders.gRPC;
 using WebDevWorkshop.Testing;
 using OrdersService = SERVER::WebDevWorkshop.Services.Orders;
@@ -12,7 +10,7 @@ namespace WebDevWorkshop.Services.Orders.Tests
         [Fact]
         public Task Adds_order_to_db()
             => TestHelper.ExecuteTest<SERVER::Program, OrdersService.Data.OrdersContext, gRPC.OrdersService.OrdersServiceClient>(
-                configureDbContext: x => x.AddInterceptors(OrdersService.Data.OrderCreatedInterceptor.Instance),
+                configureDbContext: x => {},
                 test: async client =>
                 {
                     var request = new AddOrderRequest
@@ -101,6 +99,7 @@ namespace WebDevWorkshop.Services.Orders.Tests
         [Fact]
         public Task Generates_an_event()
             => TestHelper.ExecuteTest<SERVER::Program, OrdersService.Data.OrdersContext, gRPC.OrdersService.OrdersServiceClient>(
+                configureDbContext: x => x.AddInterceptors(OrdersService.Data.OrderCreatedInterceptor.Instance),
                 test: async client =>
                 {
                     var request = new AddOrderRequest
