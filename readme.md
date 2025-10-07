@@ -61,3 +61,7 @@ If you struggle with getting a lab completed, you can always clone this repo and
 ## Questions?
 
 If you are in the workshop, just let Chris know that you have a question. If you are not currently attending the workshop, you can contact Chris on Twitter, where his handle is [@ZeroKoll](https://twitter.com/ZeroKoll), or through mail at chris(a)59north.com.
+
+## Special thank you
+
+A special thank you needs to be added to @CarolinNygren who has worked through all the labs and made sure that they work. Thank you Carolin, you rock! 
