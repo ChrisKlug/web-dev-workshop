@@ -1,6 +1,6 @@
 # Web Dev Workshop
 
-This repo contains the instructions for running a 2-day web development workshop.
+This repo contains the lab instructions for the 2-day web development workshop that I sometimes hold.
 
 ## The goal
 
