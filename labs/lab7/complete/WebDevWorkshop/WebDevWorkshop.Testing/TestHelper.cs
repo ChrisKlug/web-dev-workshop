@@ -7,51 +7,50 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Data.Common;
 
-namespace WebDevWorkshop.Testing
+namespace WebDevWorkshop.Testing;
+
+public static class TestHelper
 {
-    public static class TestHelper
+    public static async Task ExecuteTest<TProgram, TDbContext>(
+    Func<DbCommand, Task> dbSetup,
+    Func<HttpClient, Task> test)
+    where TProgram : class
+    where TDbContext : DbContext
     {
-        public static async Task ExecuteTest<TProgram, TDbContext>(
-        Func<DbCommand, Task> dbSetup,
-        Func<HttpClient, Task> test)
-        where TProgram : class
-        where TDbContext : DbContext
-        {
-            var app = new WebApplicationFactory<TProgram>()
-                .WithWebHostBuilder(builder =>
-                {
-                    builder.UseEnvironment("IntegrationTesting");
-                    builder.ConfigureTestServices(services =>
-                    {
-                        var dbDescriptor = services.First(x => x.ServiceType == typeof(TDbContext));
-                        var optionsDescriptor = services.First(x => x.ServiceType == typeof(DbContextOptions<TDbContext>));
-                        services.Remove(dbDescriptor);
-                        services.Remove(optionsDescriptor);
-                        services.AddDbContext<TDbContext>((services, options) =>
-                        {
-                            var config = services.GetRequiredService<IConfiguration>();
-                            options.UseSqlServer(config.GetConnectionString("WebDevWorkshop"),
-                                options =>
-                                {
-                                    options.ExecutionStrategy(x => new NonRetryingExecutionStrategy(x));
-                                });
-                        }, ServiceLifetime.Singleton);
-                    });
-                });
-
-            var ctx = app.Services.GetRequiredService<TDbContext>();
-            using (var transaction = ctx.Database.BeginTransaction())
-            using (var conn = ctx.Database.GetDbConnection())
+        var app = new WebApplicationFactory<TProgram>()
+            .WithWebHostBuilder(builder =>
             {
-                var cmd = conn.CreateCommand();
-                cmd.Transaction = transaction.GetDbTransaction();
+                builder.UseEnvironment("IntegrationTesting");
+                builder.ConfigureTestServices(services =>
+                {
+                    var dbDescriptor = services.First(x => x.ServiceType == typeof(TDbContext));
+                    var optionsDescriptor = services.First(x => x.ServiceType == typeof(DbContextOptions<TDbContext>));
+                    services.Remove(dbDescriptor);
+                    services.Remove(optionsDescriptor);
+                    services.AddDbContext<TDbContext>((services, options) =>
+                    {
+                        var config = services.GetRequiredService<IConfiguration>();
+                        options.UseSqlServer(config.GetConnectionString("WebDevWorkshop"),
+                            options =>
+                            {
+                                options.ExecutionStrategy(x => new NonRetryingExecutionStrategy(x));
+                            });
+                    }, ServiceLifetime.Singleton);
+                });
+            });
 
-                await dbSetup(cmd);
+        var ctx = app.Services.GetRequiredService<TDbContext>();
+        using (var transaction = ctx.Database.BeginTransaction())
+        using (var conn = ctx.Database.GetDbConnection())
+        {
+            var cmd = conn.CreateCommand();
+            cmd.Transaction = transaction.GetDbTransaction();
 
-                var client = app.CreateClient();
+            await dbSetup(cmd);
 
-                await test(client);
-            }
+            var client = app.CreateClient();
+
+            await test(client);
         }
     }
 }
