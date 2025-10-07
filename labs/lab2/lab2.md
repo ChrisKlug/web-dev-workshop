@@ -92,6 +92,10 @@ Click on the HTTPS link for Web resource. This should open a new tab, in which y
 
 __Note:__ Depending on your resolution, the HTTP link might be hidden as a __+1__ instead of the actual link.
 
+The web resource should serve up a page that complains about not being able to get the featured products. The ui resource on the other hand, should still give you an "internal error".
+
+__Note:__ From now on, you should not browse to the ui resource at all. You shouls always go through the web project, and use the YARP reverse proxying.
+
 Go back to the Dashboard and click on the Web resource to open the details pane. In the new pane, scroll down to find the `services__ui__http__0` environment variable. This is the thing that makes the Aspire service discovery work.
 
 Next, go to the "Structured Logs" section and select the Web project in the drop-down. This should show you the logs being output from the project. 
