@@ -1,4 +1,4 @@
-# Lab 22: Optional: Deploying using Docker Compose
+# [Optional] Lab 22: Deploying using Docker Compose
 
 Aspire publishing is still very much an experimental feature that moves around a bit. However, in this tiny lab you will see what it means to add publishing to your Aspire-based solutions.
 
@@ -100,7 +100,7 @@ Once the CLI is installed, and you have verified that it works, you can go ahead
 Open a terminal in the directory you have your __WebDevWorkshop.sln__ file, and then simply run
 
 ```bash
-aspire publish
+aspire publish -output .
 ```
 
 This should output a bit of information as it is working. Hopefully outputting some green checkboxes indicating that it has all worked.

@@ -84,7 +84,7 @@ First of all, you need to set up a new SQL Server Docker container. This is quit
 docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=<password>" -p 14330:1433 --name sqltest -d mcr.microsoft.com/mssql/server:2022-latest
 ```
 
-__Note:__ `<password>` needs to be replaced with a password that is complex enough for SQL Server to accept it. __Password123__ is...
+__Note:__ `<password>` needs to be replaced with a password that is complex enough for SQL Server to accept it. __MyPassword123__ is...
 
 __Note:__ The server is set up to run on port __14330__ instead of the default to make sure it doesn't collide with any existing instance. It also does not use any volumes to store the data, as it doesn't matter if the database disappears. The tests will figure that out.
 
@@ -118,7 +118,7 @@ Inside the new file, add a connectionstring called __WebDevWorkshop__ (the name 
     ...
   },
   "ConnectionStrings": {
-    "WebDevWorkshop": "Server=localhost,14330;User ID=sa;Password=Password123;TrustServerCertificate=true;Initial Catalog=WebDevWorkshopTests"
+    "WebDevWorkshop": "Server=localhost,14330;User ID=sa;Password=MyPassword123;TrustServerCertificate=true;Initial Catalog=WebDevWorkshopTests"
   }
 }
 ```

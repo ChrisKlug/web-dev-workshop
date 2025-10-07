@@ -1,4 +1,4 @@
-# Lab 16: Testing with Authentication
+# [Optional] Lab 16: Testing with Authentication
 
 The thing is, now that you have added authentication to the website, you probably want to test it as well. But it doesn't really matter if you want to test it or not, because if you open the Test Explorer and run the tests, you will actually notice that they are failing at the moment.
 

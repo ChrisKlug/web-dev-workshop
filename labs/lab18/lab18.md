@@ -1,4 +1,4 @@
-# Lab 18: Testing gRPC Services
+# [Optional] Lab 18: Testing gRPC Services
 
 Now that you have a new service, it might be worth testing that as well. And even though this is implemented using gRPC instead of good old HTTP and JSON, it is still possible to test it in-memory in the same way you have tested the other endpoints. However, there are some tweaks to be made for it to work.
 
@@ -414,7 +414,7 @@ So, go ahead and copy the __appsettings.IntegrationTesting.json__ from the __Web
 
 ```json
 "ConnectionStrings": {
-    "WebDevWorkshopOrders": "Server=localhost,14330;User ID=sa;Password=Password123;TrustServerCertificate=true;Initial Catalog=WebDevWorkshop.Orders"
+    "WebDevWorkshopOrders": "Server=localhost,14330;User ID=sa;Password=MyPassword123;TrustServerCertificate=true;Initial Catalog=WebDevWorkshop.Orders"
   }
 ```
 

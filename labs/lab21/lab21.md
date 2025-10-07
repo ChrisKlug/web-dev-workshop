@@ -1,6 +1,6 @@
-# Optional: Outbox Pattern using EF Core Interceptors
+# [Optional] Lab 21: Outbox Pattern using EF Core Interceptors
 
-In this last, optional, lab, you will have a look at implementing the "outbox pattern" using Entity Framework Core interceptors.
+In this, optional, lab, you will have a look at implementing the "outbox pattern" using Entity Framework Core interceptors.
 
 The pattern is useful for a lot of things, but you might actually take something else away from this lab as well. And that is the fact that interceptors in EF are really powerful and useful for a lot of scenarios. Not to mention, fairly easy to implement.
 
