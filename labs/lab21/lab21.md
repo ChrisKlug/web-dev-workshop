@@ -1,6 +1,6 @@
-# Optional: Outbox Pattern using EF Core Interceptors
+# [Optional] Lab 21: Outbox Pattern using EF Core Interceptors
 
-In this last, optional, lab, you will have a look at implementing the "outbox pattern" using Entity Framework Core interceptors.
+In this, optional, lab, you will have a look at implementing the "outbox pattern" using Entity Framework Core interceptors.
 
 The pattern is useful for a lot of things, but you might actually take something else away from this lab as well. And that is the fact that interceptors in EF are really powerful and useful for a lot of scenarios. Not to mention, fairly easy to implement.
 
@@ -105,7 +105,7 @@ __Note:__ You can either inherit from ready made base classes like `SaveChangesI
 
 __Note:__ Since the interfaces have default implementations, the difference between implementing the interface and inheriting a base class has been muddled a lot.
 
-In this case, you want to override the `SavingChangesAsync()` method, as you want to act on the information before it is written to the database. That way, your changes will be commited in the same transaction.
+In this case, you want to override the `SavingChangesAsync()` method, as you want to act on the information before it is written to the database. That way, your changes will be committed in the same transaction.
 
 __Note:__ There is also a `SavedChangesAsync()` method that is invoked after the data has been persisted. As well as a bunch of other methods...
 
@@ -324,13 +324,19 @@ You are currently not adding the interceptor to the `DbContext` in the `TestHelp
 
 The reason is that when you `AddSqlServerDbContext<OrdersContext>()` during startup of the application, it adds the configuration callback as a `IDbContextOptionsConfiguration<OrdersContext>` in the service container. 
 
-This causes the callback to be called, a bit unexepctedly, even if you have removed both the `OrdersContext` and `DbContextOptions<OrdersContext>` registrations during test set up in the `TestHelper`.
+This causes the callback to be called, a bit unexpectedly, even if you have removed both the `TDbContext` and `DbContextOptions<TDbContext>` registrations during test set up in the `TestHelper`.
 
-To fix this, you need to remove that `IDbContextOptionsConfiguration<OrdersContext>` registration as well.
+To fix this, you need to remove that `IDbContextOptionsConfiguration<TDbContext>` registration as well.
 
-Open the __TestHelper.cs__ file in the __WebDevWorkshop.Testing__ project, and located the code that removes the `OrdersContext` and `DbContextOptions<OrdersContext>` registrations.
+Open the __TestHelper.cs__ file in the __WebDevWorkshop.Testing__ project, and located the `ExecuteTest()` method that you are using in the `Generates_an_event()` test.
 
-Right after retrieving the descriptors for these types, add code to retrieve the `IDbContextOptionsConfiguration<OrdersContext>` as well.
+__Note:__ It is the one that takes 4 parameters.
+
+__Tip:__ The easiest way to locate the correct method, is actually to go to the `Generates_an_event()` test, put the caret on the `TestHelper.ExecuteTest<...>()` method name and press __F12__ (Go to implementation).
+
+Once you have located the correct `TestHelper.ExecuteTest()` method, find the code that removes the `TDbContext` and `DbContextOptions<TDbContext>` registrations.
+
+Right after retrieving the descriptors for these types, add code to retrieve the `IDbContextOptionsConfiguration<TDbContext>` as well.
 
 ```csharp
 var dbDescriptor = services.First(x => x.ServiceType == typeof(TDbContext));

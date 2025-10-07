@@ -4,7 +4,7 @@ The UI for the solution requires some API endpoints to be available for it to wo
 
 One solution would obviously be to set up cross-origin support in the API. But...for this workshop we are going to do something else.
 
-Instead of cross-origin support, we can make it possible for the UI to call the API on on the same host as itself. And to do that, we will use YARP to reverse proxy the UI from the application hosting the API.
+Instead of cross-origin support, we can make it possible for the UI to call the API on the same host as itself. And to do that, we will use YARP to reverse proxy the UI from the application hosting the API.
 
 ## Steps (for Visual Studio)
 
@@ -32,11 +32,11 @@ In the newly created __webdevworkshop.Web__ project, add the following NuGet pac
  - Yarp.ReverseProxy
  - Microsoft.Extensions.ServiceDiscovery.Yarp
 
-The first one is to be able to add YARP proxying to your project. And the second one is to enable Aspie Service Discovery then using YARP.
+The first one is to be able to add YARP proxying to your project. And the second one is to enable Aspire Service Discovery when using YARP.
 
 ### Add a reference from the Web resource to the UI resource
 
-To allow the web project to reverse proxy the UI project, we need a reference betwen the 2. This is done quite easily in Aspire. You just call the `WithReference()` extension method on the project that you want the reference to be added to, passing the resource you want to reference
+To allow the web project to reverse proxy the UI project, we need a reference between the two. This is done quite easily in Aspire. You just call the `WithReference()` extension method on the project that you want the reference to be added to, passing the resource you want to reference
 
 __Note:__ As it is a container resource, Aspire doesn't know quite how to reference it. So, you need to explicitly reference the __http__ endpoint by calling the `GetEndpoint()` method
 
@@ -80,7 +80,7 @@ app.Map("/api/{**catch-all}", (HttpContext ctx) => {
 });
 ```
 
-Now you just need to make sure that any API endpoint you create is added before this handler...
+Now you just need to make sure that any API endpoint you create is added before this handler.
 
 ### Verify that it works
 
@@ -89,6 +89,8 @@ Press F5 to start the project.
 In the Aspire Dashboard, make sure you are seeing 2 resources (the UI and the Web).
 
 Click on the HTTPS link for Web resource. This should open a new tab, in which you see the (broken) UI, as the call should be reverse-proxied for you.
+
+__Note:__ Depending on your resolution, the HTTP link might be hidden as a __+1__ instead of the actual link.
 
 Go back to the Dashboard and click on the Web resource to open the details pane. In the new pane, scroll down to find the `services__ui__http__0` environment variable. This is the thing that makes the Aspire service discovery work.
 

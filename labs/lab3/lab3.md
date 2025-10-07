@@ -1,6 +1,6 @@
 # Lab 3 - Adding a SQL Server database
 
-The UI expects a couple of REST-ful endpoints to retrieve the product information to display in the application. However, before we can start implementing these, we need to have a database to store the data in.
+The UI expects a couple of RESTful endpoints to retrieve the product information to display in the application. However, before we can start implementing these, we need to have a database to store the data in.
 
 ## Steps (for Visual Studio)
 
@@ -16,14 +16,14 @@ Open the __AppHost.cs__ file in the __WebDevWorkshop.AppHost__ project, and at t
 var db = builder.AddSqlServer("sqlserver");
 ```
 
-This will make sure that a SQL Server container is set up when you run the project. However, as containers a ephemeral, it is recomended to add a data volume to store the data. So, go ahead and call the `WithDataVolume()` extension method to add a data volume
+This will make sure that a SQL Server container is set up when you run the project. However, as containers are ephemeral, it is recommended to add a data volume to store the data. So, go ahead and call the `WithDataVolume()` extension method to add a data volume
 
 ```csharp
 builder.AddSqlServer("sqlserver")
         .WithDataVolume("webdevworkshopdata");
 ```
 
-As starting the SQL Server container is a bit on the slow side, it is a good idea to leave it running once it has been started. This con be configured by calling the `WithLifetime()` method, passing in `ContainerLifetime.Persistent`. 
+As starting the SQL Server container is a bit on the slow side, it is a good idea to leave it running once it has been started. This can be configured by calling the `WithLifetime()` method, passing in `ContainerLifetime.Persistent`. 
 
 ```csharp
 builder.AddSqlServer("sqlserver")
@@ -31,7 +31,7 @@ builder.AddSqlServer("sqlserver")
         .WithLifetime(ContainerLifetime.Persistent);
 ```
 
-__Note:__ You are now responsible for stopping the container when you are done developing with it.
+__Note:__ You are now responsible for stopping the container when you are done developing with it. This can be done by using the Docker Desktop Dashboard, or by using the `docker stop` command in the terminal.
 
 ### Adding a database
 

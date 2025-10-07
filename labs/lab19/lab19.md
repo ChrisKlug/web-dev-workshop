@@ -8,7 +8,7 @@ Because of the familiarity that a lot of people have with MVC; the choice has on
 
 ###  Creating a gRPC client
 
-Before you can start implementing the required endpoint, you need a gRPC client to be able to talk to the oerders service. Creating is is fairly simple though.
+Before you can start implementing the required endpoint, you need a gRPC client to be able to talk to the orders service. Creating it is fairly simple though.
 
 Start by opening the __WebDevWorkshop.Web__ and adding the NuGet package __Grpc.AspNetCore__. This will be used to create the client, just like it was in the test project.
 
@@ -43,7 +43,7 @@ In the end, both options end up with an entry in the csproj-file that looks like
     </Protobuf>
 </ItemGroup>
 ```
-Once you have the prot-file included, the source generator will do its thing, and you will get a client generated for you. So, all you need to do now, is to add that client to the IoC container.
+Once you have the proto file included, the source generator will do its thing, and you will get a client generated for you. So, all you need to do now is add that client to the IoC container.
 
 Open the __Program.cs__ file, and add the auto-generated client to the `IServiceCollection` right before the creation of the `WebApplication`.
 
@@ -55,9 +55,9 @@ Now, that client needs an address to know where to find the service.
 
 ### Configuring the gRPC service address
 
-Currently, there is no reference from the __webdevworkshop-web__ resource and the __webdevworkshop-services-orders__ resource in the Aspire configuration. And because of that, there is no way for the __webdevworkshop-web__ to get hold of the address to the __webdevworkshop-services-orders__ project. This needs to be sorted out...
+Currently, there is no reference from the __webdevworkshop-web__ resource to the __webdevworkshop-services-orders__ resource in the Aspire configuration. And because of that, there is no way for the __webdevworkshop-web__ to get hold of the address to the __webdevworkshop-services-orders__ project. This needs to be sorted out...
 
-Open the __AppHost.cs__ file in the __WebDevWorkshop.AppHost__ project and locate the __webdevworkshop-services-orders__ resource. As you can see, it is defined after the __webdevworkshop-web__ resource, maiking it impossible to add the reference. So, go ahead and move the __webdevworkshop-services-orders__ resource declaration before the __webdevworkshop-web__ one.
+Open the __AppHost.cs__ file in the __WebDevWorkshop.AppHost__ project and locate the __webdevworkshop-services-orders__ resource. As you can see, it is defined after the __webdevworkshop-web__ resource, making it impossible to add the reference. So, go ahead and move the __webdevworkshop-services-orders__ resource declaration before the __webdevworkshop-web__ one.
 
 There is also no variable that holds a reference to the __webdevworkshop-services-orders__ resource. So, add that as well.
 
@@ -81,7 +81,7 @@ However, the orders service resource has a very long name, which is a bit annoyi
 var orders = builder.AddProject<Projects.WebDevWorkshop_Services_Orders>("orders")
 ```
 
-You also need to run gRPC over HTTPS, and by default, the `http` launch profile is used. And thayt doesn't support HTTPS. 
+You also need to run gRPC over HTTPS, and by default, the `http` launch profile is used. And that doesn't support HTTPS. 
 
 To fix that, update the `AddProject()` call to pass in `"https"` as a second parameter to make Aspire use the __https__ launch profile that supports HTTPS
 
@@ -102,7 +102,7 @@ builder.Services.AddGrpcClient<OrdersService.OrdersServiceClient>(options =>
 
 ### Creating the endpoint
 
-The last piece of the puzzle is to create the actual endpoint. And, as mentiond before, the choice has once again fallen on MVC, which means that you need a new controller.
+The last piece of the puzzle is to create the actual endpoint. And, as mentioned before, the choice has once again fallen on MVC, which means that you need a new controller.
 
 Add a new, empty API controller called __OrdersController__ in the __Controllers__ directory.
 
@@ -231,7 +231,7 @@ var retrievedProducts = retrievalTasks
                             .ToDictionary(x => x.Id, x => x);
 ```
 
-And then, it is just a maatter of iterating through the ordered items, and an `OrderItem` for each one
+And then, it is just a matter of iterating through the ordered items, and an `OrderItem` for each one
 
 ```csharp
 foreach (var item in order.Items)
@@ -270,7 +270,7 @@ catch (Exception ex)
 }
 ```
 
-Once you have gotten the `AddOrderResponse` you need to make sure that it succeded. Remember, the `try/catch` will handle errors in the communication, but the actual service also has built in error handling that returns the error in trhe response. So, you need to make sure that the `Success` property is true. If it isn't, you should return an HTTP 500. If it is true, you should return an HTTP 200, with a body containing a `Success` and a `OrderId` property.
+Once you have gotten the `AddOrderResponse`, you need to make sure that it succeeded. Remember, the `try/catch` will handle errors in the communication, but the actual service also has built-in error handling that returns the error in the response. So, you need to make sure that the `Success` property is true. If it isn't, you should return an HTTP 500. If it is true, you should return an HTTP 200, with a body containing a `Success` and an `OrderId` property.
 
 ```csharp
 ...
@@ -299,7 +299,7 @@ If you scroll down a little, you will find some commented out code that says __U
 
 Uncomment the second line, adding the `AddGrpcClientInstrumentation()` call. This will add gRPC tracing. However, as mentioned in the comment above, you also need to install a NuGet package called __OpenTelemetry.Instrumentation.GrpcNetClient__.
 
-__Warning:__ There is a caveat here. The __OpenTelemetry.Instrumentation.GrpcNetClient__ is still in pre-view at the time of writing. So, make sure that you have ticked the box to include pre-releases. Otherwise, you won't see it in the list of packages when you search for it.
+__Warning:__ There is a caveat here. The __OpenTelemetry.Instrumentation.GrpcNetClient__ is still in preview at the time of writing. So, make sure that you have ticked the box to include pre-releases. Otherwise, you won't see it in the list of packages when you search for it.
 
 Once the NuGet package has been installed, the call to `AddGrpcClientInstrumentation()` should be fine.
 
@@ -341,7 +341,7 @@ public interface IShoppingCart : IGrainWithStringKey
 }
 ```
 
-Next, scroll down to the `ShoppingCartGrain` class and create and implementation of the `Clear()` method. 
+Next, scroll down to the `ShoppingCartGrain` class and create an implementation of the `Clear()` method. 
 
 Now, you could just empty the list of items in the grain's state. But that would still leave an empty state object in the store. It is better to call the `ClearStateAsync()` method on the state, as this actually removes the state completely.
 
@@ -357,9 +357,9 @@ public class ShoppingCartGrain : ...
 }
 ```
 
-The downside to this, is that you still have a running grain. One that is unlikely to be used again right away, as the used has just checked out. 
+The downside to this, is that you still have a running grain. One that is unlikely to be used again right away, as the user has just checked out. 
 
-So, it would be better that you told Orleans to remove the grain as well. And you can do that by calling the `DeactivateOnIdle()` method from the base class. This will make sure that the grain is removed as soon as the current method invocation is complete.
+So, it would be better if you told Orleans to remove the grain as well. And you can do that by calling the `DeactivateOnIdle()` method from the base class. This will make sure that the grain is removed as soon as the current method invocation is complete.
 
 ```csharp
 public class ShoppingCartGrain : ...
@@ -374,7 +374,7 @@ public class ShoppingCartGrain : ...
 }
 ```
 
-Now, the last thing to do, is to call this new method on the shopping cart once the order has been added. But before you can do that, you need to have access to an instance of `IGrainFactory`.
+Now, the last thing to do is to call this new method on the shopping cart once the order has been added. But before you can do that, you need to have access to an instance of `IGrainFactory`.
 
 So, open the __OrdersController.cs__ file and add a constructor parameter of the type `IGrainFactory` to the `OrdersController`.
 
@@ -386,7 +386,7 @@ public class OrdersController(
 ) : ControllerBase
 ```
 
-Then locate the call to the `AddOrderAsync()` method, inside the `AddOrder()` action, Then add the following code right after it to, get hold of the users shopping cart grain and clear it
+Then locate the call to the `AddOrderAsync()` method inside the `AddOrder()` action. Then add the following code right after it to get hold of the user's shopping cart grain and clear it:
 
 ```csharp
 ...
@@ -408,8 +408,8 @@ That's it!
 
 Press __F5__ to start debugging. 
 
-In the website, once again make sure that you you are logged in. Then add some products to the shopping cart, and go through the checkout.
+In the website, once again make sure that you are logged in. Then add some products to the shopping cart, and go through the checkout.
 
-After you get the __Order placed successfully, thank you!__ message, verify that the shopping cart disappears in the top righ corner.
+After you get the __Order placed successfully, thank you!__ message, verify that the shopping cart disappears in the top right corner.
 
 [<< Lab 18](../lab18/lab18.md) | [Lab 20 >>](../lab20/lab20.md)

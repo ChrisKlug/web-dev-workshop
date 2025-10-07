@@ -1,6 +1,6 @@
 # Lab 8: Testing the Product Endpoint
 
-You now have a, at least very basic, test for the `FeaturedProductsEndpoint` endpoint. But you still have one endpoint to test, the `ProductEndpoint` one.
+You now have at least a very basic test for the `FeaturedProductsEndpoint` endpoint. But you still have one endpoint to test: the `ProductEndpoint` one.
 
 Luckily, with the newly created `TestHelper`, this is very easy to do.
 
@@ -10,7 +10,7 @@ Luckily, with the newly created `TestHelper`, this is very easy to do.
 
 Create a new class called __ProductEndpointTests__ in the __WebDevWorkshop.Services.Products.Tests__ project.
 
-__Note:__ Make sure the class is public, otherwise the test runner can't find it
+__Note:__ Make sure the class is public; otherwise, the test runner can't find it.
 
 Inside the class, add a test method called __GET_Returns_HTTP_200_and_the_requested_product__
 
@@ -22,7 +22,7 @@ public Task GET_Returns_HTTP_200_and_the_requested_product()
 }
 ```
 
-In this case, as you will need to use the id of the product you are adding to the database as part of the setup, you can't implement as a simple lambda function. Instead, the call to the `TestHelper.ExecuteTest()` method needs to be inside a proper method
+In this case, as you will need to use the id of the product you are adding to the database as part of the setup, you can't implement it as a simple lambda function. Instead, the call to the `TestHelper.ExecuteTest()` method needs to be inside a proper method
 
 ```csharp
 [Fact]
@@ -41,11 +41,11 @@ public Task GET_Returns_HTTP_200_and_the_requested_product()
 }
 ```
 
-__Note:__ This will make a lot more sense in a second...
+__Note:__ This will make a lot more sense in a second.
 
-In the database setup, you need to add a product to return in the API. A task that is easily solved by using the `AddProduct` extension method you created in the previous lab.
+In the database setup, you need to add a product to return in the API. This task is easily solved by using the `AddProduct` extension method you created in the previous lab.
 
-However, you also need to store the returned id so that you can access it from the `test` func. This is why you need to use a block bodied function, as this allows you to define variables outside of the call to `TestHelper.ExecuteTest()`
+However, you also need to store the returned id so that you can access it from the `test` func. This is why you need to use a block-bodied function, as this allows you to define variables outside of the call to `TestHelper.ExecuteTest()`.
 
 ```csharp
 var productId = 0;
@@ -61,7 +61,7 @@ return TestHelper.ExecuteTest<Program, ProductsContext>(
 );
 ```
 
-The actual test implementation is just as simple as it was in the previous test. Just use the `client` to make a __GET__ request to the __/api/products/{id}__ endpoint, and then assert that the returned value looks like you expect it to
+The actual test implementation is just as simple as it was in the previous test. Just use the `client` to make a __GET__ request to the __/api/products/{id}__ endpoint, and then assert that the returned value looks like you expect it to.
 
 ```csharp
 return TestHelper.ExecuteTest<Program, ProductsContext>(
@@ -89,10 +89,10 @@ That's it!
 
 ### Verify that it works
 
-Pull up the Test Explorer and run all tests again! 
+Pull up the Test Explorer and run all tests again!
 
 It should come back green for both tests!
 
-__Note:__ You might need to re-build the solution to get the Test Explorer to see the new test
+__Note:__ You might need to rebuild the solution to get the Test Explorer to see the new test.
 
 [<< Lab 7](../lab7/lab7.md) | [Lab 9 >>](../lab9/lab9.md)

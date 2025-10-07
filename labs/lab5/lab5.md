@@ -1,6 +1,6 @@
 # Lab 5: Implementing the Products API using FastEndpoints
 
-The Products API should be a REST-ful HTTP-based API, which in a lot of cases means implementing it using ASP.NET MVC or minimal APIs. However, MVC is slowly falling out of focus because of the extra ceremony needed. As well as because of them being slightly less efficient than minimal APIs. 
+The Products API should be a RESTful HTTP-based API, which in a lot of cases means implementing it using ASP.NET MVC or minimal APIs. However, MVC is slowly falling out of focus because of the extra ceremony needed. As well as because of them being slightly less efficient than minimal APIs. 
 
 Minimal APIs on the other hand lack a built in mechanism for grouping and managing larger quantities of endpoints. They are also often implemented using a mediator pattern, using for example MediatR, to make them easier to test and manage.
 
@@ -12,7 +12,7 @@ Another, a bit less used way of implementing HTTP-based APIs, is to implement th
 
 To add support for Fast Endpoints in your __WebDevWorkshop.Services.Products__ project, you start by adding a reference to the NuGet package __FastEndpoints__.
 
-Once the NuGet package has been added, you need to add the required services to DI. This is eaisly done by calling the `AddFastEndpoints()` extension method on the `WebApplicationBuilder`.
+Once the NuGet package has been added, you need to add the required services to DI. This is easily done by calling the `AddFastEndpoints()` extension method on the `WebApplicationBuilder`.
 
 ```csharp
 builder.Services.AddFastEndpoints()
@@ -30,7 +30,7 @@ app.UseFastEndpoints();
 
 Now that Fast Endpoints support has been added to the project, you need to add the first endpoint. You will start with the "featured products" endpoint.
 
-To add a new endpoint, you need to add a class that inherits from `Endpoint<T,Y>` or one of its decendants. 
+To add a new endpoint, you need to add a class that inherits from `Endpoint<T,Y>` or one of its descendants. 
 
 However, to keep a bit of structure in the project, you should add a new directory called __Endpoints__ in the __WebDevWorkshop.Services.Products__ project first. And then add a new class called __FeaturedProductsEndpoint__ in this directory.
 
@@ -38,7 +38,7 @@ As this endpoint has no "incoming information", that is no path parameters or qu
 
 __Note:__ The `T` defines what this endpoint returns. Information that can be used to enhance the metadata for this endpoint. Metadata that can then be used by things like Swagger etc to generate API documentation. 
 
-As this endpoint shoild return an HTTP 200 OK, and an array of `Product`, you can set the `T` to `Ok<Product[]>`.
+As this endpoint should return an HTTP 200 OK, and an array of `Product`, you can set the `T` to `Ok<Product[]>`.
 
 ```csharp
 public class FeaturedProductsEndpoint
@@ -108,7 +108,7 @@ The second endpoint should return a specific `Product`. For this, the path will 
 
 Start by adding a new class called __ProductEndpoint.cs__. However, before you can make it inherit from `Endpoint`, you will need one more class.
 
-Fast Endpoints use classes/records to represent the incoming data (path and query parameters etc). To support this, create a record called __Request__ inside the `ProductEndpoint` class. The record needs a single `ìnt` property called __Id__
+Fast Endpoints use classes/records to represent the incoming data (path and query parameters etc). To support this, create a record called __Request__ inside the `ProductEndpoint` class. The record needs a single `int` property called __Id__
 
 ```csharp
 public class ProductEndpoint
@@ -166,7 +166,7 @@ public override Task<Results<Ok<Product>, NotFound>> ExecuteAsync(
 }
 ```
 
-The implementation is almost as simple as in the previous endpoint. You just need to retrieve the requested product and return it. However, as this product might not exist, you need to make sure you send a 404 Not Found if the repository return null
+The implementation is almost as simple as in the previous endpoint. You just need to retrieve the requested product and return it. However, as this product might not exist, you need to make sure you send a 404 Not Found if the repository returns null
 
 ```csharp
 public override async Task<Results<Ok<Product>, NotFound>> ExecuteAsync(
@@ -190,6 +190,8 @@ The last step is to verify that the endpoints work.
 __Note:__ Fast Endpoints automatically registers any endpoint in DI during start up, so you don't need to do anything else to make it work...
 
 Press __F5__ to start debugging. This should open up 3 tabs, one for the Dashboard, one for the Web project and one for the Products service.
+
+__Note:__ It might take a few seconds for the tabs to open...
 
 Find the tab that points to the Products service, and browse to __/api/products/featured__ and to __/api/products/1__, to verify that you are getting the expected data back.
 

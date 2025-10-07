@@ -1,6 +1,6 @@
 # Lab 20: Adding Custom Data to the OTEL Traces
 
-One of the best things about using Aspire is the Dashboard. And a big part of that, is that the Aspire Dashboard works as an Open Telemetry endpoint, getting all OTEL data sent by the different resources in the solution.
+One of the best things about using Aspire is the Dashboard. And a big part of that is that the Aspire Dashboard works as an Open Telemetry endpoint, getting all OTEL data sent by the different resources in the solution.
 
 But you can make it even better by extending the OTEL data being sent from the different parts of the application.
 
@@ -34,11 +34,11 @@ public override async Task<AddOrderResponse> AddOrder(AddOrderRequest request, S
 
 __Note:__ The `Current` property is nullable, as there might not be an `Activity` available. 
 
-You can also add "events" to a tag. An event is a thing that has happened. For example, an order was placed.
+You can also add "events" to a span. An event is a thing that has happened. For example, an order was placed.
 
 __Note:__ The tags and events can be queried when looking for information about the system, and its execution.
 
-So, let's add an event when an order being added.
+So, let's add an event when an order is being added.
 
 Look a little further down the `AddOrder` method to locate the line of code that creates the `Order`.
 
@@ -121,7 +121,7 @@ activity?.AddEvent(new ActivityEvent("Adding Order",
 ...
 ```
 
-That´s it! This will add another span/activity to the trace, and include the information you added to it. However, not all activities are picked up by OTEL by default. 
+That's it! This will add another span/activity to the trace, and include the information you added to it. However, not all activities are picked up by OTEL by default. 
 
 When you create custom `ActivitySources` like this, you need to tell OTEL to include it.
 
@@ -154,11 +154,11 @@ You should now see one more span that represents your custom activity. And if yo
 
 ### Adding OTEL metrics
 
-OTEL doesn't only support traces. It supports metrics as well. And custom metrics can actually be a really good way to see if your environment is having issues. Or, just observe the usage.
+OTEL doesn't just support traces. It supports metrics as well. And custom metrics can actually be a really good way to see if your environment is having issues. Or, just observe the usage.
 
 So, let's try and add a metric to keep track of orders being added.
 
-Create a new directory called __Observability__, and then a new class called __OrdersMetrics__ inside that directory. This class will be the way to interact with the metric. 
+Create a new directory called __Observability__ in the __WebDevWorkshop.Services.Orders__ project, and then a new class called __OrdersMetrics__ inside that directory. This class will be the way to interact with the metric. 
 
 An OTEL metric can take a few different forms, for example a counter, a histogram or a gauge. In this case you will use a counter, to keep track of the number of orders being added.
 
@@ -189,9 +189,9 @@ public class OrdersMetrics
 
 You don't need to keep track of the `Meter` instance in this case. But you do need it to create the `Counter<int>` instance that you will use to keep track of the added orders. 
 
-When you create counter, you only need to provide a name. You can optionally provide a unit and description as well.
+When you create counter, you only need to provide a name. You can optionally provide a unit and description as well. 
 
-As the counter is a thing you need to use over time, add a private property called __TotalOrdersCounter__ to hold the instance.
+In this case, it makes sense to set the name to __orders__, the unit to __Order__ and the description to __Orders added__. And as the counter is a thing you need to use over time, add a private property called __TotalOrdersCounter__ to hold the instance.
 
 ```csharp
 public class OrdersMetrics
@@ -201,13 +201,14 @@ public class OrdersMetrics
     public OrdersMetrics(IMeterFactory meterFactory)
     {
         var meter = meterFactory.Create(MeterName);
+        TotalOrdersCounter = meter.CreateCounter<int>("orders", "Order", "Orders added");
     }
 
     private Counter<int> TotalOrdersCounter { get; }
 }
 ```
 
-The last step is to add a method called __AddOrder()__ so that you can notify the counter that a new order has been added. All you need to do inside the __AddOrder()__ method is to call the `Add()`method on the `TotalOrdersCounter`.
+The last step is to add a method called __AddOrder()__ so that you can notify the counter that a new order has been added. All you need to do inside the __AddOrder()__ method is to call the `Add()` method on the `TotalOrdersCounter`.
 
 
 ```csharp
@@ -226,7 +227,7 @@ public class OrdersMetrics
 }
 ```
 
-Ok, that's _almost_ everything you need to do to add a custom metric to your OTEL data. However, there are 2 more things you need to do...
+Ok, that's _almost_ everything you need to do to add a custom metric to your OTEL data. However, there are two more things you need to do...
 
 First of all, you need to register your newly created `OrdersMetrics` class as a singleton instance in the service collection.
 
@@ -265,7 +266,7 @@ public class OrdersService(
     ) 
 ```
 
-Then locate the code where the order is saved to the database, and add a call to `metrics.AddOrder()` as soon as the order has been saved
+Then locate the code where the order is saved to the database, and add a call to `metrics.AddOrder()` as soon as the order has been saved.
 
 ```csharp
 ...
@@ -276,13 +277,13 @@ metrics.AddOrder();
 
 That's it!
 
-### Verofying that it works
+### Verifying that it works
 
 Press __F5__ to start debugging, and then add a couple of orders to the system.
 
 Then go to the Aspire Dashboard, and the __Metrics__ section. In the __Resource__ drop-down, choose the __orders__ resource. Then locate the __orders__ metric under the __WebDevWorkshop.Services.Orders__ section.
 
-Clicking on that metric should give you a graph displaying the total number of orders added. And if you switch over to the __Table__ tab, you get the same data, but split into timeslots.
+Clicking on that metric should give you a graph displaying the total number of orders added. And if you switch over to the __Table__ tab, you get the same data, but split into time slots.
 
 If you want to, you can go back to the website and add another order. It should show up in the metrics data almost immediately.
 

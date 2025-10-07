@@ -1,3 +1,7 @@
 old-source/
 .DS_Store
 *.pfx
+.vs/
+/resources/docker/identity-server/src/obj/Debug/net8.0
+/resources/docker/identity-server/src/obj/Release/net8.0
+.idea/

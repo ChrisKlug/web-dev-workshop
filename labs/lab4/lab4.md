@@ -6,7 +6,7 @@ Now that you have a database in place, it is time to create a new Products servi
 
 ### Add a new project
 
-Add a new project to your solution. Make it an __ASP.NET Core Empty__ project, and call it __WebDevWorkshop.Web__.
+Add a new project to your solution. Make it an __ASP.NET Core Empty__ project, and call it __WebDevWorkshop.Services.Products__.
 
 Making sure that "_Enlist in .NET Aspire orchestration_" option is ticked on the second screen to add it to Aspire.
 
@@ -235,12 +235,10 @@ public interface IProducts
 public class EfProducts : IProducts
 {
     public Task<Product?> WithId(int id)
-    {
-    }
+        => throw new NotImplementedException();
 
     public Task<Product[]> ThatAreFeatured()
-    {
-    }
+        => throw new NotImplementedException();
 }
 ```
 
@@ -253,7 +251,7 @@ public class EfProducts(ProductsContext ctx) : IProducts
 }
 ```
 
-To implement the `WithId()` method, use the `Set<T>()` method to get hold of a set of `Product`. Then use Linq to get the `Product` with the supplied id. However, as it might be and invalid id, you need to make sure the code can handle that. `FirstOrDefaultAsync()` handles this, so you can use that.
+To implement the `WithId()` method, use the `Set<T>()` method to get hold of a set of `Product`. Then use Linq to get the `Product` with the supplied id. However, as it might be an invalid id, you need to make sure the code can handle that. `FirstOrDefaultAsync()` handles this, so you can use that.
 
 ```csharp
 public Task<Product?> WithId(int id) 

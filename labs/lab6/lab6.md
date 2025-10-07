@@ -2,7 +2,8 @@
 
 Now that you have an API that provides product information, it might be a good idea to set up some integration tests to make sure that it works as it should.
 
-You could test the FastEndpoint endpoints using unit testing, or potentially integration testing. However, it ssems like a good idea to actually integration test the entire API using actual requests to it. This is a fairly simple thing to do, and ensures that the _whole_ application works as expected. It also allows you to test authentication, pipeline specific tweaks etc, as the test runs as a "real" HTTP request. Just testing the endpoints and down skips a fairly large part of the application.
+
+You could test the FastEndpoint endpoints using unit testing, or potentially integration testing. However, it seems like a good idea to actually integration test the entire API using real requests to it. This is a fairly simple thing to do, and ensures that the _whole_ application works as expected. It also allows you to test authentication, pipeline-specific tweaks, etc., as the test runs as a "real" HTTP request. Just testing the endpoints alone skips a fairly large part of the application.
 
 Having tests that replicate the real world also allows us to test the format of the returned JSON. This makes it easy to check if future changes might cause problems.
 
@@ -18,13 +19,13 @@ With the test project in place, add a reference to the __Microsoft.AspNetCore.Mv
 
 You also need to add a reference to the project to test. In this case the __WebDevWorkshop.Services.Products__ project.
 
-### Definings the first test
+### Defining the first test
 
 Open the __FeaturedProductsEndpointTests.cs__ file, and rename the __Test1__ test to __GET_Returns_HTTP_200_and_all_products_marked_as_featured__.
 
 __Note:__ Yes, that is a long name, but it is also very descriptive, which is good.
 
-It also needs to be updated to asyncronously return `Task`, as the test will be asyncronous.
+It also needs to be updated to asynchronously return `Task`, as the test will be asynchronous.
 
 ```csharp
 [Fact]
@@ -72,9 +73,10 @@ The test kind of works now. However, the `ProductsContext` would potentially cra
 
 To fix this, you will need to figure out a way to handle test data. In this workshop, the suggested approach is this.
 
-Create another "permanent" SQL Server instance using Docker. Run the migrations before every test run (not every test) to get the database tables in place. And then, inside each test, add the data required for that specific test. And to make sure that the test data doesn't cause problems in other tests, you will wrap a database transaction around the test. This will make sure that any data that is added to it, is rolled back at the end, leaving the database in a prinstine condition.
 
-There are however a few things that needs to be set up for this to work.
+Create another "permanent" SQL Server instance using Docker. Run the migrations before every test run (not every test) to get the database tables in place. Then, inside each test, add the data required for that specific test. To make sure that the test data doesn't cause problems in other tests, you will wrap a database transaction around the test. This will make sure that any data that is added is rolled back at the end, leaving the database in a pristine condition.
+
+There are, however, a few things that need to be set up for this to work.
 
 First of all, you need to set up a new SQL Server Docker container. This is quite easily done by running the following command
 
@@ -82,7 +84,7 @@ First of all, you need to set up a new SQL Server Docker container. This is quit
 docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=<password>" -p 14330:1433 --name sqltest -d mcr.microsoft.com/mssql/server:2022-latest
 ```
 
-__Note:__ `<password>` needs to be replaced with a password that is complex enough for SQL Server to accept it. __Password123__ is...
+__Note:__ `<password>` needs to be replaced with a password that is complex enough for SQL Server to accept it. __MyPassword123__ is...
 
 __Note:__ The server is set up to run on port __14330__ instead of the default to make sure it doesn't collide with any existing instance. It also does not use any volumes to store the data, as it doesn't matter if the database disappears. The tests will figure that out.
 
@@ -116,7 +118,7 @@ Inside the new file, add a connectionstring called __WebDevWorkshop__ (the name 
     ...
   },
   "ConnectionStrings": {
-    "WebDevWorkshop": "Server=localhost,14330;User ID=sa;Password=Password123;TrustServerCertificate=true;Initial Catalog=WebDevWorkshopTests"
+    "WebDevWorkshop": "Server=localhost,14330;User ID=sa;Password=MyPassword123;TrustServerCertificate=true;Initial Catalog=WebDevWorkshopTests"
   }
 }
 ```
@@ -179,7 +181,8 @@ builder.ConfigureTestServices(services =>
 });
 ```
 
-Ok, so now you have a __Singleton__ `ProductsContext`to use. However, there is one small issue still... By default, EF Core uses retry policies to make your application more resilient. The problem is that you cannot use manually created transaction together with retry policies. So, you will have to disable that. And they way you do that, is by replacing the defaul `ExecutionStrategy` with one called `NonRetryingExecutionStrategy`
+
+Ok, so now you have a __Singleton__ `ProductsContext` to use. However, there is one small issue still... By default, EF Core uses retry policies to make your application more resilient. The problem is that you cannot use manually created transactions together with retry policies. So, you will have to disable that. And the way you do that is by replacing the default `ExecutionStrategy` with one called `NonRetryingExecutionStrategy`.
 
 ```csharp
 options.UseSqlServer(config.GetConnectionString("WebDevWorkshop"),
@@ -234,7 +237,8 @@ using (var conn = ctx.Database.GetDbConnection())
 }
 ```
 
-Now, you could start adding products to the database right here, using the `DbCommand`. However, seeing that it is likely that you willo do this in many places, in many tests, you might as well make it reusable. And the easiest way to do that, is to use an extension method.
+
+Now, you could start adding products to the database right here, using the `DbCommand`. However, seeing that it is likely that you will do this in many places, in many tests, you might as well make it reusable. And the easiest way to do that is to use an extension method.
 
 Create a new directory called __Data__, to keep this stuff away from the actual tests.
 
@@ -268,11 +272,11 @@ cmd.CommandText = "INSERT INTO Products (Name, Description, Price, IsFeatured, T
                           "SELECT SCOPE_IDENTITY();";
 
 cmd.Parameters.Add(new SqlParameter("@Name", name));
-cmd.Parameters.Add(new SqlParameter("Description", description));
-cmd.Parameters.Add(new SqlParameter("Price", price));
-cmd.Parameters.Add(new SqlParameter("IsFeatured", isFeatured));
-cmd.Parameters.Add(new SqlParameter("ThumbnailUrl", $"{imageName}_thumbnail.jpg"));
-cmd.Parameters.Add(new SqlParameter("ImageUrl", $"{imageName}.jpg"));
+cmd.Parameters.Add(new SqlParameter("@Description", description));
+cmd.Parameters.Add(new SqlParameter("@Price", price));
+cmd.Parameters.Add(new SqlParameter("@IsFeatured", isFeatured));
+cmd.Parameters.Add(new SqlParameter("@ThumbnailUrl", $"{imageName}_thumbnail.jpg"));
+cmd.Parameters.Add(new SqlParameter("@ImageUrl", $"{imageName}.jpg"));
 
 var ret = Convert.ToInt32(await cmd.ExecuteScalarAsync());
 
@@ -300,7 +304,8 @@ using (var conn = ctx.Database.GetDbConnection())
 }
 ```
 
-Currently, the actual test functionality is outside of the `using` block. So, go ahead and move the `HttpClient` creation, usage and assertion inside the `using` block
+
+Currently, the actual test functionality is outside of the `using` block. So, go ahead and move the `HttpClient` creation, usage, and assertion inside the `using` block.
 
 ```csharp
 var ctx = app.Services.GetRequiredService<ProductsContext>();
@@ -317,9 +322,9 @@ using (var conn = ctx.Database.GetDbConnection())
 
 Now that you have some data in the database, it's possible to add some more assertions to make sure that the returned data is what you expect.
 
-When doing API integration testing, it is a good idea to verify the data "as-is". That is, verify the actual JSON in this case, instead of deserializing it to some object. By doing ti like this, you getter better backwards compatibility checks.
+When doing API integration testing, it is a good idea to verify the data "as-is". That is, verify the actual JSON in this case, instead of deserializing it to some object. By doing it like this, you getter better backwards compatibility checks.
 
-So, once you got your response from the server, and you know the repsonse is OK, you can go ahead and parse it using `JArray.Parse()`, as you know it is going to return an array.
+So, once you got your response from the server, and you know the response is OK, you can go ahead and parse it using `JArray.Parse()`, as you know it is going to return an array.
 
 __Note:__ `JArray.Parse` comes out of Json.NET. It is a bit easier to parse raw JSON using that, compared to using the classes in `System.Text.Json`.
 
@@ -344,7 +349,7 @@ Assert.Contains(products, x => x.Value<string>("name") == "Product 3");
 
 As the test stands right now, it would actually fail. The reason being that there is no database to talk to. There is a SQL Server instance, but no database. 
 
-To set up the database, you need to run the migrations. However, the migrations only run if you are en development mode. And you are not anymore, as you have changed the environment name from the default __Development__ to __IntegrationTesting__.
+To set up the database, you need to run the migrations. However, the migrations only run if you are in development mode. And you are not anymore, as you have changed the environment name from the default __Development__ to __IntegrationTesting__.
 
 To fix this, you need to tell xUnit to run the migrations for you. And you also want to make sure that they only run once per test run, not per test.
 
@@ -375,7 +380,7 @@ public class TestRunStart : XunitTestFramework
 
 As you can see, it inherits from `XunitTestFramework`, and has a bunch of code in the constructor. The code in the constructor gets hold of the __appsettings.IntegrationTesting.json__, creates a `ProductsContext` using the connectionstring in the config, and then runs the migrations.
 
-The only thing left to do, is to tell xUnit that this file extsis, using an assembly level `TestFramework` attribute that points to this class
+The only thing left to do, is to tell xUnit that this file exists, using an assembly level `TestFramework` attribute that points to this class
 
 ```csharp
 ...

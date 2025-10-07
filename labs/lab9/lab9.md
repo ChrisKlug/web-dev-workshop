@@ -8,7 +8,7 @@ If you instead distribute an SDK that leverages the API, you have more control. 
 
 ### Create a new class library
 
-The first step is to create a new __Class Library Project__ called __WebDevWorkshop.Services.Products.Client__. This will be the project that would be disributed to the end-user using for example NuGet. 
+The first step is to create a new __Class Library Project__ called __WebDevWorkshop.Services.Products.Client__. This will be the project that would be distributed to the end-user using, for example, NuGet. 
 
 In this case, as you are not going to distribute it to anyone else, it will be a simple class library that other projects can use.
 
@@ -24,7 +24,7 @@ public interface IProductsClient
 
 Now, as the data that comes back from the API is JSON, you need to turn it into a Plain Old C# Object (POCO). In this case, a simple `record` called __Product__.
 
-__Note:__ It will look a lot like the `Product` in the __WebDevWorkshop.Services.Products__ project. However, you want to keep a total separation between these 2 projects. So, the SDK project needs its own representation of a product.
+__Note:__ It will look a lot like the `Product` in the __WebDevWorkshop.Services.Products__ project. However, you want to keep a total separation between these two projects. So, the SDK project needs its own representation of a product.
 
 As this is a very simple interface with a single type connected to it, you might as well put it in the same file...
 
@@ -42,7 +42,7 @@ public record Product(int Id,
     string ImageUrl);
 ```
 
-The interface itself needs 2 methods to represent the 2 API endpoints. One called __GetProduct__ and one called __GetFeaturedProducts__. And both need to be async and return `Task`-based results.
+The interface itself needs two methods to represent the two API endpoints: one called __GetProduct__ and one called __GetFeaturedProducts__. Both need to be async and return `Task`-based results.
 
 ```csharp
 public interface IProductsClient
@@ -88,7 +88,7 @@ public Task<Product[]> GetFeaturedProducts()
 
 __Note:__ This would obviously be a bit more complicated if you needed authentication etc. But the good thing for the consumer of the SDK is that they wouldn't need to care about that. You could just pass in the required information in this class, and it could handle it all for them.
 
-The `GetProduct()` method is a bit more complicated, as it returns a `Product?`. However, the API indicates a `null` response through an HTTP 404 status code. So, you will need to use the simpler `GetAsync()` method to get the `HttpResponseMessage` to be able to verify the returned status code. And if the status code is 404 Not Found, you return null.
+The `GetProduct()` method is a bit more complicated, as it returns a `Product?`. However, the API indicates a `null` response through an HTTP 404 status code. So, you will need to use the simpler `GetAsync()` method to get the `HttpResponseMessage` to be able to verify the returned status code. If the status code is 404 Not Found, you return null.
 
 ```csharp
 public async Task<Product?> GetProduct(int productId)
@@ -101,13 +101,13 @@ public async Task<Product?> GetProduct(int productId)
 }
 ```
 
-__Note:__ The method also need to be made `async` to support the use of `await`
+__Note:__ The method also needs to be made `async` to support the use of `await`.
 
 Once you know that the status code is not 404, you know that the response should contain a product.
 
 You probably want to check that it is a 200, and handle other potential problems here as well. But...this is a simple lab, not production ready code... 😂
 
-So, if you assume everything is OK, you just need to deserialize the response and return it. Unfortunately, deserializing it using `System.Text.Json.JsonSerializer`, which is the recommended approach, is a bit fiddly. By default, it is not case-insensitive when i comes to property names. So, to be able to use the camelCased JSON, you need to provide it with an instance of `JsonSerializerOptions` with the `PropertyNameCaseInsensitive` property set to `true`
+So, if you assume everything is OK, you just need to deserialize the response and return it. Unfortunately, deserializing it using `System.Text.Json.JsonSerializer`, which is the recommended approach, is a bit fiddly. By default, it is not case-insensitive when it comes to property names. So, to be able to use the camelCased JSON, you need to provide it with an instance of `JsonSerializerOptions` with the `PropertyNameCaseInsensitive` property set to `true`.
 
 ```csharp
 return JsonSerializer.Deserialize<Product>(
@@ -128,9 +128,9 @@ The best way to sort this out, is to provide an extension method that does the w
 - Microsoft.Extensions.DependencyInjection.Abstractions
 - Microsoft.Extensions.Http
 
-The first one is to allow you to use the `IServiceCollection` interface. And the second to allow you to add the `HttpClientFactory` service to the DI.
+The first one is to allow you to use the `IServiceCollection` interface, and the second to allow you to add the `HttpClientFactory` service to the DI.
 
-__Note:__ Adding the `HttpClientFactory` isn't strictly necessary as long as the end-user registers an `HttpClient` in the IoC container. However, it is very likley that they will not do that, so adding the `HttpClientFactory` ensures that the `HttpClient` is available for injection.
+__Note:__ Adding the `HttpClientFactory` isn't strictly necessary as long as the end-user registers an `HttpClient` in the IoC container. However, it is very likely that they will not do that, so adding the `HttpClientFactory` ensures that the `HttpClient` is available for injection.
 
 Once the NuGet packages have been installed, you need to create a new, static class called __IServiceCollectionExtensions__. 
 
@@ -140,7 +140,7 @@ public static class IServiceCollectionExtensions
 }
 ```
 
-The extension method should extend the `IServiceCollection` interface, and return the same. The name __AddProductsClient__ follows the standard of using __AddXXX___
+The extension method should extend the `IServiceCollection` interface and return the same. The name __AddProductsClient__ follows the standard of using __AddXXX___
 
 ```csharp
 public static IServiceCollection AddProductsClient(this IServiceCollection services)
@@ -159,11 +159,11 @@ public static IServiceCollection AddProductsClient(this IServiceCollection servi
 }
 ```
 
-However, you also need to tell the `HttpClient` where the actual API is located, as the `HttpProductsClient` only uses relative URLs. And, you need to provide the end-user a way to do this.
+However, you also need to tell the `HttpClient` where the actual API is located, as the `HttpProductsClient` only uses relative URLs. You also need to provide the end-user a way to do this.
 
 A standard way to do this, is to provide the user with a configuration callback. In the callback, the user is given a class on which they can configure the base address.
 
-This pattern works very well for optional configuration. In this case, the base address isn't optional. So, you might as well just add a second, string parameter called __baseAddress__ to the `AddProductsClient()` method
+This pattern works very well for optional configuration. In this case, the base address isn't optional. So, you might as well just add a second string parameter called __baseAddress__ to the `AddProductsClient()` method.
 
 ```csharp
 public static IServiceCollection AddProductsClient(
@@ -181,6 +181,6 @@ services.AddHttpClient<IProductsClient, HttpProductsClient>(client => {
 
 Now, any relative path used by the `HttpProductsClient` will be prefixed with the provided base address.
 
-That's all there is to it! In the next lab you will see how to use this SDK to retrieve products from the API, without having to use HTTP requests.
+That's all there is to it! In the next lab, you will see how to use this SDK to retrieve products from the API, without having to use HTTP requests.
 
 [<< Lab 8](../lab8/lab8.md) | [Lab 10 >>](../lab10/lab10.md)

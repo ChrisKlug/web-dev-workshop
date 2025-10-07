@@ -1,0 +1,116 @@
+name: "webdev-workshop-solution"
+services:
+  aspire-docker-demo-dashboard:
+    image: "mcr.microsoft.com/dotnet/nightly/aspire-dashboard:latest"
+    expose:
+      - "18888"
+      - "18889"
+    networks:
+      - "aspire"
+    restart: "always"
+  sqlserver:
+    image: "mcr.microsoft.com/mssql/server:2025-latest"
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "${SQLSERVER_PASSWORD}"
+    expose:
+      - "1433"
+    volumes:
+      - type: "volume"
+        target: "/var/opt/mssql"
+        source: "webdevworkshopdata"
+        read_only: false
+    networks:
+      - "aspire"
+  identityserver:
+    image: "zerokoll/webdevworkshop-identity-server:latest"
+    environment:
+      ASPNETCORE_URLS: "https://*:8081"
+      Kestrel__Certificates__Default__Path: "/devcert/ssl-cert.pfx"
+      Kestrel__Certificates__Default__Password: "${SSL_PASSWORD}"
+    ports:
+      - "8081"
+    volumes:
+      - type: "bind"
+        target: "/devcert/ssl-cert.pfx"
+        source: "C:\\repos\\Webworkshop\\web-dev-workshop\\labs\\lab22\\complete\\WebDevWorkshop\\WebDevWorkshop.AppHost\\../ssl-cert.pfx"
+        read_only: true
+    networks:
+      - "aspire"
+  ui:
+    image: "zerokoll/webdevworkshop-ui:latest"
+    expose:
+      - "80"
+    networks:
+      - "aspire"
+  products:
+    image: "${PRODUCTS_IMAGE}"
+    environment:
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY: "in_memory"
+      ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
+      HTTP_PORTS: "${PRODUCTS_PORT}"
+      ConnectionStrings__WebDevWorkshop: "Server=sqlserver,1433;User ID=sa;Password=${SQLSERVER_PASSWORD};TrustServerCertificate=true;Initial Catalog=WebDevWorkshop"
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://aspire-docker-demo-dashboard:18889"
+      OTEL_EXPORTER_OTLP_PROTOCOL: "grpc"
+      OTEL_SERVICE_NAME: "products"
+    expose:
+      - "${PRODUCTS_PORT}"
+    depends_on:
+      sqlserver:
+        condition: "service_started"
+    networks:
+      - "aspire"
+  orders:
+    image: "${ORDERS_IMAGE}"
+    environment:
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY: "in_memory"
+      ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
+      HTTP_PORTS: "${ORDERS_PORT}"
+      ConnectionStrings__WebDevWorkshopOrders: "Server=sqlserver,1433;User ID=sa;Password=${SQLSERVER_PASSWORD};TrustServerCertificate=true;Initial Catalog=WebDevWorkshop.Orders"
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://aspire-docker-demo-dashboard:18889"
+      OTEL_EXPORTER_OTLP_PROTOCOL: "grpc"
+      OTEL_SERVICE_NAME: "orders"
+    expose:
+      - "${ORDERS_PORT}"
+    depends_on:
+      sqlserver:
+        condition: "service_started"
+    networks:
+      - "aspire"
+  webdevworkshop-web:
+    image: "${WEBDEVWORKSHOP_WEB_IMAGE}"
+    environment:
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY: "in_memory"
+      ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
+      HTTP_PORTS: "${WEBDEVWORKSHOP_WEB_PORT}"
+      IdentityServer__Url: "https://identityserver:8081"
+      DashboardPort: "${WEBDEVWORKSHOP_WEB_PORT}"
+      services__ui__http__0: "http://ui:80"
+      services__products__http__0: "http://products:${PRODUCTS_PORT}"
+      services__orders__http__0: "http://orders:${ORDERS_PORT}"
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://aspire-docker-demo-dashboard:18889"
+      OTEL_EXPORTER_OTLP_PROTOCOL: "grpc"
+      OTEL_SERVICE_NAME: "webdevworkshop-web"
+    ports:
+      - "${WEBDEVWORKSHOP_WEB_PORT}"
+    expose:
+      - "${WEBDEVWORKSHOP_WEB_PORT}"
+    depends_on:
+      products:
+        condition: "service_started"
+      orders:
+        condition: "service_started"
+    networks:
+      - "aspire"
+networks:
+  aspire:
+    driver: "bridge"
+volumes:
+  webdevworkshopdata:
+    driver: "local"

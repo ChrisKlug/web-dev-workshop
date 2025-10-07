@@ -2,17 +2,17 @@
 
 Currently the shopping carts have no real persistence. It is all in-memory. So, if you were to restart the application, or Orleans decided to garbage collect some of the grains, the data would be gone.
 
-However, Orleans do come with support for persistence. So, that is what this lab is about.
+However, Orleans does come with support for persistence. So, that is what this lab is about.
 
 ## Steps (for Visual Studio)
 
 ###  Adding memory storage
 
-To keep it simple, this lab will just use a memory persistence store. This allows Orleans to store state in-memory, which is better than no state at all, as it means that grains that are garbage collected can be "re-hydrated". But it doesn't solve the long term persistence needed in most systems.
+To keep it simple, this lab will just use a memory persistence store. This allows Orleans to store state in-memory, which is better than no state at all, as it means that grains that are garbage collected can be "re-hydrated". But it doesn't solve the long-term persistence needed in most systems.
 
 __Note:__ There are also ways to do custom persistence, where you decide how to persist the state. And it is actually not that hard to do. More information about that can be found [here](https://learn.microsoft.com/en-us/dotnet/orleans/grains/grain-persistence)
 
-The first step in adding memory persistence is to add a the NuGet package called __Microsoft.Orleans.Persistence.Memory__. This allows you to add persistence to Orleans grains by simply calling `AddMemoryGrainStorageAsDefault()` on the `ISiloBuilder`
+The first step in adding memory persistence is to add the NuGet package called __Microsoft.Orleans.Persistence.Memory__ to the __WebDevWorkshop.Web__ project. This allows you to add persistence to Orleans grains by simply calling `AddMemoryGrainStorageAsDefault()` on the `ISiloBuilder` in the __Program.cs__ file in that same project.
 
 ```csharp
 builder.Services.AddOrleans(silo =>
@@ -24,7 +24,7 @@ builder.Services.AddOrleans(silo =>
 
 The next step is to update the grain to use it. And the way that state is handled, is by injecting a "state" object in the grain. 
 
-To support that, you need to create a class to represent the state you want to use in the grain. In this case, it is fairly simple. You need to the `List<ShoppingCartItem>` instance. 
+To support that, you need to create a class to represent the state you want to use in the grain. In this case, it is fairly simple. You need the `List<ShoppingCartItem>` instance. 
 
 Create a new class called __ShoppingCartState__ inside the `ShoppingCartGrain` class
 
@@ -48,7 +48,7 @@ public class ShoppingCartState
 }
 ```
 
-Now that you hava a "state object", you need to update the grain to use it. 
+Now that you have a "state object", you need to update the grain to use it. 
 
 The way that Orleans injects state, is that it injects an instance of `IPersistentState<T>`, where `T` is the type of the "state object" to use. In your case `ShoppingCartState`. Like this
 
@@ -78,7 +78,7 @@ public ShoppingCartGrain(
 }
 ```
 
-Ok, so now that you have access to the state like this, you don't need the `items` member anymore. So, you can simply remove it, and update all the places that used it to use `state.State.Items`
+Ok, so now that you have access to the state like this, you don't need the `items` member anymore. So, you can simply remove it, and update all the places that used it to use `_state.State.Items`
 
 ```csharp
 public class ShoppingCartGrain : Grain, IShoppingCart
@@ -119,7 +119,7 @@ __Note:__ Under the hood, the `WriteStateAsync()` will use the grain store to pe
 
 ### Verify persistence works
 
-It is actually really hard to verify that the memory persistence works, at there is no way to look at the memory. And since it only really makes a difference when garbage collection happens, it is even harder.
+It is actually really hard to verify that the memory persistence works, and there is no way to look at the memory. And since it only really makes a difference when garbage collection happens, it is even harder.
 
 However, you are more than welcome to inject a `Logger<T>` in your grains and add some logging statements in the constructor. These can then be viewed in the Aspire Dashboard.
 
@@ -151,7 +151,7 @@ In this dashboard, you can see the different grains and silos etc in your cluste
 
 Having the Orleans Dashboard hardcoded to 8080 is not the greatest solution. Aspire does a lot of work to make sure ports don't collide. 
 
-Instead of hard-coding the port, let's let Aspire create on for you. To do that, you need to use the `WithHttpEndpoint`. This method tells Aspire to add another port for you. And the port number can be injected to your application as an envrionment variable by using the `env` parameter to tell it what environment variable name to use
+Instead of hard-coding the port, let's let Aspire create on for you. To do that, you need to use the `WithHttpEndpoint`. This method tells Aspire to add another port for you. And the port number can be injected to your application as an envrinoment variable by using the `env` parameter to tell it what environment variable name to use
 
 Open the __AppHost.cs__ file in the __WebDevWorkshop.AppHost__ project, and add the a call to `WithHttpEndpoint()` that looks like this
 
@@ -162,7 +162,7 @@ builder.AddProject<Projects.WebDevWorkshop_Web>("webdevworkshop-web", "aspire")
     ...
 ```
 
-This will inject the provided port number using the environment variable called __DashboardPort__. Using that variable, you can now tell the Orleans Dashboard to listen to that port instead of the default 8080.
+This will inject the provided port number using the environment variable called __DashboardPort__. Using that variable, you can now tell the Orleans Dashboard to listen on that port instead of the default 8080.
 
 Maybe it is a good idea to only add the Dashboard if that variable is provided, so you don't end up using port 8080 by mistake.
 
@@ -189,7 +189,7 @@ Just open the __AppHost.cs__ file in the __WebDevWorkshop.AppHost__ project, and
 
 As part of registering the resource, you can use the `WithUrlForEndpoint()` extension method to modify the URL that is used for this endpoint in the Dashboard.
 
-However, to modify the endpoint we added for the Orleans Dashboard, you need to first give it a name
+However, to modify the endpoint we added for the Orleans Dashboard, you need to first give it a name.
 
 ```csharp
 builder.AddProject<Projects.WebDevWorkshop_Web>(...)
