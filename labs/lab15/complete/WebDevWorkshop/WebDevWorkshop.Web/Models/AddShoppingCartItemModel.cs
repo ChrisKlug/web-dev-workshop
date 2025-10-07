@@ -1,4 +1,3 @@
-﻿namespace WebDevWorkshop.Web.Models
-{
-    public record AddShoppingCartItemModel(int ProductId, int Count);
-}
+﻿namespace WebDevWorkshop.Web.Models;
+
+public record AddShoppingCartItemModel(int ProductId, int Count);

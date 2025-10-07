@@ -6,12 +6,17 @@ using WebDevWorkshop.Web.ShoppingCart;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddProductsClient("https://products");
+
 builder.Services.AddHttpForwarderWithServiceDiscovery();
+
 builder.Services.AddControllers();
-builder.AddServiceDefaults();
+
 builder.Services.AddOrleans(silo => {
     silo.UseLocalhostClustering();
 });
+
+builder.AddServiceDefaults();
+
 var app = builder.Build();
 
 app.UseStaticFiles(new StaticFileOptions
@@ -26,6 +31,7 @@ app.UseStaticFiles(new StaticFileOptions
 
 app.UseRouting();
 app.MapControllers();
+
 //Minimal APIs
 app.MapPost("/api/shopping-cart", async (AddShoppingCartItemModel model, HttpContext ctx,
             IProductsClient productsClient, IGrainFactory grainFactory) =>
@@ -75,6 +81,7 @@ app.MapDefaultEndpoints();
 app.Map("/api/{**catch-all}", (HttpContext ctx) => {
     ctx.Response.StatusCode = 404;
 });
+
 app.MapForwarder("/{**catch-all}", "https+http://ui");
 
 app.Run();

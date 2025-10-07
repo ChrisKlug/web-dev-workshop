@@ -23,6 +23,5 @@ builder.AddProject<Projects.WebDevWorkshop_Web>("webdevworkshop-web","aspire")
     .WithReference(ui.GetEndpoint("http"))
     .WithReference(products)
     .WaitFor(products);
-    
 
 builder.Build().Run();
