@@ -47,7 +47,7 @@ The _State_ might read as "Runtime unhealthy" until the Docker image has been do
 
 Once the __ui__ resource is in the "Healthy" state, click on the __localhost:XXXXX__ URL to view the UI.
 
-__Note:__ The UI doesn't actually work at the moment, as it requires some API endpoints to exist...
+__Note:__ The UI doesn't actually work at the moment, as it requires some API endpoints to exist... So you will see a __Whoopsi Daisy!__ error message. But that is okay for now.
 
 ### Optional: Fix the Dashboard state
 
