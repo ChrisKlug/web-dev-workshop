@@ -1,13 +1,13 @@
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
 using WebDevWorkshop.Services.Products.Data;
-using static WebDevWorkshop.Services.Products.Data.IProducts;
 
 var builder = WebApplication.CreateBuilder(args);
+
 builder.Services.AddScoped<IProducts, EfProducts>();
 builder.AddSqlServerDbContext<ProductsContext>("WebDevWorkshop");
-builder.Services.AddFastEndpoints();
 
+builder.Services.AddFastEndpoints();
 
 var app = builder.Build();
 
