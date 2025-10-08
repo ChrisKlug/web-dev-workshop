@@ -1,4 +1,7 @@
-﻿namespace WebDevWorkshop.Services.Products.Data.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
+
+namespace WebDevWorkshop.Services.Products.Data.Migrations;
 
 [Migration("001_InitialMigration")]
 [DbContext(typeof(ProductsContext))]
