@@ -3,7 +3,7 @@
 namespace WebDevWorkshop.Services.Products.Data;
 
 public class ProductsContext(DbContextOptions<ProductsContext> options)
-    : DbContext(options)
+: DbContext(options)
 {
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

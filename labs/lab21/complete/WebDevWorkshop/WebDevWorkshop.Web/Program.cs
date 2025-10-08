@@ -70,6 +70,7 @@ if (!builder.Environment.IsEnvironment("IntegrationTesting"))
         };
     });
 }
+
 builder.Services.AddGrpcClient<OrdersService.OrdersServiceClient>(options =>
 {
     options.Address = new Uri("https://orders");

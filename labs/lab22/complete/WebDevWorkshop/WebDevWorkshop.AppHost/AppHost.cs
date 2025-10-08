@@ -50,7 +50,6 @@ var products = builder.AddProject<Projects.WebDevWorkshop_Services_Products>("pr
                       .WithReference(db)
                       .WaitFor(db);
 
-
 var orders = builder.AddProject<Projects.WebDevWorkshop_Services_Orders>("orders", "https")
     .WithReference(ordersDb)
     .WaitFor(ordersDb);
