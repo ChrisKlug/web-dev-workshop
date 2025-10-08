@@ -3,10 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using WebDevWorkshop.Services.Products.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+
 builder.Services.AddScoped<IProducts, EfProducts>();
 builder.AddSqlServerDbContext<ProductsContext>("WebDevWorkshop");
-builder.Services.AddFastEndpoints();
 
+builder.Services.AddFastEndpoints();
 
 var app = builder.Build();
 

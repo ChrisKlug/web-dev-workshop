@@ -52,10 +52,8 @@ builder.AddProject<Projects.WebDevWorkshop_Web>("webdevworkshop-web","aspire")
     .WithReference(products)
     .WaitFor(products);
     
-
 builder.AddProject<Projects.WebDevWorkshop_Services_Orders>("webdevworkshop-services-orders")
     .WithReference(ordersDb)
     .WaitFor(ordersDb);
-
 
 builder.Build().Run();

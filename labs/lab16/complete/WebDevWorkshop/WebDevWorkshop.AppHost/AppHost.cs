@@ -50,5 +50,4 @@ builder.AddProject<Projects.WebDevWorkshop_Web>("webdevworkshop-web","aspire")
     .WithReference(products)
     .WaitFor(products);
     
-
 builder.Build().Run();

@@ -6,32 +6,31 @@ using System.Text;
 using System.Threading.Tasks;
 using WebDevWorkshop.Testing;
 
-namespace WebDevWorkshop.Web.Tests
+namespace WebDevWorkshop.Web.Tests;
+
+public class MeTests
 {
-    public class MeTests
-    {
-        [Fact]
-        public Task Get_returns_HTTP_401_Unauthorized_if_not_authenticated()
-            => TestHelper.ExecuteTest<Program>(
-                isAuthenticated: false,
-                test: async client => 
-                {
-                    var response = await client.GetAsync("/api/me");
+    [Fact]
+    public Task Get_returns_HTTP_401_Unauthorized_if_not_authenticated()
+        => TestHelper.ExecuteTest<Program>(
+            isAuthenticated: false,
+            test: async client => 
+            {
+                var response = await client.GetAsync("/api/me");
 
-                    Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
-                }
-            );
+                Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+            }
+        );
 
-        [Fact]
-        public Task Get_returns_HTTP_200_OK_and_name_if_authenticated()
-            => TestHelper.ExecuteTest<Program>(
-                test: async client =>
-                {
-                    var response = await client.GetAsync("/api/me");
+    [Fact]
+    public Task Get_returns_HTTP_200_OK_and_name_if_authenticated()
+        => TestHelper.ExecuteTest<Program>(
+            test: async client =>
+            {
+                var response = await client.GetAsync("/api/me");
 
-                    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-                    Assert.Equal("\"test\"", await response.Content.ReadAsStringAsync());
-                }
-            );
-    }
+                Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+                Assert.Equal("\"test\"", await response.Content.ReadAsStringAsync());
+            }
+        );
 }

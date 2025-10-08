@@ -10,22 +10,21 @@ using Xunit.Sdk;
     "WebDevWorkshop.Services.Orders.Tests"
 )]
 
-namespace WebDevWorkshop.Services.Orders.Tests.Infrastructure
+namespace WebDevWorkshop.Services.Orders.Tests.Infrastructure;
+
+public class TestRunStart : XunitTestFramework
 {
-    public class TestRunStart : XunitTestFramework
+    public TestRunStart(IMessageSink messageSink) : base(messageSink)
     {
-        public TestRunStart(IMessageSink messageSink) : base(messageSink)
-        {
-            var config = new ConfigurationManager()
-                            .AddJsonFile("appsettings.IntegrationTesting.json")
-                            .Build();
+        var config = new ConfigurationManager()
+                        .AddJsonFile("appsettings.IntegrationTesting.json")
+                        .Build();
 
-            var options = new DbContextOptionsBuilder<OrdersContext>()
-                                .UseSqlServer(config.GetConnectionString("WebDevWorkshopOrders"));
+        var options = new DbContextOptionsBuilder<OrdersContext>()
+                            .UseSqlServer(config.GetConnectionString("WebDevWorkshopOrders"));
 
-            var dbContext = new OrdersContext(options.Options);
+        var dbContext = new OrdersContext(options.Options);
 
-            dbContext.Database.Migrate();
-        }
+        dbContext.Database.Migrate();
     }
 }

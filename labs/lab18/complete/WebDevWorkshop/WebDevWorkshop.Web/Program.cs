@@ -10,8 +10,11 @@ using WebDevWorkshop.Web.ShoppingCart;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddProductsClient("https://products");
+
 builder.Services.AddHttpForwarderWithServiceDiscovery();
+
 builder.Services.AddControllers();
+
 builder.AddServiceDefaults();
 
 builder.Services.AddOrleans(silo => {
@@ -33,6 +36,7 @@ var auth = builder.Services.AddAuthentication(options =>
                     options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
                 })
                 .AddCookie();
+
 if (!builder.Environment.IsEnvironment("IntegrationTesting"))
 {
     auth.AddOpenIdConnect(options =>
@@ -136,9 +140,11 @@ app.MapGet("/api/shopping-cart", async (HttpContext ctx, IGrainFactory grainFact
 
 app.MapDefaultEndpoints();
 
-app.Map("/api/{**catch-all}", (HttpContext ctx) => {
+app.Map("/api/{**catch-all}", (HttpContext ctx) =>
+{
     ctx.Response.StatusCode = 404;
 });
+
 app.MapForwarder("/{**catch-all}", "https+http://ui");
 
 app.Run();
