@@ -93,6 +93,8 @@ Add a new directory called __Migrations__ under the __Data__ directory. Then add
 The migration doesn't really matter, so you can simply replace the `InitialMigration` class with the following
 
 ```csharp
+namespace WebDevWorkshop.Services.Products.Data.Migrations;
+
 [Migration("001_InitialMigration")]
 [DbContext(typeof(ProductsContext))]
 public class InitialMigration : Migration

@@ -237,12 +237,6 @@ Open the __AppHost.cs__ file in the __WebDevWorkshop.AppHost__ project. Find the
 var products = builder.AddProject<Projects.WebDevWorkshop_Services_Products>("products", "https")
 ```
 
-And while you are at it, you might as well change the products project so that it doesn't open a browser tab every time you start Aspire.
-
-To do this, open the __Properties/launchSettings.json__ file in the __WebDevWorkshop.Services.Products__ project. 
-
-Locate the __https__ profile, and set the `launchBrowser` setting to `false`.
-
 ### Verify that it works
 
 Now, try start debugging again.

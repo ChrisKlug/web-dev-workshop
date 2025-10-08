@@ -184,6 +184,8 @@ Now that the entities are in place, you need a database to store them in. For th
 Create a new class called __InitialMigration__ in the __Data__ directory. And because writing the migration is tedious, and gives you very little benefit, just replace the class of the file with this
 
 ```csharp
+namespace WebDevWorkshop.Services.Orders.Data;
+
 [Migration("001_InitialMigration")]
 [DbContext(typeof(OrdersContext))]
 public class InitialMigration : Migration

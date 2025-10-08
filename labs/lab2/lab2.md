@@ -117,8 +117,6 @@ Duplicate the `https` profile, and rename it to `aspire`. Then update the `appli
 }
 ```
 
-__Tip:__ If you don't want the browser to launch at every run, you can also set the `launchBrowser` to `false`
-
 Now you just need to tell Aspire that you want to use this new profile.
 
 Open the __AppHost.cs__ file in the __WebDevWorkshop.AppHost__ project. 
