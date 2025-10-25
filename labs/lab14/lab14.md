@@ -72,7 +72,21 @@ Ok, there is no certificate inside the container that it can use. Or at least no
 
 To be able to support HTTPS, you will need a TLS certificate to work with. Luckily, ASP.NET Core creates one of those for you the first time you run an ASP.NET Core application. So, let's use that!
 
-First, you need to export the certificate as a __pfx__ file. To do this, open the Start menu and find the __Manage User Certificates__ entry. 
+First, you need to export the certificate as a __pfx__ file.
+
+The easiest way to do that, is to run the following command in your terminal
+
+```bash
+dotnet dev-certs https --export-path <PATH_TO_EXPORT_FILE> --password <YOUR_PASSWORD>
+```
+
+Setting __<PATH_TO_EXPORT_FILE>__ to there you want to put the file, and __<YOUR_PASSWORD>__ to a secure password like __P@ssw0rd123!__.
+
+In this case, the __<PATH_TO_EXPORT_FILE>__ should point to directory that contains your solution file.
+
+If you prefer to do it in a graphical way on Windows, the steps are as follows.
+
+Open the Start menu and find the __Manage User Certificates__ entry. 
 
 Go to __Personal__ > __Certificates__ and locate the certificate with a friendly name of __ASP.NET Core HTTPS development certificate__. 
 
@@ -100,7 +114,7 @@ __Note:__ By "root", it means that it should be in the same directory as the sol
 
 Close the __certmgr__ window.
 
-__Important:__ This certificate is trusted by your machine, so make sure it doesn't leave your machine. After the workshop, it is recommended to delete the file completely.
+__Very Important:__ This certificate is trusted by your machine, so make sure it doesn't leave your machine. After the workshop, it is recommended to delete the file completely.
 
 Now that you have the certificate, we can add it to the IdentityServer container using a bind mount.
 
