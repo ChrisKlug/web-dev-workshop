@@ -80,9 +80,9 @@ The easiest way to do that, is to run the following command in your terminal
 dotnet dev-certs https --export-path <PATH_TO_EXPORT_FILE> --password <YOUR_PASSWORD>
 ```
 
-Setting __<PATH_TO_EXPORT_FILE>__ to there you want to put the file, and __<YOUR_PASSWORD>__ to a secure password like __P@ssw0rd123!__.
+Setting __<PATH_TO_EXPORT_FILE>__ to the path where you want to put the file, including filename, and __<YOUR_PASSWORD>__ to a secure password like __P@ssw0rd123!__.
 
-In this case, the __<PATH_TO_EXPORT_FILE>__ should point to directory that contains your solution file.
+__Important:__ In this case, the __<PATH_TO_EXPORT_FILE>__ should point to directory that contains your solution file. And the filename should be __ssl-cert.pfx__
 
 If you prefer to do it in a graphical way on Windows, the steps are as follows.
 
