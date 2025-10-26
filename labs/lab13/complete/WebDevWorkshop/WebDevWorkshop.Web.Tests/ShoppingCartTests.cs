@@ -64,7 +64,7 @@ public class ShoppingCartTests
     public class AddShoppingCartItem
     {
         [Fact]
-        public Task Gets_shopping_cart_from_grain_if_ShoppingCartId_cookie_exists()
+        public Task Adds_item_to_grain_with_id_from_ShoppingCartId_cookie()
         {
             var grainFake = A.Fake<IShoppingCart>();
 
