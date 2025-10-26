@@ -414,7 +414,7 @@ public Task Gets_shopping_cart_from_grain_if_ShoppingCartId_cookie_exists()
 And the `Adds_item_to_grain_with_id_from_ShoppingCartId_cookie` one becomes
 
 ```csharp
-public Task Gets_shopping_cart_from_grain_if_ShoppingCartId_cookie_exists()
+public Task Adds_item_to_grain_with_id_from_ShoppingCartId_cookie()
 {
     var grainFake = A.Fake<IShoppingCart>();
 
@@ -424,11 +424,11 @@ public Task Gets_shopping_cart_from_grain_if_ShoppingCartId_cookie_exists()
             A.CallTo(() => grainFactory.GetGrain<IShoppingCart>("TestCart", null)).Returns(grainFake);
 
             A.CallTo(() => productsClient.GetProduct(1)).Returns(
-                new Product(1, 
-                    "Test Product", 
-                    "A Test Product", 
-                    1.23m, false, 
-                    "thumbnail.jpg", 
+                new Product(1,
+                    "Test Product",
+                    "A Test Product",
+                    1.23m, false,
+                    "thumbnail.jpg",
                     "image.jpg")
             );
         },
