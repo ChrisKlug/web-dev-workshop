@@ -10,6 +10,8 @@ __Note:__ gRPC is actually not a bad option for this at all, as it is a service 
 
 The first step is to create a new __ASP.NET Core gRPC Service__ project called __WebDevWorkshop.Services.Orders__. And as usual, don't forget to tick that "_Enlist in .NET Aspire orchestration_" checkbox to add it to your Aspire project.
 
+__Note:__ Once again, if you are using an IDE that does not have the "_Enlist in .NET Aspire orchestration_" option,you have to manually add the reference to the __WebDevWorkshop.ServiceDefaults__ project, and add the `builder.AddServiceDefaults()` and `app.MapDefaultEndpoints()` calls to the __Program.cs__ file.
+
 A thing to note here, is that gRPC runs on HTTP2, so, if you open the __appsettings.json__ file in the new project, you will see a __Kestrel__ section that looks like this 
 
 ```json

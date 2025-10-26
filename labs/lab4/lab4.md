@@ -10,6 +10,8 @@ Add a new project to your solution. Make it an __ASP.NET Core Empty__ project, a
 
 Making sure that "_Enlist in .NET Aspire orchestration_" option is ticked on the second screen to add it to Aspire.
 
+__Note:__ Once again, if you are using an IDE that does not have the "_Enlist in .NET Aspire orchestration_" option,you have to manually add the reference to the __WebDevWorkshop.ServiceDefaults__ project, and add the `builder.AddServiceDefaults()` and `app.MapDefaultEndpoints()` calls to the __Program.cs__ file.
+
 Once the new project has been set up. You should be able to open the __AppHost.cs__ file in the __WebDevWorkshop.AppHost__ project and see the new project being added to the AppModel.
 
 ### Add a reference to the database

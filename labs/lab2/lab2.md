@@ -14,6 +14,8 @@ Add a new project to your solution. Make it an __ASP.NET Core Empty__ project, a
 
 Making sure that "_Enlist in .NET Aspire orchestration_" option is ticked on the second screen to add it to Aspire.
 
+__Note:__ If you are using an IDE that does not have the "_Enlist in .NET Aspire orchestration_" options, like Rider or VS Code, you will have to manually add a reference to the __WebDevWorkshop.ServiceDefaults__ project, and add the `builder.AddServiceDefaults()` and `app.MapDefaultEndpoints()` calls to the __Program.cs__ file.
+
 ### Expose the HTTP-endpoints
 
 Once the project has been created, and added to the __AppHost.cs__, you really should tell Aspire that you want to expose it publicly. This is done by calling `WithExternalHttpEndpoints()`.
