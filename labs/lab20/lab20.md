@@ -219,6 +219,7 @@ public class OrdersMetrics
     public OrdersMetrics(IMeterFactory meterFactory)
     {
         var meter = meterFactory.Create(MeterName);
+        TotalOrdersCounter = meter.CreateCounter<int>("orders", "Order", "Orders added");
     }
 
     public void AddOrder() => TotalOrdersCounter.Add(1);
